@@ -112,11 +112,21 @@
             position: relative;
             overflow: hidden;
             background: 
-                linear-gradient(135deg, rgba(5, 5, 5, 0.92), rgba(10, 10, 10, 0.88)),
+                linear-gradient(180deg, rgba(5, 5, 5, 0.92) 0%, rgba(5, 5, 5, 0.88) 70%, rgba(5, 5, 5, 0.95) 100%),
                 url('https://images.unsplash.com/photo-1574717024653-61fd2cf4d44d?w=1600&q=80');
             background-size: cover;
             background-position: center;
-            background-attachment: fixed;
+        }
+
+        .hero::after {
+            content: '';
+            position: absolute;
+            bottom: 0;
+            left: 0;
+            right: 0;
+            height: 200px;
+            background: linear-gradient(to bottom, transparent, var(--bg));
+            pointer-events: none;
         }
 
         .hero::before {
@@ -250,6 +260,22 @@
             font-size: 1.1rem;
             line-height: 1.9;
             margin-bottom: 1.5rem;
+        }
+
+        #about {
+            position: relative;
+            padding-top: 6rem;
+        }
+
+        #about::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: 0;
+            right: 0;
+            height: 150px;
+            background: linear-gradient(to bottom, var(--bg), transparent);
+            pointer-events: none;
         }
 
         /* Skills Section */
