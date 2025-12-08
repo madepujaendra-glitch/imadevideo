@@ -265,12 +265,24 @@
             padding-top: 8rem;
             padding-bottom: 5rem;
             margin-top: -100px;
+            background: var(--bg);
+        }
+
+        #about::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: 0;
+            right: 0;
+            height: 400px;
             background: 
-                linear-gradient(180deg, transparent 0%, rgba(5, 5, 5, 0.75) 100px, rgba(5, 5, 5, 0.92) 200px, var(--bg) 300px),
+                linear-gradient(180deg, transparent 0%, rgba(5, 5, 5, 0.5) 100px, rgba(5, 5, 5, 0.85) 200px, var(--bg) 400px),
                 url('https://images.unsplash.com/photo-1574717024653-61fd2cf4d44d?w=1920&q=80');
             background-size: cover;
             background-position: center;
             background-repeat: no-repeat;
+            z-index: 0;
+            pointer-events: none;
         }
 
         .about-content {
