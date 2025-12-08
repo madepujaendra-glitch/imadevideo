@@ -111,6 +111,10 @@
             padding: 8rem 5% 4rem;
             position: relative;
             overflow: hidden;
+            background: linear-gradient(135deg, rgba(5, 5, 5, 0.95), rgba(10, 10, 10, 0.9)), 
+                        url('data:image/svg+xml,<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 1200 800"><rect fill="%23050505"/><g opacity="0.15"><rect x="100" y="200" width="300" height="20" fill="%23C3FF00"/><rect x="100" y="240" width="250" height="20" fill="%23C3FF00"/><rect x="100" y="280" width="280" height="20" fill="%23C3FF00"/><circle cx="900" cy="400" r="150" fill="none" stroke="%23C3FF00" stroke-width="3"/><path d="M850 380 L950 380 L900 450 Z" fill="%23C3FF00"/></g></svg>');
+            background-size: cover;
+            background-position: center;
         }
 
         .hero::before {
@@ -187,20 +191,24 @@
 
         .hero-image {
             position: relative;
-        }
-
-        .hero-image img {
-            width: 100%;
             border-radius: 20px;
+            overflow: hidden;
             box-shadow: 0 30px 80px rgba(0, 0, 0, 0.5);
             border: 3px solid rgba(195, 255, 0, 0.3);
-            transition: all 0.5s ease;
         }
 
-        .hero-image img:hover {
-            transform: scale(1.05);
+        .hero-image iframe {
+            width: 100%;
+            aspect-ratio: 16/9;
+            border: none;
+            display: block;
+        }
+
+        .hero-image:hover {
+            transform: scale(1.02);
             box-shadow: 0 40px 100px rgba(195, 255, 0, 0.3);
             border-color: var(--primary);
+            transition: all 0.5s ease;
         }
 
         /* Section Styles */
@@ -316,11 +324,12 @@
             box-shadow: 0 10px 30px rgba(195, 255, 0, 0.3);
         }
 
-        /* Showcase Section */
+        /* Project Showcase Section */
         .showcase-grid {
             display: grid;
-            grid-template-columns: repeat(auto-fit, minmax(400px, 1fr));
+            grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
             gap: 2.5rem;
+            max-width: 1400px;
         }
 
         .showcase-item {
@@ -337,10 +346,49 @@
             box-shadow: 0 25px 60px rgba(195, 255, 0, 0.2);
         }
 
-        .showcase-item iframe {
+        .showcase-thumbnail {
+            position: relative;
             width: 100%;
-            height: 350px;
+            aspect-ratio: 9/16;
+            overflow: hidden;
+            cursor: pointer;
+        }
+
+        .showcase-thumbnail iframe {
+            width: 100%;
+            height: 100%;
             border: none;
+            display: block;
+            object-fit: cover;
+        }
+
+        .showcase-thumbnail img {
+            width: 100%;
+            height: 100%;
+            object-fit: cover;
+            display: block;
+        }
+
+        .play-overlay {
+            position: absolute;
+            top: 50%;
+            left: 50%;
+            transform: translate(-50%, -50%);
+            width: 60px;
+            height: 60px;
+            background: rgba(195, 255, 0, 0.9);
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 1.5rem;
+            transition: all 0.3s;
+            pointer-events: none;
+        }
+
+        .showcase-item:hover .play-overlay {
+            transform: translate(-50%, -50%) scale(1.1);
+            box-shadow: 0 0 30px rgba(195, 255, 0, 0.6);
         }
 
         .showcase-info {
@@ -359,6 +407,11 @@
             margin-bottom: 0.5rem;
         }
 
+        .showcase-info p {
+            color: var(--muted);
+            font-size: 0.95rem;
+        }
+
         /* Portfolio Categories */
         #portfolio {
             background: var(--card-bg);
@@ -371,8 +424,8 @@
         }
 
         .portfolio-card {
-            background: linear-gradient(135deg, rgba(195, 255, 0, 0.05) 0%, rgba(10, 10, 10, 0.8) 100%);
-            padding: 3rem 2rem;
+            background: var(--card-bg);
+            padding: 0;
             border-radius: 20px;
             border: 1px solid rgba(195, 255, 0, 0.1);
             text-align: center;
@@ -383,6 +436,29 @@
             display: block;
             position: relative;
             overflow: hidden;
+        }
+
+        .portfolio-card-image {
+            width: 100%;
+            height: 200px;
+            background-size: cover;
+            background-position: center;
+            position: relative;
+        }
+
+        .portfolio-card-image::after {
+            content: '';
+            position: absolute;
+            bottom: 0;
+            left: 0;
+            right: 0;
+            height: 100%;
+            background: linear-gradient(to bottom, transparent 0%, rgba(5, 5, 5, 0.9) 100%);
+        }
+
+        .portfolio-card-content {
+            padding: 2rem;
+            position: relative;
         }
 
         .portfolio-card::before {
@@ -422,6 +498,7 @@
         .portfolio-card .icon {
             font-size: 3rem;
             margin-bottom: 1rem;
+            display: none;
         }
 
         /* Contact Section */
@@ -454,7 +531,14 @@
             transition: all 0.3s;
             display: inline-flex;
             align-items: center;
-            gap: 0.5rem;
+            gap: 0.8rem;
+            font-size: 1.05rem;
+        }
+
+        .contact-btn svg {
+            width: 24px;
+            height: 24px;
+            fill: currentColor;
         }
 
         .contact-btn.secondary {
@@ -664,7 +748,11 @@
                 <a href="#showcase" class="hero-cta">Explore My Work</a>
             </div>
             <div class="hero-image reveal">
-                <img src="assets/images/hero.jpg" alt="I Made Puja Endra" class="hero-img">
+                <iframe 
+                    src="https://www.youtube.com/embed/VIDEO_ID_DISINI?autoplay=1&mute=1&loop=1&playlist=VIDEO_ID_DISINI&controls=0" 
+                    allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture" 
+                    allowfullscreen>
+                </iframe>
             </div>
         </div>
     </section>
@@ -711,55 +799,64 @@
             </div>
         </div>
         <div class="downloads reveal">
-            <a href="https://drive.google.com/file/d/1EaOUrJRtO6AiCIsX9EULS6yjwWW_1IV1/view?usp=sharing" target="_blank" class="btn-download">📄 Download CV</a>
-            <a href="https://drive.google.com/file/d/1wWHQLdoxjBV419_Np-p-5y4P_gmdND0H/view?usp=sharing" target="_blank" class="btn-download">📋 Download Resume</a>
+            <a href="https://drive.google.com/file/d/1EaOUrJRtO6AiCIsX9EULS6yjwWW_1IV1/view?usp=sharing" target="_blank" class="btn-download">Download CV</a>
+            <a href="https://drive.google.com/file/d/1wWHQLdoxjBV419_Np-p-5y4P_gmdND0H/view?usp=sharing" target="_blank" class="btn-download">Download Resume</a>
         </div>
     </section>
 
-    <!-- Showcase Section -->
+    <!-- Project Showcase Section -->
     <section id="showcase">
-        <h2 class="section-title reveal">Featured Showcase</h2>
+        <h2 class="section-title reveal">Project Showcase</h2>
         <p class="section-subtitle reveal">
-            Highlighting my best work with leading creators and brands
+            Highlighting my best short-form content with leading creators and brands
         </p>
         <div class="showcase-grid">
-            <!-- Ruangsepri -->
+            <!-- RuangSepri -->
             <div class="showcase-item reveal">
-                <iframe 
-                    src="https://drive.google.com/file/d/1EYDMJjfcbVilZajdPyQJVxF1od4J9Zev/preview" 
-                    allow="autoplay; fullscreen" 
-                    loading="lazy">
-                </iframe>
+                <div class="showcase-thumbnail" onclick="window.open('https://youtube.com/shorts/lKmNIRaVSKE', '_blank')">
+                    <img src="https://img.youtube.com/vi/lKmNIRaVSKE/maxresdefault.jpg" alt="RuangSepri">
+                    <div class="play-overlay">▶</div>
+                </div>
                 <div class="showcase-info">
-                    <div class="client">RuangSepri</div>
-                    <h3>Educational Reel Editing</h3>
-                    <p>Short-form educational content with clean pacing and clear visual structure.</p>
+                    <div class="client">@ruangsepri</div>
+                    <h3>AI-Driven Content Creator</h3>
+                    <p>Engaging educational content with dynamic pacing.</p>
                 </div>
             </div>
-            <!-- contentcreator.club -->
+            <!-- TechpreneurBoi -->
             <div class="showcase-item reveal">
-                <iframe 
-                    src="https://drive.google.com/file/d/1FdSJJ7vBJs4ibIS75cmNfPt9WvJM5Hki/preview" 
-                    allow="autoplay; fullscreen" 
-                    loading="lazy">
-                </iframe>
+                <div class="showcase-thumbnail" onclick="window.open('https://youtube.com/shorts/PbyaB1vroW0', '_blank')">
+                    <img src="https://img.youtube.com/vi/PbyaB1vroW0/maxresdefault.jpg" alt="TechpreneurBoi">
+                    <div class="play-overlay">▶</div>
+                </div>
                 <div class="showcase-info">
-                    <div class="client">contentcreator.club</div>
-                    <h3>Creator-Focused Reel</h3>
-                    <p>Dynamic, creator-first edit optimized for hooks and retention.</p>
+                    <div class="client">@techpreneurboi</div>
+                    <h3>Automation Expert</h3>
+                    <p>Fast-paced tech content optimized for retention.</p>
                 </div>
             </div>
-            <!-- victoriawong68 -->
+            <!-- ContentCreator.Club -->
             <div class="showcase-item reveal">
-                <iframe 
-                    src="https://drive.google.com/file/d/1YyHNLfDBWgNVjwRo5tPU9B2SOK0TIRWQ/preview" 
-                    allow="autoplay; fullscreen" 
-                    loading="lazy">
-                </iframe>
+                <div class="showcase-thumbnail" onclick="window.open('https://youtube.com/shorts/1c1neNWR3Y8', '_blank')">
+                    <img src="https://img.youtube.com/vi/1c1neNWR3Y8/maxresdefault.jpg" alt="CreateContent.Club">
+                    <div class="play-overlay">▶</div>
+                </div>
                 <div class="showcase-info">
-                    <div class="client">victoriawong68</div>
-                    <h3>Educational Branding Reel</h3>
-                    <p>Clean, premium-style edit for educational personal branding content.</p>
+                    <div class="client">@createcontent.club</div>
+                    <h3>Businesses Scale with Content</h3>
+                    <p>High-energy edit for creator community.</p>
+                </div>
+            </div>
+            <!-- VictoriaWong68 -->
+            <div class="showcase-item reveal">
+                <div class="showcase-thumbnail" onclick="window.open('https://youtube.com/shorts/LvjzKyPSyQg', '_blank')">
+                    <img src="https://img.youtube.com/vi/LvjzKyPSyQg/maxresdefault.jpg" alt="VictoriaWong68">
+                    <div class="play-overlay">▶</div>
+                </div>
+                <div class="showcase-info">
+                    <div class="client">@victoriawong68</div>
+                    <h3>Build Personal Brand</h3>
+                    <p>Professional branding with clean aesthetics.</p>
                 </div>
             </div>
         </div>
@@ -770,50 +867,77 @@
         <h2 class="section-title reveal">Full Portfolio</h2>
         <p class="section-subtitle reveal">Explore my complete collection of projects across different categories</p>
         <div class="portfolio-grid">
-            <a href="#" class="portfolio-card reveal" onclick="alert('Navigate to: /portfolio/reels.html'); return false;">
-                <div class="icon">🎬</div>
-                <h3>Reels Content Editing Project</h3>
-                <p>A full collection of short-form editing projects for brands & creators</p>
+            <!-- 1. Reels Content -->
+            <a href="portfolio/reels.html" class="portfolio-card reveal">
+                <div class="portfolio-card-image" style="background-image: linear-gradient(rgba(0,0,0,0.3), rgba(5,5,5,0.9)), url('https://images.unsplash.com/photo-1492619375914-88005aa9e8fb?w=800')"></div>
+                <div class="portfolio-card-content">
+                    <h3>Reels Content Editing Project</h3>
+                    <p>A full collection of short-form editing projects for brands & creators.</p>
+                </div>
             </a>
-            <a href="#" class="portfolio-card reveal" onclick="alert('Navigate to: /portfolio/creative.html'); return false;">
-                <div class="icon">🏆</div>
-                <h3>1st Place Creative Video</h3>
-                <p>Award-winning creative video productions</p>
+            <!-- 2. Creative Video -->
+            <a href="https://drive.google.com/drive/folders/1FY7bHSeCgDttKfXQNFHRDymrnhpU0Tyu?usp=sharing" target="_blank" class="portfolio-card reveal">
+                <div class="portfolio-card-image" style="background-image: linear-gradient(rgba(0,0,0,0.3), rgba(5,5,5,0.9)), url('https://images.unsplash.com/photo-1478720568477-152d9b164e26?w=800')"></div>
+                <div class="portfolio-card-content">
+                    <h3>1st Place Creative Video</h3>
+                    <p>Award-winning creative video project and competition entry.</p>
+                </div>
             </a>
-            <a href="#" class="portfolio-card reveal" onclick="alert('Navigate to: /portfolio/bestfilm.html'); return false;">
-                <div class="icon">🎥</div>
-                <h3>Best Film Production Award</h3>
-                <p>Recognized excellence in filmmaking</p>
+            <!-- 3. Best Film -->
+            <a href="https://drive.google.com/drive/folders/11f5Oa8MIq5mrFU3_qxLaE3gGVnVj8C3c?usp=sharing" target="_blank" class="portfolio-card reveal">
+                <div class="portfolio-card-image" style="background-image: linear-gradient(rgba(0,0,0,0.3), rgba(5,5,5,0.9)), url('https://images.unsplash.com/photo-1485846234645-a62644f84728?w=800')"></div>
+                <div class="portfolio-card-content">
+                    <h3>Best Film Production Award</h3>
+                    <p>Film production recognized with a Best Film award.</p>
+                </div>
             </a>
-            <a href="#" class="portfolio-card reveal" onclick="alert('Navigate to: /portfolio/cinematic.html'); return false;">
-                <div class="icon">🎞️</div>
-                <h3>Cinematic Video</h3>
-                <p>Story-driven cinematic productions</p>
+            <!-- 4. Cinematic -->
+            <a href="https://drive.google.com/drive/folders/1-hm1iBLPnW0Uh045z-5s922fR99Jg9KX?usp=sharing" target="_blank" class="portfolio-card reveal">
+                <div class="portfolio-card-image" style="background-image: linear-gradient(rgba(0,0,0,0.3), rgba(5,5,5,0.9)), url('https://images.unsplash.com/photo-1536240478700-b869070f9279?w=800')"></div>
+                <div class="portfolio-card-content">
+                    <h3>Cinematic Video</h3>
+                    <p>Cinematic edits with storytelling, camera movement, and mood-focused grading.</p>
+                </div>
             </a>
-            <a href="#" class="portfolio-card reveal" onclick="alert('Navigate to: /portfolio/company.html'); return false;">
-                <div class="icon">🏢</div>
-                <h3>Company Profile Video</h3>
-                <p>Professional brand storytelling</p>
+            <!-- 5. Company Profile -->
+            <a href="https://drive.google.com/drive/folders/1zubPlV0JR7sXFKm1f23kKRteKEHD0rT2?usp=sharing" target="_blank" class="portfolio-card reveal">
+                <div class="portfolio-card-image" style="background-image: linear-gradient(rgba(0,0,0,0.3), rgba(5,5,5,0.9)), url('https://images.unsplash.com/photo-1497366216548-37526070297c?w=800')"></div>
+                <div class="portfolio-card-content">
+                    <h3>Company Profile Video</h3>
+                    <p>Profile videos for brands, businesses, and organizations.</p>
+                </div>
             </a>
-            <a href="#" class="portfolio-card reveal" onclick="alert('Navigate to: /portfolio/documentary.html'); return false;">
-                <div class="icon">📹</div>
-                <h3>Documentary Video</h3>
-                <p>Real stories, powerful narratives</p>
+            <!-- 6. Documentary -->
+            <a href="https://drive.google.com/drive/folders/1lQfraJ2X0hf99E_9trLVWO5Ws66kZL5G?usp=sharing" target="_blank" class="portfolio-card reveal">
+                <div class="portfolio-card-image" style="background-image: linear-gradient(rgba(0,0,0,0.3), rgba(5,5,5,0.9)), url('https://images.unsplash.com/photo-1579532537598-459ecdaf39cc?w=800')"></div>
+                <div class="portfolio-card-content">
+                    <h3>Documentary Video</h3>
+                    <p>Documentary-style storytelling with real subjects and narratives.</p>
+                </div>
             </a>
-            <a href="#" class="portfolio-card reveal" onclick="alert('Navigate to: /portfolio/academic.html'); return false;">
-                <div class="icon">🎓</div>
-                <h3>Academic Award Certificate</h3>
-                <p>Educational achievements and recognitions</p>
+            <!-- 7. Academic -->
+            <a href="https://drive.google.com/drive/folders/13AzucIUYHF2RGct9zz8XVZFdstsbGs0k?usp=sharing" target="_blank" class="portfolio-card reveal">
+                <div class="portfolio-card-image" style="background-image: linear-gradient(rgba(0,0,0,0.3), rgba(5,5,5,0.9)), url('https://images.unsplash.com/photo-1523050854058-8df90110c9f1?w=800')"></div>
+                <div class="portfolio-card-content">
+                    <h3>Academic Award Certificate</h3>
+                    <p>Certificates and recognition related to academic & creative achievements.</p>
+                </div>
             </a>
-            <a href="#" class="portfolio-card reveal" onclick="alert('Navigate to: /portfolio/news.html'); return false;">
-                <div class="icon">📰</div>
-                <h3>News Video</h3>
-                <p>News coverage and journalism projects</p>
+            <!-- 8. News -->
+            <a href="https://drive.google.com/drive/folders/15fFhvLq_MEyvnE1Hv_IW1oWQ_m2NJKjt?usp=sharing" target="_blank" class="portfolio-card reveal">
+                <div class="portfolio-card-image" style="background-image: linear-gradient(rgba(0,0,0,0.3), rgba(5,5,5,0.9)), url('https://images.unsplash.com/photo-1504711434969-e33886168f5c?w=800')"></div>
+                <div class="portfolio-card-content">
+                    <h3>News Video</h3>
+                    <p>News-style videos and coverage work.</p>
+                </div>
             </a>
-            <a href="#" class="portfolio-card reveal" onclick="alert('Navigate to: /portfolio/videographer.html'); return false;">
-                <div class="icon">📸</div>
-                <h3>Videographer</h3>
-                <p>Event coverage and videography services</p>
+            <!-- 9. Videographer -->
+            <a href="https://drive.google.com/drive/folders/10o_XKYlLNSiDZEks3s9qLTdGiUf-43bG?usp=sharing" target="_blank" class="portfolio-card reveal">
+                <div class="portfolio-card-image" style="background-image: linear-gradient(rgba(0,0,0,0.3), rgba(5,5,5,0.9)), url('https://images.unsplash.com/photo-1492691527719-9d1e07e534b4?w=800')"></div>
+                <div class="portfolio-card-content">
+                    <h3>Videographer</h3>
+                    <p>On-site videography projects and event coverage.</p>
+                </div>
             </a>
         </div>
     </section>
@@ -824,9 +948,18 @@
         <div class="contact-content reveal">
             <p>Ready to create something amazing? Let's collaborate and bring your vision to life.</p>
             <div class="contact-links">
-                <a href="https://wa.me/6281243532553" target="_blank" class="contact-btn">💬 WhatsApp</a>
-                <a href="mailto:madepujaendra@gmail.com" class="contact-btn secondary">📧 Email</a>
-                <a href="https://instagram.com/imadevideo" target="_blank" class="contact-btn secondary">📷 Instagram</a>
+                <a href="https://wa.me/6281243532553" target="_blank" class="contact-btn">
+                    <svg viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg"><path d="M17.472 14.382c-.297-.149-1.758-.867-2.03-.967-.273-.099-.471-.148-.67.15-.197.297-.767.966-.94 1.164-.173.199-.347.223-.644.075-.297-.15-1.255-.463-2.39-1.475-.883-.788-1.48-1.761-1.653-2.059-.173-.297-.018-.458.13-.606.134-.133.298-.347.446-.52.149-.174.198-.298.298-.497.099-.198.05-.371-.025-.52-.075-.149-.669-1.612-.916-2.207-.242-.579-.487-.5-.669-.51-.173-.008-.371-.01-.57-.01-.198 0-.52.074-.792.372-.272.297-1.04 1.016-1.04 2.479 0 1.462 1.065 2.875 1.213 3.074.149.198 2.096 3.2 5.077 4.487.709.306 1.262.489 1.694.625.712.227 1.36.195 1.871.118.571-.085 1.758-.719 2.006-1.413.248-.694.248-1.289.173-1.413-.074-.124-.272-.198-.57-.347m-5.421 7.403h-.004a9.87 9.87 0 01-5.031-1.378l-.361-.214-3.741.982.998-3.648-.235-.374a9.86 9.86 0 01-1.51-5.26c.001-5.45 4.436-9.884 9.888-9.884 2.64 0 5.122 1.03 6.988 2.898a9.825 9.825 0 012.893 6.994c-.003 5.45-4.437 9.884-9.885 9.884m8.413-18.297A11.815 11.815 0 0012.05 0C5.495 0 .16 5.335.157 11.892c0 2.096.547 4.142 1.588 5.945L0 24l6.305-1.654a11.882 11.882 0 005.683 1.448h.005c6.554 0 11.89-5.335 11.893-11.893a11.821 11.821 0 00-3.48-8.413Z"/></svg>
+                    WhatsApp
+                </a>
+                <a href="mailto:madepujaendra@gmail.com" class="contact-btn secondary">
+                    <svg viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg"><path d="M20 4H4c-1.1 0-1.99.9-1.99 2L2 18c0 1.1.9 2 2 2h16c1.1 0 2-.9 2-2V6c0-1.1-.9-2-2-2zm0 4l-8 5-8-5V6l8 5 8-5v2z"/></svg>
+                    Email
+                </a>
+                <a href="https://instagram.com/imadevideo" target="_blank" class="contact-btn secondary">
+                    <svg viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg"><path d="M12 2.163c3.204 0 3.584.012 4.85.07 3.252.148 4.771 1.691 4.919 4.919.058 1.265.069 1.645.069 4.849 0 3.205-.012 3.584-.069 4.849-.149 3.225-1.664 4.771-4.919 4.919-1.266.058-1.644.07-4.85.07-3.204 0-3.584-.012-4.849-.07-3.26-.149-4.771-1.699-4.919-4.92-.058-1.265-.07-1.644-.07-4.849 0-3.204.013-3.583.07-4.849.149-3.227 1.664-4.771 4.919-4.919 1.266-.057 1.645-.069 4.849-.069zm0-2.163c-3.259 0-3.667.014-4.947.072-4.358.2-6.78 2.618-6.98 6.98-.059 1.281-.073 1.689-.073 4.948 0 3.259.014 3.668.072 4.948.2 4.358 2.618 6.78 6.98 6.98 1.281.058 1.689.072 4.948.072 3.259 0 3.668-.014 4.948-.072 4.354-.2 6.782-2.618 6.979-6.98.059-1.28.073-1.689.073-4.948 0-3.259-.014-3.667-.072-4.947-.196-4.354-2.617-6.78-6.979-6.98-1.281-.059-1.69-.073-4.949-.073zm0 5.838c-3.403 0-6.162 2.759-6.162 6.162s2.759 6.163 6.162 6.163 6.162-2.759 6.162-6.163c0-3.403-2.759-6.162-6.162-6.162zm0 10.162c-2.209 0-4-1.79-4-4 0-2.209 1.791-4 4-4s4 1.791 4 4c0 2.21-1.791 4-4 4zm6.406-11.845c-.796 0-1.441.645-1.441 1.44s.645 1.44 1.441 1.44c.795 0 1.439-.645 1.439-1.44s-.644-1.44-1.439-1.44z"/></svg>
+                    Instagram
+                </a>
             </div>
         </div>
     </section>
@@ -921,144 +1054,9 @@
             }
         });
 
-        // Google Drive API Integration
-        const API_KEY = 'YOUR_GOOGLE_API_KEY'; // Replace with your API key
-
-        // Portfolio Drive Folders Configuration
-        const portfolioFolders = {
-            reels: {
-                category: "Reels Content Editing Project",
-                folders: {
-                    "@aicreatorlabs.id": "1jxsYAbn14FqMjtVqJF6JAD_mJcAe8Wfy",
-                    "@createcontent.club": "1ewwgZVNUBGNMrRWKKLHZm2V7V2Vz0f1N",
-                    "@ferdianlie_ss": "1szJjEgZjLv4KoHlMJCqZ-aohSAuSCLJJ",
-                    "@imadevideo": "19Wiq-V-Jjsrcf8AyNANp66eCajoPLbsb",
-                    "@ruangsepri": "1KRKKDZ3y2FeyFU8eEumIL0LDea2cOpCm",
-                    "@rumahbumnjambi": "1XJsH7pnFypVJZz_YT4q_9ggu8B-NtfpG",
-                    "@simon_sons": "1694ZAjv0H75g2dEfy_uvin7tg1ACYu2J",
-                    "@techpreneurboi": "13m2cLLOW02Irik0UG7OKoeya7D1_ulyn",
-                    "@victoriawong68": "1v4BRWEa5K07diHy1v1cBAWjT8JK_qd-T"
-                }
-            },
-            creative: {
-                certificate: "1UeQW2IVIp7SBILVrLX8EjAOkXlnNqHVq",
-                video: "1FY7bHSeCgDttKfXQNFHRDymrnhpU0Tyu"
-            },
-            bestfilm: "11f5Oa8MIq5mrFU3_qxLaE3gGVnVj8C3c",
-            cinematic: "1-hm1iBLPnW0Uh045z-5s922fR99Jg9KX",
-            company: "1zubPlV0JR7sXFKm1f23kKRteKEHD0rT2",
-            documentary: "1lQfraJ2X0hf99E_9trLVWO5Ws66kZL5G",
-            academic: "13AzucIUYHF2RGct9zz8XVZFdstsbGs0k",
-            news: "15fFhvLq_MEyvnE1Hv_IW1oWQ_m2NJKjt",
-            videographer: "10o_XKYlLNSiDZEks3s9qLTdGiUf-43bG"
-        };
-
-        // Fetch files from Google Drive folder
-        async function fetchDriveFolder(folderId) {
-            if (API_KEY === 'YOUR_GOOGLE_API_KEY') {
-                console.warn('Google Drive API key not configured');
-                return null;
-            }
-
-            try {
-                const url = `https://www.googleapis.com/drive/v3/files?q='${folderId}'+in+parents&key=${API_KEY}&fields=files(id,name,webViewLink,thumbnailLink,mimeType,videoMediaMetadata,imageMediaMetadata)&pageSize=100`;
-                const response = await fetch(url);
-                
-                if (!response.ok) {
-                    throw new Error(`API Error: ${response.status}`);
-                }
-                
-                const data = await response.json();
-                return data.files || [];
-            } catch (error) {
-                console.error('Error fetching Drive folder:', error);
-                return null;
-            }
-        }
-
-        // Render gallery grid
-        function renderGallery(files, containerId) {
-            const container = document.getElementById(containerId);
-            if (!container) return;
-
-            container.innerHTML = '';
-
-            if (!files || files.length === 0) {
-                container.innerHTML = '<p style="text-align: center; color: var(--muted); padding: 3rem;">No files found.</p>';
-                return;
-            }
-
-            files.forEach(file => {
-                const card = document.createElement('div');
-                card.classList.add('portfolio-card');
-                card.style.cursor = 'pointer';
-                
-                let icon = '📄';
-                if (file.mimeType.includes('video')) icon = '🎬';
-                else if (file.mimeType.includes('image')) icon = '🖼️';
-                
-                card.innerHTML = `
-                    <div class="icon">${icon}</div>
-                    <h3>${file.name}</h3>
-                    <p>${file.mimeType.split('/')[0].toUpperCase()}</p>
-                `;
-                
-                card.addEventListener('click', () => {
-                    let content = '';
-                    
-                    if (file.mimeType.includes('video')) {
-                        content = `<iframe src="https://drive.google.com/file/d/${file.id}/preview" allowfullscreen></iframe>`;
-                    } else if (file.mimeType.includes('image')) {
-                        const imgUrl = file.thumbnailLink ? file.thumbnailLink.replace('=s220', '=s1600') : `https://drive.google.com/thumbnail?id=${file.id}&sz=w1600`;
-                        content = `<img src="${imgUrl}" alt="${file.name}" style="width: 100%; height: auto; max-height: 80vh; object-fit: contain;"/>`;
-                    } else {
-                        content = `<div style="text-align: center; padding: 3rem;"><p style="color: var(--primary); font-size: 1.5rem;">📄 ${file.name}</p><p style="color: var(--muted); margin-top: 1rem;">Click below to view in Google Drive</p><a href="${file.webViewLink}" target="_blank" class="hero-cta" style="display: inline-block; margin-top: 2rem;">Open in Drive</a></div>`;
-                    }
-                    
-                    const info = `<h3>${file.name}</h3>`;
-                    openModal(content, info);
-                });
-                
-                container.appendChild(card);
-            });
-        }
-
-        // Example: Load showcase items with hover glow effect
-        document.querySelectorAll('.showcase-item').forEach(item => {
-            item.addEventListener('mouseenter', function() {
-                this.style.boxShadow = '0 0 40px rgba(195, 255, 0, 0.4)';
-            });
-            item.addEventListener('mouseleave', function() {
-                this.style.boxShadow = '';
-            });
-        });
-
-        // Grid hover glow effect for portfolio cards
-        document.querySelectorAll('.portfolio-card').forEach(card => {
-            card.addEventListener('mouseenter', function() {
-                this.style.boxShadow = '0 30px 70px rgba(195, 255, 0, 0.35)';
-            });
-            card.addEventListener('mouseleave', function() {
-                this.style.boxShadow = '';
-            });
-        });
-
-        // Console info for developers
+        // Console info
         console.log('%c🎬 imadevideo Portfolio', 'color: #C3FF00; font-size: 20px; font-weight: bold;');
         console.log('%cAI-Driven Video Editor & Cinematic Storyteller', 'color: #9A9A9A; font-size: 14px;');
-        console.log('%c\nGoogle Drive API Integration Ready!', 'color: #C3FF00; font-size: 12px;');
-        console.log('%cReplace API_KEY in script to enable auto-loading from Drive folders.', 'color: #9A9A9A; font-size: 11px;');
-        console.log('%c\nPortfolio Folders:', 'color: #C3FF00; font-size: 12px;');
-        console.log(portfolioFolders);
-
-        // Page load animation
-        window.addEventListener('load', () => {
-            document.body.style.opacity = '0';
-            setTimeout(() => {
-                document.body.style.transition = 'opacity 0.5s';
-                document.body.style.opacity = '1';
-            }, 100);
-        });
     </script>
 </body>
 </html>
