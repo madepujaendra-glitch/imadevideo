@@ -110,23 +110,22 @@
             align-items: center;
             padding: 8rem 5% 4rem;
             position: relative;
-            overflow: visible;
+            overflow: hidden;
             background: 
-                linear-gradient(180deg, rgba(5, 5, 5, 0.88) 0%, rgba(5, 5, 5, 0.85) 60%, rgba(5, 5, 5, 0.95) 100%),
+                linear-gradient(180deg, rgba(5, 5, 5, 0.88) 0%, rgba(5, 5, 5, 0.85) 60%, rgba(5, 5, 5, 0.92) 90%, var(--bg) 100%),
                 url('https://images.unsplash.com/photo-1574717024653-61fd2cf4d44d?w=1920&q=80');
             background-size: cover;
-            background-position: center top;
+            background-position: center;
             background-repeat: no-repeat;
-            background-attachment: scroll;
         }
 
         .hero::before {
             content: '';
             position: absolute;
-            bottom: -100px;
+            bottom: 0;
             left: 0;
             right: 0;
-            height: 200px;
+            height: 150px;
             background: linear-gradient(to bottom, transparent 0%, var(--bg) 100%);
             pointer-events: none;
             z-index: 10;
@@ -262,27 +261,9 @@
         /* About Section */
         #about {
             position: relative;
-            padding-top: 8rem;
+            padding-top: 5rem;
             padding-bottom: 5rem;
-            margin-top: -100px;
             background: var(--bg);
-        }
-
-        #about::before {
-            content: '';
-            position: absolute;
-            top: 0;
-            left: 0;
-            right: 0;
-            height: 400px;
-            background: 
-                linear-gradient(180deg, transparent 0%, rgba(5, 5, 5, 0.5) 100px, rgba(5, 5, 5, 0.85) 200px, var(--bg) 400px),
-                url('https://images.unsplash.com/photo-1574717024653-61fd2cf4d44d?w=1920&q=80');
-            background-size: cover;
-            background-position: center;
-            background-repeat: no-repeat;
-            z-index: 0;
-            pointer-events: none;
         }
 
         .about-content {
