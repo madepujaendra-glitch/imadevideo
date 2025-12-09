@@ -208,6 +208,17 @@
                 0 0 0 1px rgba(195, 255, 0, 0.1),
                 inset 0 1px 0 rgba(255, 255, 255, 0.08);
             margin-bottom: 2.5rem;
+            transition: all 0.3s ease;
+            cursor: pointer;
+        }
+        
+        .hero-content .hero-desc-box:hover {
+            border-color: var(--primary);
+            transform: translateY(-5px);
+            box-shadow: 
+                0 20px 50px rgba(195, 255, 0, 0.15),
+                0 0 0 1px var(--primary),
+                inset 0 1px 0 rgba(255, 255, 255, 0.1);
         }
         
         .hero-content .hero-desc-box .subtitle {
@@ -297,6 +308,14 @@
             padding: 2.5rem;
             border-radius: 20px;
             border: 1px solid rgba(195, 255, 0, 0.1);
+            transition: all 0.3s ease;
+            cursor: pointer;
+        }
+        
+        .about-content:hover {
+            border-color: var(--primary);
+            transform: translateY(-5px);
+            box-shadow: 0 20px 50px rgba(195, 255, 0, 0.15);
         }
 
         .about-content p {
