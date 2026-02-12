@@ -202,11 +202,11 @@
         .showcase-scroll-container {
             display: flex;
             overflow-x: scroll;
-            scroll-snap-type: x mandatory;
             gap: 1.5rem;
             padding: 2rem 5%;
             scrollbar-width: none;
-            scroll-behavior: smooth;
+            scroll-behavior: auto;
+            cursor: grab;
         }
         .showcase-scroll-container::-webkit-scrollbar {
             display: none;
@@ -683,47 +683,120 @@
     </footer>
 
     <script>
-        // Auto-scroll carousel with looping
-        function setupAutoScroll(containerId, interval = 3000) {
+        // Manual scroll with seamless infinite looping and center highlight
+        function setupInfiniteScroll(containerId) {
             const container = document.getElementById(containerId);
             if (!container) return;
             
             const items = container.querySelectorAll('.showcase-item');
             if (items.length === 0) return;
             
-            let currentIndex = 0;
+            // Clone first and last items for seamless loop
+            const firstClone = items[0].cloneNode(true);
+            const lastClone = items[items.length - 1].cloneNode(true);
+            container.appendChild(firstClone);
+            container.insertBefore(lastClone, items[0]);
             
-            function scrollToIndex(index) {
-                items[index].scrollIntoView({ 
-                    behavior: 'smooth', 
-                    block: 'nearest', 
-                    inline: 'center' 
+            // Start at the real first item (after the clone)
+            const itemWidth = items[0].offsetWidth + 24; // width + gap
+            container.scrollLeft = itemWidth;
+            
+            let isScrolling = false;
+            
+            // Enable mouse wheel scroll
+            container.addEventListener('wheel', (e) => {
+                e.preventDefault();
+                container.scrollLeft += e.deltaY * 0.8;
+            }, { passive: false });
+            
+            // Enable drag scroll
+            let isDragging = false;
+            let startX, scrollLeft;
+            
+            container.addEventListener('mousedown', (e) => {
+                isDragging = true;
+                startX = e.pageX - container.offsetLeft;
+                scrollLeft = container.scrollLeft;
+                container.style.cursor = 'grabbing';
+            });
+            
+            container.addEventListener('mouseleave', () => {
+                isDragging = false;
+                container.style.cursor = 'grab';
+            });
+            
+            container.addEventListener('mouseup', () => {
+                isDragging = false;
+                container.style.cursor = 'grab';
+            });
+            
+            container.addEventListener('mousemove', (e) => {
+                if (!isDragging) return;
+                e.preventDefault();
+                const x = e.pageX - container.offsetLeft;
+                const walk = (x - startX) * 1.5;
+                container.scrollLeft = scrollLeft - walk;
+            });
+            
+            // Infinite loop logic
+            container.addEventListener('scroll', () => {
+                if (isScrolling) return;
+                
+                const maxScroll = container.scrollWidth - container.clientWidth;
+                const currentScroll = container.scrollLeft;
+                
+                // If at the cloned first item (end), jump to real first
+                if (currentScroll >= maxScroll - 5) {
+                    isScrolling = true;
+                    container.scrollLeft = itemWidth;
+                    setTimeout(() => { isScrolling = false; }, 50);
+                }
+                
+                // If at the cloned last item (start), jump to real last
+                if (currentScroll <= 5) {
+                    isScrolling = true;
+                    container.scrollLeft = maxScroll - itemWidth;
+                    setTimeout(() => { isScrolling = false; }, 50);
+                }
+                
+                // Update center highlight
+                updateCenterHighlight();
+            });
+            
+            // Center highlight function
+            function updateCenterHighlight() {
+                const containerRect = container.getBoundingClientRect();
+                const centerX = containerRect.left + containerRect.width / 2;
+                
+                const allItems = container.querySelectorAll('.showcase-item');
+                let closest = null;
+                let minDist = Infinity;
+                
+                allItems.forEach(item => {
+                    const rect = item.getBoundingClientRect();
+                    const itemCenter = rect.left + rect.width / 2;
+                    const dist = Math.abs(centerX - itemCenter);
+                    
+                    if (dist < minDist) {
+                        minDist = dist;
+                        closest = item;
+                    }
                 });
                 
-                // Highlight current item
-                items.forEach(item => item.classList.remove('active'));
-                items[index].classList.add('active');
-            }
-            
-            function next() {
-                currentIndex++;
-                if (currentIndex >= items.length) {
-                    currentIndex = 0; // Loop back to start
+                allItems.forEach(item => item.classList.remove('active'));
+                if (closest && minDist < 250) {
+                    closest.classList.add('active');
                 }
-                scrollToIndex(currentIndex);
             }
             
             // Initial highlight
-            scrollToIndex(0);
-            
-            // Auto-advance every interval
-            setInterval(next, interval);
+            setTimeout(updateCenterHighlight, 300);
         }
 
-        // Setup all carousels with 4 second interval
-        setupAutoScroll('scroll-main', 4000);
-        setupAutoScroll('scroll-motion', 4000);
-        setupAutoScroll('scroll-ads', 4000);
+        // Setup all carousels
+        setupInfiniteScroll('scroll-main');
+        setupInfiniteScroll('scroll-motion');
+        setupInfiniteScroll('scroll-ads');
     </script>
 </body>
 </html>
