@@ -400,8 +400,37 @@
             scrollbar-width: none;
             -ms-overflow-style: none;
             scroll-behavior: smooth;
+            cursor: grab;
         }
+        .showcase-scroll-container:active { cursor: grabbing; }
         .showcase-scroll-container::-webkit-scrollbar { display: none; }
+
+        /* Scroll arrows */
+        .scroll-arrow {
+            position: absolute;
+            top: 50%;
+            transform: translateY(-50%);
+            width: 48px;
+            height: 48px;
+            background: rgba(195, 255, 0, 0.15);
+            border: 1px solid rgba(195, 255, 0, 0.3);
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            color: var(--primary);
+            font-size: 1.2rem;
+            cursor: pointer;
+            z-index: 10;
+            transition: all 0.3s;
+            backdrop-filter: blur(10px);
+        }
+        .scroll-arrow:hover {
+            background: rgba(195, 255, 0, 0.25);
+            transform: translateY(-50%) scale(1.1);
+        }
+        .scroll-arrow-left { left: 1%; }
+        .scroll-arrow-right { right: 1%; }
 
         /* Fade edges */
         .showcase-scroll-wrap::before,
@@ -784,6 +813,8 @@
 
         <!-- Main showcase -->
         <div class="showcase-scroll-wrap" id="wrap-main">
+            <button class="scroll-arrow scroll-arrow-left" onclick="scrollSection('scroll-main', -1)">‹</button>
+            <button class="scroll-arrow scroll-arrow-right" onclick="scrollSection('scroll-main', 1)">›</button>
             <div class="showcase-scroll-container" id="scroll-main">
                 <!-- 1. RuangSepri -->
                 <div class="showcase-item">
@@ -842,6 +873,8 @@
             <div class="showcase-section-title">motion graphic</div>
         </div>
         <div class="showcase-scroll-wrap" id="wrap-motion">
+            <button class="scroll-arrow scroll-arrow-left" onclick="scrollSection('scroll-motion', -1)">‹</button>
+            <button class="scroll-arrow scroll-arrow-right" onclick="scrollSection('scroll-motion', 1)">›</button>
             <div class="showcase-scroll-container" id="scroll-motion">
                 <!-- MG 1 -->
                 <div class="showcase-item">
@@ -900,6 +933,8 @@
             <div class="showcase-section-title">video ads</div>
         </div>
         <div class="showcase-scroll-wrap" id="wrap-ads">
+            <button class="scroll-arrow scroll-arrow-left" onclick="scrollSection('scroll-ads', -1)">‹</button>
+            <button class="scroll-arrow scroll-arrow-right" onclick="scrollSection('scroll-ads', 1)">›</button>
             <div class="showcase-scroll-container" id="scroll-ads">
                 <!-- Ads 1 -->
                 <div class="showcase-item">
@@ -1117,6 +1152,53 @@
         window.addEventListener('scroll', reveal);
         reveal();
 
+        // ─── Arrow Scroll Function ───
+        function scrollSection(containerId, direction) {
+            const container = document.getElementById(containerId);
+            if (!container) return;
+            const scrollAmount = 300;
+            container.scrollBy({ left: scrollAmount * direction, behavior: 'smooth' });
+        }
+
+        // ─── Mouse Wheel Horizontal Scroll ───
+        function addWheelScroll(containerId) {
+            const container = document.getElementById(containerId);
+            if (!container) return;
+            container.addEventListener('wheel', (e) => {
+                if (e.deltaY !== 0) {
+                    e.preventDefault();
+                    container.scrollLeft += e.deltaY;
+                }
+            }, { passive: false });
+        }
+
+        // ─── Drag to Scroll ───
+        function addDragScroll(containerId) {
+            const container = document.getElementById(containerId);
+            if (!container) return;
+            
+            let isDown = false;
+            let startX;
+            let scrollLeft;
+
+            container.addEventListener('mousedown', (e) => {
+                isDown = true;
+                startX = e.pageX - container.offsetLeft;
+                scrollLeft = container.scrollLeft;
+            });
+
+            container.addEventListener('mouseleave', () => { isDown = false; });
+            container.addEventListener('mouseup', () => { isDown = false; });
+
+            container.addEventListener('mousemove', (e) => {
+                if (!isDown) return;
+                e.preventDefault();
+                const x = e.pageX - container.offsetLeft;
+                const walk = (x - startX) * 2;
+                container.scrollLeft = scrollLeft - walk;
+            });
+        }
+
         // ─── Horizontal Scroll Highlight + Dots ───
         function setupScrollHighlight(containerId, dotsId) {
             const container = document.getElementById(containerId);
@@ -1125,6 +1207,10 @@
 
             const items = Array.from(container.querySelectorAll('.showcase-item'));
             if (!items.length) return;
+
+            // Add wheel and drag scroll
+            addWheelScroll(containerId);
+            addDragScroll(containerId);
 
             // Build dots
             items.forEach((_, i) => {
@@ -1164,9 +1250,4 @@
 
         setupScrollHighlight('scroll-main', 'dots-main');
         setupScrollHighlight('scroll-motion', 'dots-motion');
-        setupScrollHighlight('scroll-ads', 'dots-ads');
-
-        console.log('%c🎬 imadevideo Portfolio', 'color: #C3FF00; font-size: 18px; font-weight: bold;');
-    </script>
-</body>
-</html>
+        setupScrollHighlight('scroll-ads
