@@ -220,14 +220,17 @@
             overflow: hidden;
             border: 1px solid rgba(195, 255, 0, 0.06);
             transition: all 0.5s ease;
-            opacity: 0.4;
-            transform: scale(0.85);
+            opacity: 0.25;
+            transform: scale(0.75);
+            filter: brightness(0.3) blur(3px);
         }
         .showcase-item.active {
             opacity: 1;
-            transform: scale(1);
-            border-color: rgba(195, 255, 0, 0.4);
-            box-shadow: 0 20px 60px rgba(195,255,0,0.15);
+            transform: scale(1.05);
+            filter: brightness(1.1) blur(0);
+            border-color: rgba(195, 255, 0, 0.6);
+            box-shadow: 0 30px 80px rgba(195,255,0,0.25), 0 0 40px rgba(195,255,0,0.2);
+            z-index: 10;
         }
         .showcase-thumbnail {
             width: 100%;
@@ -862,28 +865,35 @@
             });
             
             // Infinite loop logic
+            let scrollTimer;
             container.addEventListener('scroll', () => {
-                if (isScrolling) return;
+                // Clear previous timer
+                clearTimeout(scrollTimer);
                 
-                const maxScroll = container.scrollWidth - container.clientWidth;
-                const currentScroll = container.scrollLeft;
-                
-                // If scrolled near the end, loop to start
-                if (currentScroll >= maxScroll - 50) {
-                    isScrolling = true;
-                    container.scrollLeft = 50;
-                    setTimeout(() => { isScrolling = false; }, 100);
-                }
-                
-                // If scrolled near the start, loop to end
-                if (currentScroll <= 50) {
-                    isScrolling = true;
-                    container.scrollLeft = maxScroll - 50;
-                    setTimeout(() => { isScrolling = false; }, 100);
-                }
-                
-                // Update center highlight
+                // Update highlight immediately for responsive feel
                 updateCenterHighlight();
+                
+                // Check for loop after scroll stops
+                scrollTimer = setTimeout(() => {
+                    if (isScrolling) return;
+                    
+                    const maxScroll = container.scrollWidth - container.clientWidth;
+                    const currentScroll = container.scrollLeft;
+                    
+                    // If scrolled near the end, loop to start
+                    if (currentScroll >= maxScroll - 50) {
+                        isScrolling = true;
+                        container.scrollLeft = 50;
+                        setTimeout(() => { isScrolling = false; updateCenterHighlight(); }, 100);
+                    }
+                    
+                    // If scrolled near the start, loop to end
+                    else if (currentScroll <= 50) {
+                        isScrolling = true;
+                        container.scrollLeft = maxScroll - 50;
+                        setTimeout(() => { isScrolling = false; updateCenterHighlight(); }, 100);
+                    }
+                }, 150);
             });
             
             // Center highlight function
@@ -912,8 +922,16 @@
                 }
             }
             
-            // Initial highlight
-            setTimeout(updateCenterHighlight, 300);
+            // Initial highlight - delayed to ensure items are rendered
+            setTimeout(() => {
+                updateCenterHighlight();
+                console.log('Initial highlight for', containerId);
+            }, 500);
+            
+            // Force update on load
+            window.addEventListener('load', () => {
+                setTimeout(updateCenterHighlight, 200);
+            });
         }
 
         // Setup all carousels
