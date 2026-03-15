@@ -32,7 +32,6 @@
     .nav-cta:hover { background: rgba(195,255,0,0.1); border-color: var(--primary); box-shadow: 0 0 18px rgba(195,255,0,0.2); }
     .nav-hamburger { display: none; flex-direction: column; gap: 5px; cursor: pointer; justify-self: end; padding: 4px; background: none; border: none; }
     .nav-hamburger span { display: block; width: 22px; height: 2px; background: var(--primary); border-radius: 2px; }
-    /* Mobile menu — elegant full-screen overlay */
     .nav-mobile {
       display: none; position: fixed; inset: 0;
       background: rgba(5,5,8,0.98);
@@ -42,36 +41,37 @@
     .nav-mobile.open { display: flex; }
     .nav-mobile::before {
       content: ''; position: absolute; top: 0; left: 0; right: 0; height: 1px;
-      background: linear-gradient(to right, transparent, rgba(195,255,0,0.4), transparent);
+      background: linear-gradient(to right, transparent, rgba(195,255,0,0.35), transparent);
     }
     .nav-mobile a {
       display: block; width: 100%; text-align: center;
-      color: rgba(240,240,240,0.5); text-decoration: none;
+      color: rgba(240,240,240,0.45); text-decoration: none;
       font-family: 'Montserrat', sans-serif;
-      font-size: clamp(1.5rem, 5vw, 2.4rem); font-weight: 700; letter-spacing: -0.5px;
-      padding: 0.85rem 5%; border-bottom: 1px solid rgba(255,255,255,0.05);
+      font-size: clamp(1rem, 3vw, 1.35rem); font-weight: 600; letter-spacing: 0.5px;
+      padding: 1.1rem 5%; border-bottom: 1px solid rgba(255,255,255,0.05);
       transition: color 0.2s var(--ease), letter-spacing 0.25s var(--ease);
     }
     .nav-mobile a:first-of-type { border-top: 1px solid rgba(255,255,255,0.05); }
-    .nav-mobile a:hover { color: var(--primary); letter-spacing: 1px; }
+    .nav-mobile a:hover { color: var(--primary); letter-spacing: 1.5px; }
     .nav-mobile a.highlight {
-      color: var(--primary); font-size: 0.82rem; font-weight: 700;
+      color: var(--primary); font-size: 0.78rem; font-weight: 700;
       letter-spacing: 2px; text-transform: uppercase;
       border: 1px solid rgba(195,255,0,0.3); border-radius: 100px;
-      padding: 0.7rem 2rem; margin-top: 2rem; width: auto; display: inline-block;
+      padding: 0.65rem 1.8rem; margin-top: 2rem; width: auto; display: inline-block;
     }
-    .nav-mobile a.highlight:hover { background: rgba(195,255,0,0.08); border-color: var(--primary); }
+    .nav-mobile a.highlight:hover { background: rgba(195,255,0,0.08); border-color: var(--primary); letter-spacing: 2px; }
     .nav-mobile-close {
       position: absolute; top: 1.2rem; right: 5%;
-      width: 40px; height: 40px; display: flex; align-items: center; justify-content: center;
+      width: 38px; height: 38px; display: flex; align-items: center; justify-content: center;
       border-radius: 50%; border: 1px solid rgba(255,255,255,0.1);
-      color: var(--muted); cursor: pointer; background: none; font-size: 1.3rem;
+      color: var(--muted); cursor: pointer; background: none; font-size: 1.2rem;
       transition: all 0.2s;
     }
     .nav-mobile-close:hover { border-color: var(--primary); color: var(--primary); }
 
-    /* FLOATING CONTACT BUTTON */
+    /* FLOATING CONTACT BUTTON — fixed bottom center, hides when contact is visible */
     .float-contact {
+      display: block;
       position: fixed; bottom: 2rem; left: 50%; transform: translateX(-50%);
       z-index: 900; opacity: 1;
       transition: opacity 0.4s var(--ease), transform 0.4s var(--ease);
@@ -83,15 +83,15 @@
       display: inline-flex; align-items: center; gap: 0.55rem;
       padding: 0.72rem 1.7rem;
       background: rgba(5,5,8,0.88); backdrop-filter: blur(16px); -webkit-backdrop-filter: blur(16px);
-      border: 1px solid rgba(195,255,0,0.35); border-radius: 100px;
+      border: 1px solid rgba(195,255,0,0.38); border-radius: 100px;
       color: var(--primary); font-size: 0.78rem; font-weight: 700;
       letter-spacing: 1px; text-transform: uppercase; text-decoration: none;
-      box-shadow: 0 8px 32px rgba(0,0,0,0.4), 0 0 20px rgba(195,255,0,0.06);
+      box-shadow: 0 8px 32px rgba(0,0,0,0.45), 0 0 20px rgba(195,255,0,0.07);
       transition: all 0.25s var(--ease); white-space: nowrap;
     }
     .float-contact a:hover {
       background: rgba(195,255,0,0.1); border-color: var(--primary);
-      box-shadow: 0 12px 40px rgba(0,0,0,0.5), 0 0 30px rgba(195,255,0,0.18);
+      box-shadow: 0 12px 40px rgba(0,0,0,0.5), 0 0 30px rgba(195,255,0,0.2);
       transform: translateY(-3px);
     }
     .float-contact svg { width: 13px; height: 13px; flex-shrink: 0; }
@@ -605,15 +605,14 @@ document.querySelectorAll('a[href^="#"]').forEach(a => {
   });
 });
 
-/* Floating contact — hide when contact section is visible */
+/* Floating contact — hide when contact section enters viewport */
 (function() {
   var btn = document.getElementById('float-contact');
   var contact = document.getElementById('contact');
   if (!btn || !contact) return;
-  var io = new IntersectionObserver(function(entries) {
+  new IntersectionObserver(function(entries) {
     btn.classList.toggle('hidden', entries[0].isIntersecting);
-  }, { threshold: 0.15 });
-  io.observe(contact);
+  }, { threshold: 0.15 }).observe(contact);
 })();
 
 /* Mobile menu */
