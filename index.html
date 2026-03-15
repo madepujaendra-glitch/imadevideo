@@ -9,23 +9,18 @@
   <style>
     /* ─────────────────────────────────────────────────────────
        DESIGN TOKENS
-       Single source of truth for all measurements and colours.
     ───────────────────────────────────────────────────────── */
     :root {
-      --primary:   #C3FF00;
-      --bg:        #050505;
-      --bg-mid:    #080810;
-      --card:      #0c0c14;
-      --text:      #F0F0F0;
-      --muted:     #6E6E80;
-
-      /* Carousel geometry — only place you ever touch these */
-      --item-w:    272px;
-      --item-gap:  28px;
-      --item-r:    20px;       /* border-radius on cards */
-
-      /* Transition easing shared by item in/out states */
-      --ease-out:  cubic-bezier(0.25, 0.46, 0.45, 0.94);
+      --primary:  #C3FF00;
+      --bg:       #050505;
+      --bg-mid:   #080810;
+      --card:     #0c0c14;
+      --text:     #F0F0F0;
+      --muted:    #6E6E80;
+      --item-w:   272px;
+      --item-gap: 28px;
+      --item-r:   20px;
+      --ease-out: cubic-bezier(0.25, 0.46, 0.45, 0.94);
     }
 
     /* ─────────────────────────────────────────────────────────
@@ -33,7 +28,6 @@
     ───────────────────────────────────────────────────────── */
     *, *::before, *::after { margin: 0; padding: 0; box-sizing: border-box; }
     html { scroll-behavior: smooth; }
-
     body {
       font-family: 'Poppins', sans-serif;
       background: var(--bg);
@@ -51,16 +45,16 @@
       background: rgba(5,5,8,0.92);
       backdrop-filter: blur(24px);
       -webkit-backdrop-filter: blur(24px);
-      border-bottom: 1px solid rgba(195,255,0,0.07);
-      padding: 1.15rem 5%;
+      padding: 1.1rem 5%;
       z-index: 1000;
     }
     .nav-inner {
       max-width: 1400px;
       margin: 0 auto;
-      display: flex;
-      justify-content: space-between;
+      display: grid;
+      grid-template-columns: 1fr auto 1fr;
       align-items: center;
+      gap: 2rem;
     }
     .logo {
       font-family: 'Montserrat', sans-serif;
@@ -69,22 +63,99 @@
       color: var(--primary);
       letter-spacing: -0.5px;
       text-decoration: none;
+      justify-self: start;
     }
     .nav-links {
       display: flex;
-      gap: 2.5rem;
+      gap: 2rem;
       list-style: none;
+      justify-self: center;
     }
     .nav-links a {
       color: var(--muted);
       text-decoration: none;
-      font-size: 0.8rem;
+      font-size: 0.78rem;
       font-weight: 600;
       letter-spacing: 0.8px;
       text-transform: uppercase;
       transition: color 0.25s;
     }
     .nav-links a:hover { color: var(--primary); }
+
+    /* Hire Me button — top-right */
+    .nav-cta {
+      justify-self: end;
+      display: inline-block;
+      padding: 0.55rem 1.4rem;
+      border: 1px solid rgba(195,255,0,0.35);
+      border-radius: 100px;
+      color: var(--primary);
+      font-size: 0.78rem;
+      font-weight: 700;
+      letter-spacing: 0.5px;
+      text-decoration: none;
+      text-transform: uppercase;
+      transition: all 0.25s var(--ease-out);
+      white-space: nowrap;
+    }
+    .nav-cta:hover {
+      background: rgba(195,255,0,0.1);
+      border-color: var(--primary);
+      box-shadow: 0 0 18px rgba(195,255,0,0.2);
+    }
+
+    /* Hamburger — mobile only */
+    .nav-hamburger {
+      display: none;
+      flex-direction: column;
+      gap: 5px;
+      cursor: pointer;
+      justify-self: end;
+      padding: 4px;
+      background: none;
+      border: none;
+    }
+    .nav-hamburger span {
+      display: block;
+      width: 22px; height: 2px;
+      background: var(--primary);
+      border-radius: 2px;
+      transition: all 0.3s;
+    }
+
+    /* Mobile menu drawer */
+    .nav-mobile {
+      display: none;
+      position: fixed;
+      inset: 0;
+      background: rgba(5,5,8,0.97);
+      z-index: 999;
+      flex-direction: column;
+      align-items: center;
+      justify-content: center;
+      gap: 2.5rem;
+    }
+    .nav-mobile.open { display: flex; }
+    .nav-mobile a {
+      color: var(--text);
+      text-decoration: none;
+      font-family: 'Montserrat', sans-serif;
+      font-size: 2rem;
+      font-weight: 800;
+      letter-spacing: -1px;
+      transition: color 0.2s;
+    }
+    .nav-mobile a:hover { color: var(--primary); }
+    .nav-mobile-close {
+      position: absolute;
+      top: 1.5rem; right: 5%;
+      font-size: 2rem;
+      color: var(--muted);
+      cursor: pointer;
+      background: none;
+      border: none;
+      line-height: 1;
+    }
 
     /* ─────────────────────────────────────────────────────────
        HERO
@@ -96,7 +167,6 @@
       position: relative;
       overflow: hidden;
     }
-    /* Ambient glow blob */
     .hero::before {
       content: '';
       position: absolute;
@@ -178,7 +248,7 @@
     }
 
     /* ─────────────────────────────────────────────────────────
-       GENERIC SECTION SHELL
+       SECTION SHELL
     ───────────────────────────────────────────────────────── */
     .section {
       padding: 6rem 5%;
@@ -227,37 +297,20 @@
     .about-card p:last-child { margin-bottom: 0; }
 
     /* ─────────────────────────────────────────────────────────
-       ██████████████████████████████████████████████████████
-       SPOTLIGHT CAROUSEL  —  the core showcase mechanic
+       SPOTLIGHT CAROUSEL
 
-       Architecture:
-       ┌────────────────────────────────────────────────┐
-       │  #showcase  (full-width section, bg-mid)        │
-       │  ┌─────────────────────────────────────────┐    │
-       │  │  .carousel-stage  (overflow:hidden)     │    │
-       │  │  ┌──────────────────────────────────┐   │    │
-       │  │  │  .spotlight-ring  (STATIC, abs)  │   │    │  ← never moves
-       │  │  └──────────────────────────────────┘   │    │
-       │  │  .stage-fade (×2)  (abs, pointer:none)  │    │
-       │  │  ┌──────────────────────────────────┐   │    │
-       │  │  │  .carousel-track  (flex row)     │   │    │  ← only this moves
-       │  │  │   item  item  item  item          │   │    │    via translateX
-       │  │  └──────────────────────────────────┘   │    │
-       │  └─────────────────────────────────────────┘    │
-       │                                                  │
-       │  .carousel-ui  (arrows · dots · counter)         │
-       └────────────────────────────────────────────────┘
+       Architecture — nothing complicated:
+       .carousel-stage  (overflow:hidden, position:relative)
+         .spotlight-ring   ← STATIC abs-centered frame, never moves
+         .stage-fade-left  ← gradient edge (abs, pointer-events:none)
+         .stage-fade-right ← gradient edge (abs, pointer-events:none)
+         .carousel-track   ← THE ONLY MOVING ELEMENT (translateX via JS)
+           .carousel-item  ← individual card (CSS handles scale/blur)
 
-       How it works:
-       • .carousel-track is NOT overflow-scrolled. It's a plain flex row.
-       • JS computes translateX each rAF frame via lerp(currentX, targetX, 0.10).
-       • The spotlight ring is position:absolute in the center of the stage — it
-         never moves. Items scroll past it.
-       • Gradient fades on L/R edges create the depth illusion.
-       • CSS transitions handle item scale/opacity/blur as .is-active toggles.
-    ██████████████████████████████████████████████████████
+       JS applies lerp(currentX → targetX) every rAF frame.
+       Wheel delta feeds a velocity accumulator so mouse-wheel
+       scrolling is smooth (no stutter from large discrete jumps).
     ───────────────────────────────────────────────────────── */
-
     #showcase {
       background: var(--bg-mid);
       padding: 6rem 0 4rem;
@@ -270,14 +323,9 @@
       margin-bottom: 4rem;
     }
 
-    /* ── Category label ─────────────────────────────── */
-    .carousel-block {
-      margin-bottom: 1rem;
-    }
-    .carousel-label-row {
-      text-align: center;
-      margin-bottom: 1.2rem;
-    }
+    /* Category pill label */
+    .carousel-block { margin-bottom: 1rem; }
+    .carousel-label-row { text-align: center; margin-bottom: 1.2rem; }
     .carousel-label-pill {
       display: inline-block;
       font-size: 0.65rem;
@@ -290,92 +338,72 @@
       padding: 0.35rem 1.1rem;
     }
 
-    /* ── Stage: the clipping container ─────────────── */
+    /* Stage — clips overflowing items */
     .carousel-stage {
       position: relative;
       width: 100%;
-      overflow: hidden;   /* clips items outside viewport horizontally */
+      overflow: hidden;
       cursor: grab;
-      /* Height is natural — set by the tallest item in the track */
-      padding: 2.5rem 0;
+      padding: 1.6rem 0 2rem;
     }
     .carousel-stage.dragging { cursor: grabbing; }
 
-    /* ── The ONLY moving element ────────────────────
-       will-change: transform  → browser composites on GPU
-       display: flex           → items sit side by side
-       translateX is set by JS each rAF tick
-    ──────────────────────────────────────────────── */
+    /* Track — the ONLY element JS moves via translateX */
     .carousel-track {
       display: flex;
       align-items: center;
       gap: var(--item-gap);
       will-change: transform;
-      /* Initial left offset is set by JS at init */
       user-select: none;
       -webkit-user-select: none;
     }
 
-    /* ── Individual item ────────────────────────────
-       Inactive state: shrunk, blurred, dimmed.
-       All transitions are CSS — JS only toggles .is-active.
-    ──────────────────────────────────────────────── */
+    /* Individual card — INACTIVE state by default */
     .carousel-item {
       flex: 0 0 var(--item-w);
       width: var(--item-w);
       background: var(--card);
       border-radius: var(--item-r);
       overflow: hidden;
-      border: 1px solid rgba(195,255,0,0.04);
-
-      /* INACTIVE state */
+      border: none;
       transform: scale(0.74);
       opacity: 0.18;
       filter: blur(3px) brightness(0.28) saturate(0.3);
-
-      /* Smooth CSS transition on all visual properties */
       transition:
-        transform     0.55s var(--ease-out),
-        opacity       0.55s var(--ease-out),
-        filter        0.55s var(--ease-out),
-        border-color  0.55s var(--ease-out),
-        box-shadow    0.55s var(--ease-out);
+        transform    0.55s var(--ease-out),
+        opacity      0.55s var(--ease-out),
+        filter       0.55s var(--ease-out),
+        box-shadow   0.55s var(--ease-out);
     }
 
-    /* ACTIVE / center state */
+    /* ACTIVE / center card — glow only, no hard border */
     .carousel-item.is-active {
       transform: scale(1.06);
       opacity: 1;
       filter: brightness(1.05) saturate(1) blur(0);
-      border-color: rgba(195,255,0,0.48);
       box-shadow:
-        0 0 0 1px rgba(195,255,0,0.12),
-        0 20px 60px rgba(0,0,0,0.55),
-        0 0 70px rgba(195,255,0,0.14);
+        0 24px 70px rgba(0,0,0,0.6),
+        0 0 80px rgba(195,255,0,0.12);
       z-index: 2;
       position: relative;
     }
 
-    /* ── 9:16 video thumbnail ────────────────────── */
+    /* 9:16 video thumbnail */
     .item-thumb {
       width: 100%;
       aspect-ratio: 9 / 16;
       background: #000;
       overflow: hidden;
-      position: relative;
     }
     .item-thumb iframe {
       display: block;
-      width: 100%;
-      height: 100%;
+      width: 100%; height: 100%;
       border: none;
-      pointer-events: none; /* prevent iframe from eating drag events */
+      pointer-events: none; /* don't let iframe eat drag events */
     }
 
-    /* ── Item text info ──────────────────────────── */
-    .item-info {
-      padding: 1.1rem 1.3rem 1.3rem;
-    }
+    /* Card text */
+    .item-info { padding: 1.1rem 1.3rem 1.3rem; }
     .item-client {
       font-size: 0.68rem;
       font-weight: 700;
@@ -391,69 +419,27 @@
       margin-bottom: 0.25rem;
       color: var(--text);
     }
-    .item-desc {
-      font-size: 0.74rem;
-      color: var(--muted);
-      line-height: 1.5;
-    }
+    .item-desc { font-size: 0.74rem; color: var(--muted); line-height: 1.5; }
 
-    /* ── Spotlight ring — NEVER MOVES ───────────────
-       Absolutely positioned in the center of .carousel-stage.
-       z-index above items but below fades (pointer-events:none
-       so drags pass through).
-
-       It's a visual "frame" that sits in the center, creating
-       the illusion that items are being "shown" through it.
-    ──────────────────────────────────────────────── */
+    /* Spotlight ring — only an ambient glow zone, NO hard border lines */
     .spotlight-ring {
       position: absolute;
-      top: 2.5rem;
-      bottom: 2.5rem;
+      top: 1.6rem;
+      bottom: 1.6rem;
       left: 50%;
-      width: var(--item-w);
-      transform: translateX(-50%) scaleX(1.06);  /* match active item scale */
-      border-radius: var(--item-r);
-      border: 1.5px solid rgba(195,255,0,0.35);
+      width: calc(var(--item-w) * 1.06);
+      transform: translateX(-50%);
+      border-radius: calc(var(--item-r) * 1.06);
+      border: none;
+      /* Ambient glow only — no visible frame line */
       box-shadow:
-        0 0 0 5px rgba(195,255,0,0.03),
-        0 0 55px rgba(195,255,0,0.14),
-        inset 0 0 40px rgba(195,255,0,0.02);
+        0 0 60px rgba(195,255,0,0.09),
+        0 0 120px rgba(195,255,0,0.05);
       pointer-events: none;
       z-index: 10;
-
-      /* Subtle breathing pulse animation */
-      animation: ring-pulse 3s ease-in-out infinite;
-    }
-    @keyframes ring-pulse {
-      0%, 100% { box-shadow: 0 0 0 5px rgba(195,255,0,0.03), 0 0 55px rgba(195,255,0,0.14), inset 0 0 40px rgba(195,255,0,0.02); }
-      50%       { box-shadow: 0 0 0 5px rgba(195,255,0,0.06), 0 0 80px rgba(195,255,0,0.22), inset 0 0 40px rgba(195,255,0,0.04); }
     }
 
-    /* Corner tick marks on spotlight ring */
-    .spotlight-ring::before,
-    .spotlight-ring::after {
-      content: '';
-      position: absolute;
-      width: 16px; height: 16px;
-      border-style: solid;
-      border-color: var(--primary);
-    }
-    .spotlight-ring::before {
-      top: -1px; left: -1px;
-      border-width: 2.5px 0 0 2.5px;
-      border-radius: 5px 0 0 0;
-    }
-    .spotlight-ring::after {
-      bottom: -1px; right: -1px;
-      border-width: 0 2.5px 2.5px 0;
-      border-radius: 0 0 5px 0;
-    }
-
-    /* ── Edge gradient fades ────────────────────────
-       These create the depth illusion — items "dissolve"
-       before they reach the viewport edges.
-       z-index: 5 (above items at z-index:2, below ring at 10)
-    ──────────────────────────────────────────────── */
+    /* Edge gradient fades — depth illusion */
     .stage-fade {
       position: absolute;
       top: 0; bottom: 0;
@@ -463,24 +449,14 @@
     }
     .stage-fade-left {
       left: 0;
-      background: linear-gradient(to right,
-        var(--bg-mid) 0%,
-        rgba(8,8,16,0.92) 40%,
-        rgba(8,8,16,0.4) 75%,
-        transparent 100%
-      );
+      background: linear-gradient(to right, var(--bg-mid) 0%, rgba(8,8,16,0.92) 40%, rgba(8,8,16,0.4) 75%, transparent 100%);
     }
     .stage-fade-right {
       right: 0;
-      background: linear-gradient(to left,
-        var(--bg-mid) 0%,
-        rgba(8,8,16,0.92) 40%,
-        rgba(8,8,16,0.4) 75%,
-        transparent 100%
-      );
+      background: linear-gradient(to left, var(--bg-mid) 0%, rgba(8,8,16,0.92) 40%, rgba(8,8,16,0.4) 75%, transparent 100%);
     }
 
-    /* ── Carousel UI: arrows · dots · counter ────── */
+    /* Carousel controls */
     .carousel-ui {
       display: flex;
       align-items: center;
@@ -488,9 +464,8 @@
       gap: 1rem;
       padding: 0.5rem 0 3.5rem;
       position: relative;
-      z-index: 15; /* above stage fades */
+      z-index: 15;
     }
-
     .c-arrow {
       display: flex;
       align-items: center;
@@ -502,35 +477,22 @@
       color: var(--primary);
       font-size: 1rem;
       cursor: pointer;
-      transition: all 0.25s var(--ease-out);
       flex-shrink: 0;
+      transition: all 0.25s var(--ease-out);
     }
-    .c-arrow:hover {
-      background: rgba(195,255,0,0.08);
-      border-color: rgba(195,255,0,0.5);
-      transform: scale(1.12);
-    }
+    .c-arrow:hover { background: rgba(195,255,0,0.08); border-color: rgba(195,255,0,0.5); transform: scale(1.12); }
     .c-arrow:active { transform: scale(0.96); }
-
-    .c-dots {
-      display: flex;
-      align-items: center;
-      gap: 6px;
-    }
+    .c-dots { display: flex; align-items: center; gap: 6px; }
     .c-dot {
       width: 6px; height: 6px;
       border-radius: 3px;
       background: rgba(195,255,0,0.18);
       cursor: pointer;
-      transition: all 0.35s var(--ease-out);
       border: none;
       padding: 0;
+      transition: all 0.35s var(--ease-out);
     }
-    .c-dot.is-active {
-      background: var(--primary);
-      width: 22px;
-    }
-
+    .c-dot.is-active { background: var(--primary); width: 22px; }
     .c-counter {
       font-size: 0.72rem;
       font-weight: 600;
@@ -561,11 +523,7 @@
       border-color: rgba(195,255,0,0.25);
       box-shadow: 0 20px 40px rgba(0,0,0,0.3), 0 0 20px rgba(195,255,0,0.06);
     }
-    .skill-card h3 {
-      color: var(--primary);
-      font-size: 1rem;
-      margin-bottom: 1.4rem;
-    }
+    .skill-card h3 { color: var(--primary); font-size: 1rem; margin-bottom: 1.4rem; }
     .skill-card ul { list-style: none; }
     .skill-card li {
       color: var(--muted);
@@ -599,32 +557,17 @@
       border-color: rgba(195,255,0,0.28);
       box-shadow: 0 20px 50px rgba(0,0,0,0.4), 0 0 30px rgba(195,255,0,0.08);
     }
-    .portfolio-thumb {
-      height: 155px;
-      background-size: cover;
-      background-position: center;
-    }
-    .portfolio-info {
-      padding: 1.4rem 1.8rem;
-    }
+    .portfolio-thumb { height: 155px; background-size: cover; background-position: center; }
+    .portfolio-info { padding: 1.4rem 1.8rem; }
     .portfolio-info h3 { font-size: 1.05rem; margin-bottom: 0.4rem; }
     .portfolio-info p  { color: var(--muted); font-size: 0.82rem; }
 
     /* ─────────────────────────────────────────────────────────
        CONTACT
     ───────────────────────────────────────────────────────── */
-    .contact-body {
-      text-align: center;
-      max-width: 640px;
-      margin: 0 auto;
-    }
+    .contact-body { text-align: center; max-width: 640px; margin: 0 auto; }
     .contact-body p { color: var(--muted); margin-bottom: 2rem; }
-    .contact-links {
-      display: flex;
-      justify-content: center;
-      flex-wrap: wrap;
-      gap: 1.2rem;
-    }
+    .contact-links { display: flex; justify-content: center; flex-wrap: wrap; gap: 1.2rem; }
     .contact-link {
       display: inline-flex;
       align-items: center;
@@ -675,15 +618,20 @@
     @media (max-width: 768px) {
       :root { --item-w: 220px; --item-gap: 20px; }
       .portfolio-grid { grid-template-columns: 1fr; }
+      /* Hide desktop nav elements, show hamburger */
       .nav-links { display: none; }
+      .nav-cta   { display: none; }
+      .nav-hamburger { display: flex; }
+      /* Nav grid collapses to just logo + hamburger */
+      .nav-inner { grid-template-columns: 1fr auto; }
     }
   </style>
 </head>
 <body>
 
-  <!-- ══════════════════════════════════════════════
+  <!-- ════════════════════════════
        NAVIGATION
-  ══════════════════════════════════════════════ -->
+  ════════════════════════════ -->
   <nav>
     <div class="nav-inner">
       <a href="#hero" class="logo">imadevideo</a>
@@ -695,16 +643,31 @@
         <li><a href="#portfolio">Portfolio</a></li>
         <li><a href="#contact">Contact</a></li>
       </ul>
+      <a href="#contact" class="nav-cta">Hire Me</a>
+      <button class="nav-hamburger" id="hamburger" aria-label="Open menu">
+        <span></span><span></span><span></span>
+      </button>
     </div>
   </nav>
 
-  <!-- ══════════════════════════════════════════════
+  <!-- Mobile full-screen menu -->
+  <div class="nav-mobile" id="nav-mobile">
+    <button class="nav-mobile-close" id="nav-close" aria-label="Close menu">&#215;</button>
+    <a href="#hero"      onclick="closeMobileMenu()">Home</a>
+    <a href="#about"     onclick="closeMobileMenu()">About</a>
+    <a href="#showcase"  onclick="closeMobileMenu()">Showcase</a>
+    <a href="#skills"    onclick="closeMobileMenu()">Skills</a>
+    <a href="#portfolio" onclick="closeMobileMenu()">Portfolio</a>
+    <a href="#contact"   onclick="closeMobileMenu()">Hire Me</a>
+  </div>
+
+  <!-- ════════════════════════════
        HERO
-  ══════════════════════════════════════════════ -->
+  ════════════════════════════ -->
   <section class="hero" id="hero">
     <div class="hero-inner">
       <div class="reveal">
-        <div class="hero-eyebrow">Video Editor & Cinematic Storyteller</div>
+        <div class="hero-eyebrow">Video Editor &amp; Cinematic Storyteller</div>
         <h1>imade<br>video</h1>
         <div class="hero-desc">
           Professional video editor for short-form and long-form content.
@@ -716,17 +679,15 @@
       <div class="hero-video reveal">
         <iframe
           src="https://www.youtube.com/embed/CaceK21sxQg?autoplay=1&mute=1&loop=1&playlist=CaceK21sxQg&controls=0"
-          allow="autoplay" allowfullscreen
-          title="Hero showreel"
-          loading="lazy">
+          allow="autoplay" allowfullscreen title="Hero showreel" loading="lazy">
         </iframe>
       </div>
     </div>
   </section>
 
-  <!-- ══════════════════════════════════════════════
+  <!-- ════════════════════════════
        ABOUT
-  ══════════════════════════════════════════════ -->
+  ════════════════════════════ -->
   <div class="section" id="about">
     <h2 class="section-title reveal">About Me</h2>
     <div class="about-card reveal">
@@ -735,38 +696,33 @@
          platforms turn raw footage into clear, cinematic stories.</p>
       <p>Over the last 3+ years I've edited for 100+ clients and brands including
          @ruangsepri, @techpreneurboi, @victoriawong68, @createcontentclub,
-         Rumah BUMN Jambi, Simon & Sons, and more.</p>
+         Rumah BUMN Jambi, Simon &amp; Sons, and more.</p>
     </div>
   </div>
 
-  <!-- ══════════════════════════════════════════════
-       PROJECT SHOWCASE — Spotlight Carousel
-
-       Each .carousel-block is one category row.
-       Data attribute  data-carousel="<id>"  links
-       the stage, dots, counter, and arrow buttons.
-  ══════════════════════════════════════════════ -->
+  <!-- ════════════════════════════
+       PROJECT SHOWCASE
+       Each .carousel-block = one category row.
+       data-carousel="<id>" ties stage ↔ dots ↔ counter ↔ arrows.
+  ════════════════════════════ -->
   <div id="showcase">
 
     <div class="showcase-header">
       <h2 class="section-title reveal">Project Showcase</h2>
-      <p class="section-sub reveal">Drag, scroll or tap the arrows to explore</p>
+      <p class="section-sub reveal">Drag, scroll, or tap the arrows to explore</p>
     </div>
 
-    <!-- ── ROW 1: Short-form Content ─────────────── -->
+    <!-- ── Row 1: Short-form Content ──────────────── -->
     <div class="carousel-block">
       <div class="carousel-label-row">
         <span class="carousel-label-pill">short-form content</span>
       </div>
-
       <div class="carousel-stage" data-carousel="main">
-        <!-- Static spotlight ring — absolutely centered, never moves -->
         <div class="spotlight-ring" aria-hidden="true"></div>
-        <!-- Gradient edge fades — depth illusion -->
         <div class="stage-fade stage-fade-left"  aria-hidden="true"></div>
         <div class="stage-fade stage-fade-right" aria-hidden="true"></div>
-        <!-- The only thing JS translates -->
         <div class="carousel-track" id="track-main">
+
           <div class="carousel-item">
             <div class="item-thumb">
               <iframe src="https://www.youtube.com/embed/rNZyRjAqnEc?autoplay=1&mute=1&loop=1&playlist=rNZyRjAqnEc&controls=0" allow="autoplay" allowfullscreen loading="lazy" title="ruangsepri"></iframe>
@@ -777,6 +733,7 @@
               <p class="item-desc">Educational content with dynamic pacing.</p>
             </div>
           </div>
+
           <div class="carousel-item">
             <div class="item-thumb">
               <iframe src="https://www.youtube.com/embed/1c1neNWR3Y8?autoplay=1&mute=1&loop=1&playlist=1c1neNWR3Y8&controls=0" allow="autoplay" allowfullscreen loading="lazy" title="createcontent.club"></iframe>
@@ -787,6 +744,7 @@
               <p class="item-desc">High-energy edit for creator community.</p>
             </div>
           </div>
+
           <div class="carousel-item">
             <div class="item-thumb">
               <iframe src="https://www.youtube.com/embed/LvjzKyPSyQg?autoplay=1&mute=1&loop=1&playlist=LvjzKyPSyQg&controls=0" allow="autoplay" allowfullscreen loading="lazy" title="victoriawong68"></iframe>
@@ -797,6 +755,7 @@
               <p class="item-desc">Professional branding with clean aesthetics.</p>
             </div>
           </div>
+
           <div class="carousel-item">
             <div class="item-thumb">
               <iframe src="https://www.youtube.com/embed/zMEycC6PtFo?autoplay=1&mute=1&loop=1&playlist=zMEycC6PtFo&controls=0" allow="autoplay" allowfullscreen loading="lazy" title="techpreneurboi"></iframe>
@@ -807,29 +766,29 @@
               <p class="item-desc">Fast-paced tech content optimized for retention.</p>
             </div>
           </div>
+
         </div><!-- /track-main -->
       </div><!-- /stage -->
-
       <div class="carousel-ui">
         <button class="c-arrow" data-carousel="main" data-dir="-1" aria-label="Previous">&#8592;</button>
         <div class="c-dots" id="dots-main"></div>
         <button class="c-arrow" data-carousel="main" data-dir="1"  aria-label="Next">&#8594;</button>
-        <span class="c-counter" id="counter-main">1 / 4</span>
+        <span class="c-counter" id="counter-main">01 / 04</span>
       </div>
-    </div><!-- /carousel-block main -->
+    </div><!-- /block main -->
 
 
-    <!-- ── ROW 2: Motion Graphic ──────────────────── -->
+    <!-- ── Row 2: Motion Graphic ───────────────────── -->
     <div class="carousel-block">
       <div class="carousel-label-row">
         <span class="carousel-label-pill">motion graphic</span>
       </div>
-
       <div class="carousel-stage" data-carousel="motion">
         <div class="spotlight-ring" aria-hidden="true"></div>
         <div class="stage-fade stage-fade-left"  aria-hidden="true"></div>
         <div class="stage-fade stage-fade-right" aria-hidden="true"></div>
         <div class="carousel-track" id="track-motion">
+
           <div class="carousel-item">
             <div class="item-thumb">
               <iframe src="https://www.youtube.com/embed/LvDhNgPAZPs?autoplay=1&mute=1&loop=1&playlist=LvDhNgPAZPs&controls=0" allow="autoplay" allowfullscreen loading="lazy" title="podcast 1"></iframe>
@@ -840,6 +799,7 @@
               <p class="item-desc">Dynamic motion graphics for podcast content.</p>
             </div>
           </div>
+
           <div class="carousel-item">
             <div class="item-thumb">
               <iframe src="https://www.youtube.com/embed/4PY48e91FU4?autoplay=1&mute=1&loop=1&playlist=4PY48e91FU4&controls=0" allow="autoplay" allowfullscreen loading="lazy" title="podcast 2"></iframe>
@@ -850,6 +810,7 @@
               <p class="item-desc">Engaging visual storytelling for audio content.</p>
             </div>
           </div>
+
           <div class="carousel-item">
             <div class="item-thumb">
               <iframe src="https://www.youtube.com/embed/lKmNIRaVSKE?autoplay=1&mute=1&loop=1&playlist=lKmNIRaVSKE&controls=0" allow="autoplay" allowfullscreen loading="lazy" title="ads content"></iframe>
@@ -860,6 +821,7 @@
               <p class="item-desc">Attention-grabbing motion for advertising.</p>
             </div>
           </div>
+
           <div class="carousel-item">
             <div class="item-thumb">
               <iframe src="https://www.youtube.com/embed/qif5BiRmJAA?autoplay=1&mute=1&loop=1&playlist=qif5BiRmJAA&controls=0" allow="autoplay" allowfullscreen loading="lazy" title="talking head"></iframe>
@@ -870,29 +832,29 @@
               <p class="item-desc">Polished talking head with motion graphics.</p>
             </div>
           </div>
+
         </div><!-- /track-motion -->
       </div><!-- /stage -->
-
       <div class="carousel-ui">
         <button class="c-arrow" data-carousel="motion" data-dir="-1" aria-label="Previous">&#8592;</button>
         <div class="c-dots" id="dots-motion"></div>
         <button class="c-arrow" data-carousel="motion" data-dir="1"  aria-label="Next">&#8594;</button>
-        <span class="c-counter" id="counter-motion">1 / 4</span>
+        <span class="c-counter" id="counter-motion">01 / 04</span>
       </div>
-    </div><!-- /carousel-block motion -->
+    </div><!-- /block motion -->
 
 
-    <!-- ── ROW 3: Video Ads ───────────────────────── -->
+    <!-- ── Row 3: Video Ads ────────────────────────── -->
     <div class="carousel-block">
       <div class="carousel-label-row">
         <span class="carousel-label-pill">video ads</span>
       </div>
-
       <div class="carousel-stage" data-carousel="ads">
         <div class="spotlight-ring" aria-hidden="true"></div>
         <div class="stage-fade stage-fade-left"  aria-hidden="true"></div>
         <div class="stage-fade stage-fade-right" aria-hidden="true"></div>
         <div class="carousel-track" id="track-ads">
+
           <div class="carousel-item">
             <div class="item-thumb">
               <iframe src="https://www.youtube.com/embed/PCUFb-glJyM?autoplay=1&mute=1&loop=1&playlist=PCUFb-glJyM&controls=0" allow="autoplay" allowfullscreen loading="lazy" title="ad 1"></iframe>
@@ -903,6 +865,7 @@
               <p class="item-desc">High-conversion short-form ad content.</p>
             </div>
           </div>
+
           <div class="carousel-item">
             <div class="item-thumb">
               <iframe src="https://www.youtube.com/embed/r9wL_3BWFbU?autoplay=1&mute=1&loop=1&playlist=r9wL_3BWFbU&controls=0" allow="autoplay" allowfullscreen loading="lazy" title="ad 2"></iframe>
@@ -913,6 +876,7 @@
               <p class="item-desc">Compelling storytelling for brand awareness.</p>
             </div>
           </div>
+
           <div class="carousel-item">
             <div class="item-thumb">
               <iframe src="https://www.youtube.com/embed/29XywKfIhzU?autoplay=1&mute=1&loop=1&playlist=29XywKfIhzU&controls=0" allow="autoplay" allowfullscreen loading="lazy" title="ad 3"></iframe>
@@ -923,25 +887,25 @@
               <p class="item-desc">Dynamic visual hook optimized for engagement.</p>
             </div>
           </div>
+
         </div><!-- /track-ads -->
       </div><!-- /stage -->
-
       <div class="carousel-ui">
         <button class="c-arrow" data-carousel="ads" data-dir="-1" aria-label="Previous">&#8592;</button>
         <div class="c-dots" id="dots-ads"></div>
         <button class="c-arrow" data-carousel="ads" data-dir="1"  aria-label="Next">&#8594;</button>
-        <span class="c-counter" id="counter-ads">1 / 3</span>
+        <span class="c-counter" id="counter-ads">01 / 03</span>
       </div>
-    </div><!-- /carousel-block ads -->
+    </div><!-- /block ads -->
 
   </div><!-- /#showcase -->
 
 
-  <!-- ══════════════════════════════════════════════
+  <!-- ════════════════════════════
        SKILLS
-  ══════════════════════════════════════════════ -->
+  ════════════════════════════ -->
   <div class="section" id="skills">
-    <h2 class="section-title reveal">Skills & Experience</h2>
+    <h2 class="section-title reveal">Skills &amp; Experience</h2>
     <div class="skills-grid">
       <div class="skill-card reveal">
         <h3>Editing Software</h3>
@@ -962,55 +926,106 @@
       <div class="skill-card reveal">
         <h3>What I Do</h3>
         <ul>
-          <li>Short form & Long form editing</li>
-          <li>Cinematic look & color grading</li>
+          <li>Short form &amp; Long form editing</li>
+          <li>Cinematic look &amp; color grading</li>
           <li>AI assisted workflow</li>
           <li>Motion graphics</li>
-          <li>Brand & creator content</li>
+          <li>Brand &amp; creator content</li>
         </ul>
       </div>
     </div>
   </div>
 
-  <!-- ══════════════════════════════════════════════
-       PORTFOLIO
-  ══════════════════════════════════════════════ -->
-  <div class="section" id="portfolio" style="background:var(--bg-mid);max-width:100%;padding:6rem 5%;">
-    <div style="max-width:1400px;margin:0 auto;">
+
+  <!-- ════════════════════════════
+       FULL PORTFOLIO
+  ════════════════════════════ -->
+  <div id="portfolio" style="background:var(--bg-mid); padding:6rem 5%;">
+    <div style="max-width:1400px; margin:0 auto;">
       <h2 class="section-title reveal">Full Portfolio</h2>
       <p class="section-sub reveal">Explore my complete collection across all categories</p>
       <div class="portfolio-grid">
-        <a href="https://drive.google.com/drive/folders/1o5he3i43HemiBZ_Ca1R-KvqgP1O161Tz?usp=sharing" target="_blank" class="portfolio-card reveal">
+
+        <a href="https://drive.google.com/drive/folders/1o5he3i43HemiBZ_Ca1R-KvqgP1O161Tz?usp=sharing"
+           target="_blank" class="portfolio-card reveal">
           <div class="portfolio-thumb" style="background-image:linear-gradient(rgba(0,0,0,0.2),rgba(12,12,20,0.95)),url('https://images.unsplash.com/photo-1492619375914-88005aa9e8fb?w=800')"></div>
-          <div class="portfolio-info"><h3>Reels Content Editing</h3><p>Full collection of short-form editing projects.</p></div>
+          <div class="portfolio-info">
+            <h3>Reels Content Editing</h3>
+            <p>Full collection of short-form editing projects.</p>
+          </div>
         </a>
-        <a href="https://drive.google.com/drive/folders/1FY7bHSeCgDttKfXQNFHRDymrnhpU0Tyu?usp=sharing" target="_blank" class="portfolio-card reveal">
+
+        <a href="https://drive.google.com/drive/folders/1vM12mUcVI84mk8kFkxMgoxaRjVQwBkvE?usp=sharing"
+           target="_blank" class="portfolio-card reveal">
+          <div class="portfolio-thumb" style="background-image:linear-gradient(rgba(0,0,0,0.2),rgba(12,12,20,0.95)),url('https://images.unsplash.com/photo-1574717024653-61fd2cf4d44d?w=800')"></div>
+          <div class="portfolio-info">
+            <h3>Long-form Video</h3>
+            <p>Full-length edits, documentaries, and deep-form content.</p>
+          </div>
+        </a>
+
+        <a href="https://drive.google.com/drive/folders/1SUs8FpWyKMan2lNLkXFMQfeX9qtPfw40?usp=sharing"
+           target="_blank" class="portfolio-card reveal">
           <div class="portfolio-thumb" style="background-image:linear-gradient(rgba(0,0,0,0.2),rgba(12,12,20,0.95)),url('https://images.unsplash.com/photo-1516035069371-29a1b244cc32?w=800')"></div>
-          <div class="portfolio-info"><h3>1st Place Creative Video</h3><p>Award-winning creative video project.</p></div>
+          <div class="portfolio-info">
+            <h3>1st Place Creative Video</h3>
+            <p>Award-winning creative video project.</p>
+          </div>
         </a>
-        <a href="https://drive.google.com/drive/folders/11f5Oa8MIq5mrFU3_qxLaE3gGVnVj8C3c?usp=sharing" target="_blank" class="portfolio-card reveal">
+
+        <a href="https://drive.google.com/drive/folders/11f5Oa8MIq5mrFU3_qxLaE3gGVnVj8C3c?usp=sharing"
+           target="_blank" class="portfolio-card reveal">
           <div class="portfolio-thumb" style="background-image:linear-gradient(rgba(0,0,0,0.2),rgba(12,12,20,0.95)),url('https://images.unsplash.com/photo-1485846234645-a62644f84728?w=800')"></div>
-          <div class="portfolio-info"><h3>Best Film Production Award</h3><p>Film production recognized with Best Film award.</p></div>
+          <div class="portfolio-info">
+            <h3>Best Film Production Award</h3>
+            <p>Film production recognized with Best Film award.</p>
+          </div>
         </a>
-        <a href="https://drive.google.com/drive/folders/1-hm1iBLPnW0Uh045z-5s922fR99Jg9KX?usp=sharing" target="_blank" class="portfolio-card reveal">
+
+        <a href="https://drive.google.com/drive/folders/1-hm1iBLPnW0Uh045z-5s922fR99Jg9KX?usp=sharing"
+           target="_blank" class="portfolio-card reveal">
           <div class="portfolio-thumb" style="background-image:linear-gradient(rgba(0,0,0,0.2),rgba(12,12,20,0.95)),url('https://images.unsplash.com/photo-1440404653325-ab127d49abc1?w=800')"></div>
-          <div class="portfolio-info"><h3>Cinematic Video</h3><p>Cinematic edits with storytelling and mood grading.</p></div>
+          <div class="portfolio-info">
+            <h3>Cinematic Video</h3>
+            <p>Cinematic edits with storytelling and mood grading.</p>
+          </div>
         </a>
-        <a href="https://drive.google.com/drive/folders/1zubPlV0JR7sXFKm1f23kKRteKEHD0rT2?usp=sharing" target="_blank" class="portfolio-card reveal">
+
+        <a href="https://drive.google.com/drive/folders/1zubPlV0JR7sXFKm1f23kKRteKEHD0rT2?usp=sharing"
+           target="_blank" class="portfolio-card reveal">
           <div class="portfolio-thumb" style="background-image:linear-gradient(rgba(0,0,0,0.2),rgba(12,12,20,0.95)),url('https://images.unsplash.com/photo-1497366216548-37526070297c?w=800')"></div>
-          <div class="portfolio-info"><h3>Company Profile Video</h3><p>Profile videos for brands and businesses.</p></div>
+          <div class="portfolio-info">
+            <h3>Company Profile Video</h3>
+            <p>Profile videos for brands and businesses.</p>
+          </div>
         </a>
-        <a href="https://drive.google.com/drive/folders/1lQfraJ2X0hf99E_9trLVWO5Ws66kZL5G?usp=sharing" target="_blank" class="portfolio-card reveal">
+
+        <a href="https://drive.google.com/drive/folders/1lQfraJ2X0hf99E_9trLVWO5Ws66kZL5G?usp=sharing"
+           target="_blank" class="portfolio-card reveal">
           <div class="portfolio-thumb" style="background-image:linear-gradient(rgba(0,0,0,0.2),rgba(12,12,20,0.95)),url('https://images.unsplash.com/photo-1579532537598-459ecdaf39cc?w=800')"></div>
-          <div class="portfolio-info"><h3>Documentary Video</h3><p>Documentary-style storytelling with real narratives.</p></div>
+          <div class="portfolio-info">
+            <h3>Documentary Video</h3>
+            <p>Documentary-style storytelling with real narratives.</p>
+          </div>
         </a>
+
+        <a href="https://drive.google.com/drive/folders/10o_XKYlLNSiDZEks3s9qLTdGiUf-43bG?usp=sharing"
+           target="_blank" class="portfolio-card reveal">
+          <div class="portfolio-thumb" style="background-image:linear-gradient(rgba(0,0,0,0.2),rgba(12,12,20,0.95)),url('https://images.unsplash.com/photo-1452780212940-6f5c0d14d848?w=800')"></div>
+          <div class="portfolio-info">
+            <h3>Videographer</h3>
+            <p>On-location shoots, event coverage, and raw cinematography.</p>
+          </div>
+        </a>
+
       </div>
     </div>
   </div>
 
-  <!-- ══════════════════════════════════════════════
+
+  <!-- ════════════════════════════
        CONTACT
-  ══════════════════════════════════════════════ -->
+  ════════════════════════════ -->
   <div class="section" id="contact">
     <h2 class="section-title reveal">Let's Work Together</h2>
     <div class="contact-body reveal">
@@ -1023,94 +1038,80 @@
     </div>
   </div>
 
-  <!-- ══════════════════════════════════════════════
+
+  <!-- ════════════════════════════
        FOOTER
-  ══════════════════════════════════════════════ -->
+  ════════════════════════════ -->
   <footer>
     <p><strong style="color:var(--primary)">imadevideo</strong> — I Made Puja Endra</p>
-    <p>AI-Driven Video Editor & Cinematic Storyteller © 2025</p>
+    <p>AI-Driven Video Editor &amp; Cinematic Storyteller © 2025</p>
   </footer>
 
 
   <script>
     /* ════════════════════════════════════════════════════════════
-       LERPCAROUSEL
+       LERPCAROUSEL CLASS
        ─────────────────────────────────────────────────────────
-       Pure transform-based carousel. No scroll containers.
+       How it works in one paragraph:
+       There is NO scrolling container. The .carousel-track is a
+       plain flex row. JS maintains two numbers per carousel:
+         currentX  — the translateX the track has RIGHT NOW
+         targetX   — the translateX we WANT it to have
+       Every requestAnimationFrame tick, currentX lerps toward
+       targetX (currentX += (targetX - currentX) * 0.09).
+       The track's CSS transform is updated each tick.
+       The spotlight-ring never moves — items slide past it.
 
-       CORE PRINCIPLE:
-       • targetX  = where we WANT the track to be
-       • currentX = where the track IS right now
-       • Each rAF tick:  currentX += (targetX - currentX) * LERP
-       • track.style.transform = `translateX(${currentX}px)`
-
-       Because it's a simple lerp, motion is always smooth — the
-       browser never fights with scroll physics or snap timings.
-
-       FIXED CENTER:
-       • The spotlight-ring div is position:absolute and never touched.
-       • xForIndex(i) returns the translateX that places item[i]
-         exactly beneath the center of the stage.
-
-       INPUT HANDLING:
-       • Wheel   → adjust targetX, schedule snap after 160 ms idle
-       • Drag    → adjust targetX live; throw momentum on mouseup
-       • Touch   → same as drag, passive listeners for perf
-       • Arrows  → call goTo(activeIndex ± 1)
-       • Dots    → call goTo(i)
-       • Resize  → recalculate and recentre without animation
+       WHEEL FIX for PC mice:
+       PC mice fire one large deltaY (~100px) per scroll notch.
+       If we directly set targetX -= delta, the track jumps in
+       visible steps and feels "macet". Fix: feed delta into a
+       _wheelVelX velocity accumulator. The RAF loop decays it
+       each frame with friction (×0.86). Both mice and trackpads
+       end up feeling identically smooth because the motion curve
+       is controlled by the decay coefficient, not event timing.
     ════════════════════════════════════════════════════════════ */
     class LerpCarousel {
 
-      /* ── Constructor ─────────────────────────────────
-         @param stageEl  The .carousel-stage DOM element
-      ──────────────────────────────────────────────── */
       constructor(stageEl) {
         this.stage  = stageEl;
         this.track  = stageEl.querySelector('.carousel-track');
         this.items  = Array.from(this.track.querySelectorAll('.carousel-item'));
         this.n      = this.items.length;
-        const id    = stageEl.dataset.carousel;
 
-        /* External UI elements */
+        const id = stageEl.dataset.carousel;
         this.dotsEl    = document.getElementById('dots-'    + id);
         this.counterEl = document.getElementById('counter-' + id);
 
-        /* ── Geometry (read AFTER layout) ─────────────
-           We measure the real item width from the DOM so
-           CSS variables and responsive rules are respected.
-        ──────────────────────────────────────────────── */
-        this.ITEM_W  = 0;   // set in _measure()
-        this.GAP     = 0;   // set in _measure()
-        this.STRIDE  = 0;   // ITEM_W + GAP
+        /* Geometry — measured from DOM after layout */
+        this.ITEM_W = 0;
+        this.GAP    = 0;
+        this.STRIDE = 0;
 
-        /* ── Physics constants ────────────────────────
-           LERP:     interpolation speed per frame. 0.09 ≈ smooth.
-           FRICTION: drag/wheel momentum decay per frame.
-        ──────────────────────────────────────────────── */
-        this.LERP     = 0.09;
-        this.FRICTION = 0.84;
+        /* Physics */
+        this.LERP     = 0.09;   /* lerp speed per frame   */
+        this.FRICTION = 0.86;   /* wheel velocity friction */
 
-        /* ── State ────────────────────────────────────── */
-        this.currentX    = 0;   // current rendered position
-        this.targetX     = 0;   // desired position (lerp target)
-        this.velX        = 0;   // current momentum velocity
-        this.activeIndex = 0;   // index of the centered item
-        this._lastActive = -1;  // used to detect index changes
+        /* State */
+        this.currentX    = 0;
+        this.targetX     = 0;
+        this.velX        = 0;   /* drag velocity           */
+        this.activeIndex = 0;
+        this._lastActive = -1;
 
-        /* ── Input tracking ───────────────────────────── */
+        /* Input */
         this._dragging   = false;
-        this._dragStartX = 0;     // clientX at drag start
-        this._dragStartT = 0;     // targetX at drag start
-        this._prevMX     = 0;     // last clientX (for velocity tracking)
+        this._dragStartX = 0;
+        this._dragStartT = 0;
+        this._prevMX     = 0;
         this._hovering   = false;
         this._wheelTimer = null;
+        this._wheelVelX  = 0;   /* accumulated wheel velocity */
 
-        /* ── Init ─────────────────────────────────────── */
         this._buildDots();
         this._bindEvents();
 
-        /* Measure + position after one paint so layout is settled */
+        /* Wait one paint so layout is fully resolved, then init */
         requestAnimationFrame(() => {
           this._measure();
           this.currentX = this._xForIndex(0);
@@ -1121,80 +1122,54 @@
         });
       }
 
-      /* ── Geometry ──────────────────────────────────────
-         Reads real offsetWidth from the first item and the
-         gap from the track's computed style.
-      ──────────────────────────────────────────────────── */
+      /* Read real pixel sizes from DOM */
       _measure() {
         this.ITEM_W = this.items[0].offsetWidth;
         this.GAP    = parseFloat(getComputedStyle(this.track).gap) || 28;
         this.STRIDE = this.ITEM_W + this.GAP;
       }
 
-      /* ── translateX that centers item[i] in the stage ── */
+      /* translateX that places item[i] exactly under the stage center */
       _xForIndex(i) {
         const stageW = this.stage.offsetWidth;
         return (stageW / 2) - (this.ITEM_W / 2) - (i * this.STRIDE);
       }
 
-      /* ── Clamp helper: keep track within valid range ─── */
+      /* Keep track within [last item center … first item center] */
       _clamp(x) {
         const min = this._xForIndex(this.n - 1);
         const max = this._xForIndex(0);
         return Math.max(min, Math.min(max, x));
       }
 
-      /* ── Which index is closest to center right now? ────
-         Works on any X value (currentX during animation,
-         targetX during input handling).
-      ──────────────────────────────────────────────────── */
+      /* Which item index is closest to the stage center at position x? */
       _nearestIndex(x) {
-        const stageW = this.stage.offsetWidth;
-        // Inverse of _xForIndex: i = (stageW/2 - ITEM_W/2 - x) / STRIDE
+        const stageW   = this.stage.offsetWidth;
         const floatIdx = ((stageW / 2) - (this.ITEM_W / 2) - x) / this.STRIDE;
         return Math.max(0, Math.min(this.n - 1, Math.round(floatIdx)));
       }
 
-      /* ── Navigate to a specific index ──────────────────
-         @param i        target index
-         @param instant  skip lerp (used on resize / init)
-      ──────────────────────────────────────────────────── */
+      /* Animate to item i. instant=true skips lerp (resize / init). */
       goTo(i, instant = false) {
-        const idx     = Math.max(0, Math.min(this.n - 1, i));
-        this.targetX  = this._xForIndex(idx);
-        if (instant) {
-          this.currentX = this.targetX;
-          this._applyTransform();
-        }
+        const idx    = Math.max(0, Math.min(this.n - 1, i));
+        this.targetX = this._xForIndex(idx);
+        if (instant) { this.currentX = this.targetX; this._applyTransform(); }
       }
 
-      /* ── Public: step by direction (called by arrows) ── */
-      navigate(dir) {
-        this.goTo(this.activeIndex + dir);
-      }
+      navigate(dir) { this.goTo(this.activeIndex + dir); }
 
-      /* ── Apply currentX to the DOM ─────────────────────
-         GPU-composited transform → no layout reflow.
-      ──────────────────────────────────────────────────── */
+      /* GPU-composited transform — zero layout reflow */
       _applyTransform() {
         this.track.style.transform = `translateX(${this.currentX}px)`;
       }
 
-      /* ── Update .is-active, dots, and counter ───────────
-         Called only when the active index actually changes.
-      ──────────────────────────────────────────────────── */
+      /* Update .is-active, dots, counter — only when index changes */
       _syncUI(idx) {
         this.activeIndex = idx;
-
-        /* Item classes */
         this.items.forEach((el, i) => el.classList.toggle('is-active', i === idx));
-
-        /* Dots */
         if (this.dots) {
           this.dots.forEach((d, i) => d.classList.toggle('is-active', i === idx));
         }
-
-        /* Counter */
         if (this.counterEl) {
           this.counterEl.textContent =
             String(idx + 1).padStart(2, '0') + ' / ' +
@@ -1202,26 +1177,38 @@
         }
       }
 
-      /* ── Animation loop (runs every frame forever) ──────
-         This is the heart of the component.
-         1. Lerp currentX toward targetX
-         2. Apply transform
-         3. Find active index from currentX
-         4. Sync UI if changed
-      ──────────────────────────────────────────────────── */
+      /* Snap targetX to nearest item position */
+      _snapNearest() {
+        const nearest = this._nearestIndex(this.targetX);
+        this.targetX  = this._xForIndex(nearest);
+      }
+
+      /* The animation loop — runs forever via rAF */
       _startLoop() {
         const tick = () => {
-          /* Lerp: exponential ease — feels natural at all speeds */
+          /* 1. Apply & decay wheel velocity each frame
+                This is what makes PC mouse scroll smooth:
+                instead of jumping targetX by ~100px at once,
+                we add small increments over ~15 frames. */
+          if (Math.abs(this._wheelVelX) > 0.15) {
+            this.targetX     = this._clamp(this.targetX + this._wheelVelX);
+            this._wheelVelX *= this.FRICTION;
+          } else {
+            this._wheelVelX = 0;
+          }
+
+          /* 2. Lerp currentX toward targetX */
           this.currentX += (this.targetX - this.currentX) * this.LERP;
 
-          /* Snap-to-pixel when close enough (avoids sub-pixel shimmer) */
-          if (Math.abs(this.targetX - this.currentX) < 0.08) {
+          /* 3. Snap to pixel when close enough (prevents shimmer) */
+          if (Math.abs(this.targetX - this.currentX) < 0.06) {
             this.currentX = this.targetX;
           }
 
+          /* 4. Apply to DOM */
           this._applyTransform();
 
-          /* Detect active index from live currentX */
+          /* 5. Detect & update active index from live currentX */
           const live = this._nearestIndex(this.currentX);
           if (live !== this._lastActive) {
             this._lastActive = live;
@@ -1230,24 +1217,14 @@
 
           requestAnimationFrame(tick);
         };
-
         requestAnimationFrame(tick);
       }
 
-      /* ── Snap targetX to the nearest item ──────────────
-         Called after wheel idle or drag release.
-      ──────────────────────────────────────────────────── */
-      _snapNearest() {
-        const nearest = this._nearestIndex(this.targetX);
-        this.targetX  = this._xForIndex(nearest);
-      }
-
-      /* ── Build dot buttons ──────────────────────────── */
       _buildDots() {
         if (!this.dotsEl) return;
         this.dots = this.items.map((_, i) => {
           const btn = document.createElement('button');
-          btn.className  = 'c-dot' + (i === 0 ? ' is-active' : '');
+          btn.className = 'c-dot' + (i === 0 ? ' is-active' : '');
           btn.setAttribute('aria-label', `Go to item ${i + 1}`);
           btn.addEventListener('click', () => this.goTo(i));
           this.dotsEl.appendChild(btn);
@@ -1255,36 +1232,38 @@
         });
       }
 
-      /* ── Bind all input events ──────────────────────── */
       _bindEvents() {
         const stage = this.stage;
 
-        /* ── Hover tracking ──── */
+        /* Hover tracking — wheel events only fire for hovered carousel */
         stage.addEventListener('mouseenter', () => { this._hovering = true; });
         stage.addEventListener('mouseleave', () => { this._hovering = false; });
 
-        /* ══════════════════════════════════════════════
-           WHEEL — vertical scroll → horizontal movement
-           We intercept it ONLY when hovering over a stage.
-           e.preventDefault() stops page scroll.
-           After 160 ms of idle, we snap to nearest item.
-        ══════════════════════════════════════════════ */
+        /* ── WHEEL ──────────────────────────────────────────
+           Feed deltaY into velocity accumulator _wheelVelX.
+           RAF loop decays it — gives smooth glide on PC mice.
+           After 220 ms idle, zero out velocity and snap.       */
         stage.addEventListener('wheel', (e) => {
           if (!this._hovering) return;
           e.preventDefault();
 
-          const delta    = e.deltaY * 0.75;  /* sensitivity */
-          this.targetX   = this._clamp(this.targetX - delta);
+          /* Normalize across deltaMode values */
+          let delta = e.deltaY;
+          if (e.deltaMode === 1) delta *= 20;   /* lines → px */
+          if (e.deltaMode === 2) delta *= 300;  /* pages → px */
 
-          /* Reset snap timer */
+          this._wheelVelX -= delta * 0.45;
+
           clearTimeout(this._wheelTimer);
-          this._wheelTimer = setTimeout(() => this._snapNearest(), 160);
+          this._wheelTimer = setTimeout(() => {
+            this._wheelVelX = 0;
+            this._snapNearest();
+          }, 220);
         }, { passive: false });
 
-        /* ══════════════════════════════════════════════
-           DRAG — mouse
-           Track velocity for momentum throw on release.
-        ══════════════════════════════════════════════ */
+        /* ── DRAG (mouse) ───────────────────────────────────
+           Listen on window so drag keeps working if cursor
+           leaves the stage while dragging.                     */
         stage.addEventListener('mousedown', (e) => {
           this._dragging   = true;
           this._dragStartX = e.clientX;
@@ -1295,78 +1274,65 @@
           e.preventDefault();
         });
 
-        /* Listen on window so drag continues outside the stage */
         window.addEventListener('mousemove', (e) => {
           if (!this._dragging) return;
-          const dx      = e.clientX - this._dragStartX;
-          this.velX     = e.clientX - this._prevMX;  /* frame velocity */
-          this._prevMX  = e.clientX;
-          this.targetX  = this._clamp(this._dragStartT + dx * 1.1);
+          const dx     = e.clientX - this._dragStartX;
+          this.velX    = e.clientX - this._prevMX;
+          this._prevMX = e.clientX;
+          this.targetX = this._clamp(this._dragStartT + dx * 1.1);
         });
 
         window.addEventListener('mouseup', () => {
           if (!this._dragging) return;
           this._dragging = false;
           stage.classList.remove('dragging');
-
-          /* Momentum throw: project targetX forward by velocity * multiplier */
-          const thrown = this._clamp(this.targetX + this.velX * 4);
-          this.targetX = thrown;
-
-          /* Then snap to nearest item */
+          /* Momentum throw on release, then snap */
+          this.targetX = this._clamp(this.targetX + this.velX * 4);
           requestAnimationFrame(() => this._snapNearest());
         });
 
-        /* ══════════════════════════════════════════════
-           TOUCH — mobile / trackpad
-        ══════════════════════════════════════════════ */
-        let touchStartX = 0;
-        let touchLastX  = 0;
-        let touchVel    = 0;
+        /* ── TOUCH ──────────────────────────────────────────
+           passive:true = browser doesn't wait for JS before
+           processing the touch, keeps scrolling at 60fps.      */
+        let touchStartX = 0, touchLastX = 0, touchVel = 0;
 
         stage.addEventListener('touchstart', (e) => {
-          touchStartX = e.touches[0].clientX;
-          touchLastX  = touchStartX;
-          touchVel    = 0;
+          touchStartX      = e.touches[0].clientX;
+          touchLastX       = touchStartX;
+          touchVel         = 0;
           this._dragStartT = this.targetX;
         }, { passive: true });
 
         stage.addEventListener('touchmove', (e) => {
-          const cx      = e.touches[0].clientX;
-          touchVel      = cx - touchLastX;
-          touchLastX    = cx;
-          const dx      = cx - touchStartX;
-          this.targetX  = this._clamp(this._dragStartT + dx);
+          const cx     = e.touches[0].clientX;
+          touchVel     = cx - touchLastX;
+          touchLastX   = cx;
+          this.targetX = this._clamp(this._dragStartT + (cx - touchStartX));
         }, { passive: true });
 
         stage.addEventListener('touchend', () => {
-          /* Momentum throw + snap */
           this.targetX = this._clamp(this.targetX + touchVel * 3);
           requestAnimationFrame(() => this._snapNearest());
         }, { passive: true });
 
-        /* ══════════════════════════════════════════════
-           RESIZE — recalculate geometry, re-centre
-        ══════════════════════════════════════════════ */
+        /* ── RESIZE ─────────────────────────────────────────
+           Recalculate geometry and re-center without animation. */
         window.addEventListener('resize', () => {
           this._measure();
-          this.goTo(this.activeIndex, true /* instant */);
+          this.goTo(this.activeIndex, true);
         });
       }
     }
 
-
     /* ════════════════════════════════════════════════════════════
-       BOOTSTRAP — create one instance per stage
+       BOOTSTRAP — one instance per .carousel-stage
     ════════════════════════════════════════════════════════════ */
     const carousels = {};
-
     document.querySelectorAll('.carousel-stage').forEach(stage => {
-      const id = stage.dataset.carousel;
-      carousels[id] = new LerpCarousel(stage);
+      carousels[stage.dataset.carousel] = new LerpCarousel(stage);
     });
 
-    /* Wire arrow buttons → navigate() */
+    /* Arrow buttons */
     document.querySelectorAll('.c-arrow').forEach(btn => {
       btn.addEventListener('click', () => {
         const car = carousels[btn.dataset.carousel];
@@ -1374,11 +1340,9 @@
       });
     });
 
-
     /* ════════════════════════════════════════════════════════════
        REVEAL ANIMATION
-       IntersectionObserver: fire once when element enters viewport,
-       then stop observing (no repeated work).
+       IntersectionObserver fires once per element, then stops.
     ════════════════════════════════════════════════════════════ */
     const revealObs = new IntersectionObserver((entries) => {
       entries.forEach(entry => {
@@ -1390,7 +1354,6 @@
     }, { threshold: 0.1, rootMargin: '0px 0px -40px 0px' });
 
     document.querySelectorAll('.reveal').forEach(el => revealObs.observe(el));
-
 
     /* ════════════════════════════════════════════════════════════
        SMOOTH ANCHOR NAVIGATION
@@ -1404,6 +1367,16 @@
         }
       });
     });
+    /* ════════════════════════════════════════════════════════════
+       HAMBURGER MENU
+    ════════════════════════════════════════════════════════════ */
+    function closeMobileMenu() {
+      document.getElementById('nav-mobile').classList.remove('open');
+    }
+    document.getElementById('hamburger').addEventListener('click', () => {
+      document.getElementById('nav-mobile').classList.add('open');
+    });
+    document.getElementById('nav-close').addEventListener('click', closeMobileMenu);
   </script>
 
 </body>
