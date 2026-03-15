@@ -6,15 +6,24 @@
     <title>imadevideo - AI-Driven Video Editor & Cinematic Storyteller</title>
     <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500;600;700;800&family=Montserrat:wght@400;500;600;700;800&display=swap" rel="stylesheet">
     <style>
+        /* ================================================
+           CSS VARIABLES & RESET
+        ================================================ */
         :root {
-            --primary: #C3FF00;
-            --bg: #050505;
-            --text: #F0F0F0;
-            --muted: #7A7A8A;
-            --card-bg: #0c0c14;
+            --primary:      #C3FF00;
+            --bg:           #050505;
+            --text:         #F0F0F0;
+            --muted:        #7A7A8A;
+            --card-bg:      #0c0c14;
+            --showcase-bg:  #080810;
+
+            /* Carousel item dimensions — change here to adjust everywhere */
+            --item-w: 280px;
+            --item-gap: 24px;
         }
 
         * { margin: 0; padding: 0; box-sizing: border-box; }
+        html { scroll-behavior: smooth; }
 
         body {
             font-family: 'Poppins', sans-serif;
@@ -24,11 +33,12 @@
             overflow-x: hidden;
         }
 
-        /* Navigation */
+        /* ================================================
+           NAVIGATION
+        ================================================ */
         nav {
             position: fixed;
-            top: 0;
-            width: 100%;
+            top: 0; width: 100%;
             background: rgba(5, 5, 8, 0.95);
             backdrop-filter: blur(24px);
             padding: 1.2rem 5%;
@@ -48,7 +58,6 @@
             font-weight: 800;
             color: var(--primary);
             letter-spacing: -0.5px;
-            line-height: 1;
         }
         .nav-links {
             display: flex;
@@ -64,22 +73,19 @@
             letter-spacing: 0.5px;
             text-transform: uppercase;
             transition: color 0.3s;
-            line-height: 1;
         }
-        .nav-links a:hover { 
-            color: var(--primary); 
-        }
+        .nav-links a:hover { color: var(--primary); }
 
-        /* Hero */
+        /* ================================================
+           HERO
+        ================================================ */
         .hero {
             min-height: 100vh;
             padding: 8rem 5% 5rem;
             position: relative;
         }
         .hero-bg {
-            position: absolute;
-            inset: 0;
-            z-index: 0;
+            position: absolute; inset: 0; z-index: 0;
             background: linear-gradient(135deg, #030308 0%, #08080f 40%, #0a0a18 100%);
         }
         .hero-container {
@@ -89,8 +95,7 @@
             grid-template-columns: 1.2fr 1fr;
             gap: 5rem;
             align-items: center;
-            position: relative;
-            z-index: 1;
+            position: relative; z-index: 1;
         }
         .hero h1 {
             font-family: 'Montserrat', sans-serif;
@@ -99,7 +104,6 @@
             line-height: 1.05;
             margin-bottom: 1.5rem;
             letter-spacing: -3px;
-            color: var(--text);
         }
         .hero-tag {
             display: inline-block;
@@ -155,7 +159,9 @@
             display: block;
         }
 
-        /* Section */
+        /* ================================================
+           GENERIC SECTION DEFAULTS
+        ================================================ */
         section {
             padding: 6rem 5%;
             max-width: 1400px;
@@ -179,7 +185,9 @@
             margin-right: auto;
         }
 
-        /* About */
+        /* ================================================
+           ABOUT
+        ================================================ */
         .about-content {
             max-width: 860px;
             margin: 0 auto;
@@ -201,103 +209,292 @@
             margin-bottom: 1.2rem;
         }
 
-        /* Showcase Horizontal Scroll */
+        /* ================================================
+           PROJECT SHOWCASE — SPOTLIGHT CAROUSEL
+           Architecture overview:
+             #showcase                 → full-width section
+               .showcase-header        → centered title block
+               .showcase-category      → label between rows
+               .carousel-wrapper       → per-carousel container
+                 .carousel-spotlight   → STATIC center frame (never moves)
+                 .carousel-track       → SCROLLABLE flex row
+                   .carousel-item      → individual video card
+                 .carousel-nav         → arrows + dots below track
+        ================================================ */
+
+        /* Override section defaults so showcase is full-width */
         #showcase {
-            background: #080810;
+            background: var(--showcase-bg);
             padding: 6rem 0;
             max-width: 100%;
+            margin: 0;
         }
-        .showcase-inner {
+        .showcase-header {
             max-width: 1400px;
             margin: 0 auto;
             padding: 0 5%;
-        }
-        .showcase-scroll-wrap {
-            position: relative;
-            margin: 3rem 0;
-        }
-        .showcase-scroll-container {
-            display: flex;
-            overflow-x: scroll;
-            gap: 1.5rem;
-            padding: 2rem 5%;
-            scrollbar-width: none;
-            cursor: grab;
-            user-select: none;
-            -webkit-overflow-scrolling: touch;
-        }
-        .showcase-scroll-container:active {
-            cursor: grabbing;
-        }
-        .showcase-scroll-container::-webkit-scrollbar {
-            display: none;
+            text-align: center;
+            margin-bottom: 4rem;
         }
 
-        .showcase-item {
-            flex: 0 0 280px;
+        /* Category pill labels between carousel rows */
+        .showcase-category {
+            max-width: 1400px;
+            margin: 0 auto 1.5rem;
+            padding: 0 5%;
+            text-align: center;
+        }
+        .showcase-category-label {
+            display: inline-block;
+            font-size: 0.7rem;
+            font-weight: 700;
+            letter-spacing: 4px;
+            text-transform: uppercase;
+            color: var(--muted);
+            border: 1px solid rgba(255,255,255,0.08);
+            padding: 0.4rem 1.2rem;
+            border-radius: 50px;
+        }
+
+        /* ── .carousel-wrapper ───────────────────────
+           Full-width outer shell. Holds the spotlight
+           overlay, the scroll track, and fade edges.
+           position: relative is crucial so the absolute
+           children (spotlight, fades) anchor here.
+        ─────────────────────────────────────────────── */
+        .carousel-wrapper {
+            position: relative;
+            width: 100%;
+            margin-bottom: 4rem;
+        }
+
+        /* ── Gradient edge fades ─────────────────────
+           Creates the illusion items dissolve as they
+           slide away from the glowing center spotlight.
+           z-index: 20 sits above items but below nothing.
+        ─────────────────────────────────────────────── */
+        .carousel-wrapper::before,
+        .carousel-wrapper::after {
+            content: '';
+            position: absolute;
+            top: 0; bottom: 0;
+            width: clamp(80px, 22vw, 300px);
+            z-index: 20;
+            pointer-events: none;   /* let clicks pass through */
+        }
+        .carousel-wrapper::before {
+            left: 0;
+            background: linear-gradient(to right,
+                var(--showcase-bg) 0%,
+                rgba(8,8,16,0.8) 60%,
+                transparent 100%
+            );
+        }
+        .carousel-wrapper::after {
+            right: 0;
+            background: linear-gradient(to left,
+                var(--showcase-bg) 0%,
+                rgba(8,8,16,0.8) 60%,
+                transparent 100%
+            );
+        }
+
+        /* ── .carousel-spotlight ─────────────────────
+           A STATIC element — it never scrolls or moves.
+           It creates the "fixed center stage" effect.
+           Items scroll behind it via .carousel-track.
+           z-index: 15 — above items (z-index 5 max),
+                         below edge fades (z-index 20).
+        ─────────────────────────────────────────────── */
+        .carousel-spotlight {
+            position: absolute;
+            left: 50%;
+            top: 2rem;
+            bottom: 2rem;
+            width: var(--item-w);
+            transform: translateX(-50%);
+            border-radius: 20px;
+            z-index: 15;
+            pointer-events: none;
+
+            /* Glowing border ring around the center slot */
+            border: 1.5px solid rgba(195, 255, 0, 0.45);
+            box-shadow:
+                0 0 0 4px rgba(195, 255, 0, 0.04),
+                0 0 50px rgba(195, 255, 0, 0.18),
+                inset 0 0 30px rgba(195, 255, 0, 0.03);
+        }
+
+        /* Corner tick marks on the spotlight frame */
+        .carousel-spotlight::before,
+        .carousel-spotlight::after {
+            content: '';
+            position: absolute;
+            width: 18px; height: 18px;
+            border-style: solid;
+            border-color: var(--primary);
+        }
+        .carousel-spotlight::before {
+            top: -1px; left: -1px;
+            border-width: 3px 0 0 3px;
+            border-radius: 6px 0 0 0;
+        }
+        .carousel-spotlight::after {
+            bottom: -1px; right: -1px;
+            border-width: 0 3px 3px 0;
+            border-radius: 0 0 6px 0;
+        }
+
+        /* ── .carousel-track ─────────────────────────
+           The only element that actually scrolls.
+           scroll-snap-type: x mandatory  → native snapping
+           padding = (50% – half item width)           → ensures
+             first and last items can scroll to center.
+        ─────────────────────────────────────────────── */
+        .carousel-track {
+            display: flex;
+            align-items: center;
+            overflow-x: scroll;
+            scroll-snap-type: x mandatory;
+            -webkit-overflow-scrolling: touch;
+            scrollbar-width: none;
+            gap: var(--item-gap);
+            /* Half-viewport padding so items 1 and N can center */
+            padding: 2rem calc(50% - var(--item-w) / 2);
+            cursor: grab;
+            user-select: none;
+        }
+        .carousel-track::-webkit-scrollbar { display: none; }
+        .carousel-track.is-dragging { cursor: grabbing; }
+
+        /* ── .carousel-item ──────────────────────────
+           Individual video card.
+           scroll-snap-align: center  → browser snaps item
+             to center of the scroll container.
+           Inactive: scaled down, blurred, dimmed.
+        ─────────────────────────────────────────────── */
+        .carousel-item {
+            flex: 0 0 var(--item-w);
             background: var(--card-bg);
             border-radius: 20px;
             overflow: hidden;
-            border: 1px solid rgba(195, 255, 0, 0.06);
-            transition: all 0.3s ease;
-            opacity: 0.25;
-            transform: scale(0.75);
-            filter: brightness(0.3) blur(3px);
+            border: 1px solid rgba(195, 255, 0, 0.04);
+            scroll-snap-align: center;
+
+            /* Inactive (resting) state */
+            transform: scale(0.78);
+            opacity: 0.22;
+            filter: blur(2px) brightness(0.3);
+
+            /* Smooth CSS transition for all visual changes */
+            transition:
+                transform  0.45s cubic-bezier(0.25, 0.46, 0.45, 0.94),
+                opacity    0.45s ease,
+                filter     0.45s ease,
+                border-color 0.45s ease,
+                box-shadow 0.45s ease;
         }
-        .showcase-item.active {
+
+        /* Active (center) item — full visibility + glow */
+        .carousel-item.is-active {
+            transform: scale(1.04);
             opacity: 1;
-            transform: scale(1.05);
-            filter: brightness(1.1) blur(0);
-            border-color: rgba(195, 255, 0, 0.6);
-            box-shadow: 0 30px 80px rgba(195,255,0,0.25), 0 0 40px rgba(195,255,0,0.2);
-            z-index: 10;
+            filter: brightness(1.05) blur(0);
+            border-color: rgba(195, 255, 0, 0.5);
+            box-shadow:
+                0 30px 80px rgba(0, 0, 0, 0.5),
+                0 0 60px rgba(195, 255, 0, 0.18);
+            z-index: 5;
         }
-        .showcase-thumbnail {
+
+        /* 9:16 video thumbnail */
+        .carousel-item-thumb {
             width: 100%;
-            aspect-ratio: 9/16;
+            aspect-ratio: 9 / 16;
             background: #000;
+            overflow: hidden;
         }
-        .showcase-thumbnail iframe {
-            width: 100%;
-            height: 100%;
+        .carousel-item-thumb iframe {
+            width: 100%; height: 100%;
             border: none;
+            display: block;
         }
-        .showcase-info {
-            padding: 1.5rem;
-        }
-        .showcase-info .client {
+
+        /* Info below video */
+        .carousel-item-info { padding: 1.2rem 1.4rem; }
+        .carousel-item-info .client-tag {
+            font-size: 0.72rem;
+            font-weight: 700;
+            letter-spacing: 1px;
+            text-transform: uppercase;
             color: var(--primary);
-            font-size: 0.78rem;
-            font-weight: 700;
-            text-transform: uppercase;
-            margin-bottom: 0.4rem;
+            margin-bottom: 0.35rem;
         }
-        .showcase-info h3 {
-            font-size: 1rem;
+        .carousel-item-info h3 {
+            font-size: 0.95rem;
             font-weight: 600;
-            margin-bottom: 0.3rem;
+            margin-bottom: 0.25rem;
+            line-height: 1.3;
         }
-        .showcase-info p {
+        .carousel-item-info p {
             color: var(--muted);
-            font-size: 0.82rem;
+            font-size: 0.78rem;
+            line-height: 1.5;
         }
 
-        .showcase-section-title {
-            font-size: 0.75rem;
-            font-weight: 700;
-            letter-spacing: 3px;
-            text-transform: uppercase;
-            color: var(--muted);
-            text-align: center;
-            margin: 5rem 0 2.5rem;
+        /* ── Navigation: arrows + dots ───────────── */
+        .carousel-nav {
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            gap: 1rem;
+            margin-top: 0.5rem;
+            position: relative;
+            z-index: 25; /* above edge fades */
+        }
+        .carousel-nav-btn {
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            width: 42px; height: 42px;
+            border-radius: 50%;
+            border: 1px solid rgba(195, 255, 0, 0.2);
+            background: transparent;
+            color: var(--primary);
+            font-size: 1.1rem;
+            cursor: pointer;
+            transition: all 0.3s ease;
+        }
+        .carousel-nav-btn:hover {
+            background: rgba(195, 255, 0, 0.1);
+            border-color: var(--primary);
+            transform: scale(1.1);
+        }
+        .carousel-dots {
+            display: flex;
+            align-items: center;
+            gap: 6px;
+        }
+        .carousel-dot {
+            width: 6px; height: 6px;
+            border-radius: 50%;
+            background: rgba(195, 255, 0, 0.2);
+            transition: all 0.35s ease;
+            cursor: pointer;
+        }
+        .carousel-dot.is-active {
+            background: var(--primary);
+            width: 22px;
+            border-radius: 3px;
         }
 
-        /* Skills */
+        /* ================================================
+           SKILLS
+        ================================================ */
         .skills-grid {
             display: grid;
             grid-template-columns: repeat(3, 1fr);
             gap: 2rem;
-            margin-bottom: 3rem;
         }
         .skill-column {
             background: rgba(12, 12, 20, 0.6);
@@ -311,14 +508,8 @@
             transform: translateY(-8px);
             box-shadow: 0 20px 40px rgba(0,0,0,0.3), 0 0 20px rgba(195,255,0,0.08);
         }
-        .skill-column h3 {
-            color: var(--primary);
-            font-size: 1.1rem;
-            margin-bottom: 1.5rem;
-        }
-        .skill-column ul {
-            list-style: none;
-        }
+        .skill-column h3 { color: var(--primary); font-size: 1.1rem; margin-bottom: 1.5rem; }
+        .skill-column ul { list-style: none; }
         .skill-column li {
             color: var(--muted);
             padding: 0.55rem 0;
@@ -326,10 +517,10 @@
             font-size: 0.92rem;
         }
 
-        /* Portfolio */
-        #portfolio {
-            background: #080810;
-        }
+        /* ================================================
+           PORTFOLIO
+        ================================================ */
+        #portfolio { background: #080810; }
         .portfolio-grid {
             display: grid;
             grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
@@ -350,30 +541,15 @@
             transform: translateY(-10px);
             box-shadow: 0 20px 50px rgba(0,0,0,0.4), 0 0 30px rgba(195,255,0,0.1);
         }
-        .portfolio-card-image {
-            width: 100%;
-            height: 160px;
-            background-size: cover;
-            background-position: center;
-        }
-        .portfolio-card-content {
-            padding: 1.5rem 2rem;
-        }
-        .portfolio-card h3 {
-            font-size: 1.1rem;
-            margin-bottom: 0.5rem;
-        }
-        .portfolio-card p {
-            color: var(--muted);
-            font-size: 0.85rem;
-        }
+        .portfolio-card-image { width: 100%; height: 160px; background-size: cover; background-position: center; }
+        .portfolio-card-content { padding: 1.5rem 2rem; }
+        .portfolio-card h3 { font-size: 1.1rem; margin-bottom: 0.5rem; }
+        .portfolio-card p { color: var(--muted); font-size: 0.85rem; }
 
-        /* Contact */
-        .contact-content {
-            text-align: center;
-            max-width: 700px;
-            margin: 0 auto;
-        }
+        /* ================================================
+           CONTACT
+        ================================================ */
+        .contact-content { text-align: center; max-width: 700px; margin: 0 auto; }
         .contact-links {
             display: flex;
             justify-content: center;
@@ -392,7 +568,6 @@
             transition: all 0.3s ease;
             display: inline-flex;
             align-items: center;
-            gap: 0.7rem;
         }
         .contact-btn:hover {
             background: rgba(195, 255, 0, 0.1);
@@ -401,35 +576,30 @@
             box-shadow: 0 8px 25px rgba(195,255,0,0.2);
         }
 
-        /* Footer */
+        /* ================================================
+           FOOTER
+        ================================================ */
         footer {
             text-align: center;
             padding: 3rem 5%;
             background: var(--card-bg);
             border-top: 1px solid rgba(195, 255, 0, 0.05);
         }
-        footer p {
-            color: var(--muted);
-            font-size: 0.88rem;
-        }
+        footer p { color: var(--muted); font-size: 0.88rem; }
 
-        /* Smooth Scroll */
-        html {
-            scroll-behavior: smooth;
-        }
-
-        /* Reveal Animations */
+        /* ================================================
+           REVEAL ANIMATION
+        ================================================ */
         .reveal {
             opacity: 0;
             transform: translateY(40px);
             transition: all 0.8s cubic-bezier(0.25, 0.46, 0.45, 0.94);
         }
-        .reveal.active {
-            opacity: 1;
-            transform: translateY(0);
-        }
+        .reveal.active { opacity: 1; transform: translateY(0); }
 
-        /* Responsive */
+        /* ================================================
+           RESPONSIVE
+        ================================================ */
         @media (max-width: 1024px) {
             .hero-container { grid-template-columns: 1fr; }
             .skills-grid { grid-template-columns: 1fr; }
@@ -438,7 +608,7 @@
             .hero h1 { font-size: 3rem; }
             .section-title { font-size: 2rem; }
             .portfolio-grid { grid-template-columns: 1fr; }
-            .showcase-item { flex: 0 0 220px; }
+            :root { --item-w: 220px; }
         }
     </style>
 </head>
@@ -486,280 +656,189 @@
         </div>
     </section>
 
-    <!-- Project Showcase -->
+
+    <!-- =======================================================
+         PROJECT SHOWCASE — Fixed-Center Spotlight Carousel
+         Each .carousel-wrapper contains:
+           1. .carousel-spotlight  → static glowing frame (never moves)
+           2. .carousel-track      → the only scrolling element
+           3. .carousel-nav        → arrows + dot pagination
+    ======================================================= -->
     <section id="showcase">
-        <div class="showcase-inner">
+
+        <div class="showcase-header">
             <h2 class="section-title reveal">Project Showcase</h2>
-            <p class="section-subtitle reveal">Scroll to explore my best short-form content with leading creators and brands</p>
+            <p class="section-subtitle reveal">Drag, scroll, or tap the arrows to explore my best work</p>
         </div>
 
-        <!-- Main -->
-        <div class="showcase-scroll-wrap">
-            <div class="showcase-scroll-container" id="scroll-main">
-                <div class="showcase-item">
-                    <div class="showcase-thumbnail">
-                        <iframe src="https://www.youtube.com/embed/rNZyRjAqnEc?autoplay=1&mute=1&loop=1&playlist=rNZyRjAqnEc&controls=0" allow="autoplay" allowfullscreen></iframe>
+        <!-- ── Short-form Content ───────────────────── -->
+        <div class="showcase-category">
+            <span class="showcase-category-label">short-form content</span>
+        </div>
+
+        <div class="carousel-wrapper">
+            <div class="carousel-spotlight" aria-hidden="true"></div>
+
+            <div class="carousel-track" id="track-main">
+                <div class="carousel-item">
+                    <div class="carousel-item-thumb">
+                        <iframe src="https://www.youtube.com/embed/rNZyRjAqnEc?autoplay=1&mute=1&loop=1&playlist=rNZyRjAqnEc&controls=0" allow="autoplay" allowfullscreen loading="lazy"></iframe>
                     </div>
-                    <div class="showcase-info">
-                        <div class="client">@ruangsepri</div>
+                    <div class="carousel-item-info">
+                        <div class="client-tag">@ruangsepri</div>
                         <h3>AI-Driven Content Creator</h3>
                         <p>Engaging educational content with dynamic pacing.</p>
                     </div>
                 </div>
-                <div class="showcase-item">
-                    <div class="showcase-thumbnail">
-                        <iframe src="https://www.youtube.com/embed/1c1neNWR3Y8?autoplay=1&mute=1&loop=1&playlist=1c1neNWR3Y8&controls=0" allow="autoplay" allowfullscreen></iframe>
+                <div class="carousel-item">
+                    <div class="carousel-item-thumb">
+                        <iframe src="https://www.youtube.com/embed/1c1neNWR3Y8?autoplay=1&mute=1&loop=1&playlist=1c1neNWR3Y8&controls=0" allow="autoplay" allowfullscreen loading="lazy"></iframe>
                     </div>
-                    <div class="showcase-info">
-                        <div class="client">@createcontent.club</div>
+                    <div class="carousel-item-info">
+                        <div class="client-tag">@createcontent.club</div>
                         <h3>Businesses Scale with Content</h3>
                         <p>High-energy edit for creator community.</p>
                     </div>
                 </div>
-                <div class="showcase-item">
-                    <div class="showcase-thumbnail">
-                        <iframe src="https://www.youtube.com/embed/LvjzKyPSyQg?autoplay=1&mute=1&loop=1&playlist=LvjzKyPSyQg&controls=0" allow="autoplay" allowfullscreen></iframe>
+                <div class="carousel-item">
+                    <div class="carousel-item-thumb">
+                        <iframe src="https://www.youtube.com/embed/LvjzKyPSyQg?autoplay=1&mute=1&loop=1&playlist=LvjzKyPSyQg&controls=0" allow="autoplay" allowfullscreen loading="lazy"></iframe>
                     </div>
-                    <div class="showcase-info">
-                        <div class="client">@victoriawong68</div>
+                    <div class="carousel-item-info">
+                        <div class="client-tag">@victoriawong68</div>
                         <h3>Build Personal Brand</h3>
                         <p>Professional branding with clean aesthetics.</p>
                     </div>
                 </div>
-                <div class="showcase-item">
-                    <div class="showcase-thumbnail">
-                        <iframe src="https://www.youtube.com/embed/zMEycC6PtFo?autoplay=1&mute=1&loop=1&playlist=zMEycC6PtFo&controls=0" allow="autoplay" allowfullscreen></iframe>
+                <div class="carousel-item">
+                    <div class="carousel-item-thumb">
+                        <iframe src="https://www.youtube.com/embed/zMEycC6PtFo?autoplay=1&mute=1&loop=1&playlist=zMEycC6PtFo&controls=0" allow="autoplay" allowfullscreen loading="lazy"></iframe>
                     </div>
-                    <div class="showcase-info">
-                        <div class="client">@techpreneurboi</div>
+                    <div class="carousel-item-info">
+                        <div class="client-tag">@techpreneurboi</div>
                         <h3>Automation Expert</h3>
                         <p>Fast-paced tech content optimized for retention.</p>
                     </div>
                 </div>
-                <!-- Duplicate for scroll -->
-                <div class="showcase-item">
-                    <div class="showcase-thumbnail">
-                        <iframe src="https://www.youtube.com/embed/rNZyRjAqnEc?autoplay=1&mute=1&loop=1&playlist=rNZyRjAqnEc&controls=0" allow="autoplay" allowfullscreen></iframe>
-                    </div>
-                    <div class="showcase-info">
-                        <div class="client">@ruangsepri</div>
-                        <h3>AI-Driven Content Creator</h3>
-                        <p>Engaging educational content with dynamic pacing.</p>
-                    </div>
-                </div>
-                <div class="showcase-item">
-                    <div class="showcase-thumbnail">
-                        <iframe src="https://www.youtube.com/embed/1c1neNWR3Y8?autoplay=1&mute=1&loop=1&playlist=1c1neNWR3Y8&controls=0" allow="autoplay" allowfullscreen></iframe>
-                    </div>
-                    <div class="showcase-info">
-                        <div class="client">@createcontent.club</div>
-                        <h3>Businesses Scale with Content</h3>
-                        <p>High-energy edit for creator community.</p>
-                    </div>
-                </div>
-                <div class="showcase-item">
-                    <div class="showcase-thumbnail">
-                        <iframe src="https://www.youtube.com/embed/LvjzKyPSyQg?autoplay=1&mute=1&loop=1&playlist=LvjzKyPSyQg&controls=0" allow="autoplay" allowfullscreen></iframe>
-                    </div>
-                    <div class="showcase-info">
-                        <div class="client">@victoriawong68</div>
-                        <h3>Build Personal Brand</h3>
-                        <p>Professional branding with clean aesthetics.</p>
-                    </div>
-                </div>
-                <div class="showcase-item">
-                    <div class="showcase-thumbnail">
-                        <iframe src="https://www.youtube.com/embed/zMEycC6PtFo?autoplay=1&mute=1&loop=1&playlist=zMEycC6PtFo&controls=0" allow="autoplay" allowfullscreen></iframe>
-                    </div>
-                    <div class="showcase-info">
-                        <div class="client">@techpreneurboi</div>
-                        <h3>Automation Expert</h3>
-                        <p>Fast-paced tech content optimized for retention.</p>
-                    </div>
-                </div>
+            </div><!-- /track-main -->
+
+            <div class="carousel-nav">
+                <button class="carousel-nav-btn" data-track="track-main" data-dir="-1" aria-label="Previous">&#8592;</button>
+                <div class="carousel-dots" id="dots-main"></div>
+                <button class="carousel-nav-btn" data-track="track-main" data-dir="1" aria-label="Next">&#8594;</button>
             </div>
+        </div><!-- /carousel-wrapper -->
+
+
+        <!-- ── Motion Graphic ───────────────────────── -->
+        <div class="showcase-category">
+            <span class="showcase-category-label">motion graphic</span>
         </div>
 
-        <!-- Motion Graphic -->
-        <div class="showcase-inner">
-            <div class="showcase-section-title">motion graphic</div>
-        </div>
-        <div class="showcase-scroll-wrap">
-            <div class="showcase-scroll-container" id="scroll-motion">
-                <div class="showcase-item">
-                    <div class="showcase-thumbnail">
-                        <iframe src="https://www.youtube.com/embed/LvDhNgPAZPs?autoplay=1&mute=1&loop=1&playlist=LvDhNgPAZPs&controls=0" allow="autoplay" allowfullscreen></iframe>
+        <div class="carousel-wrapper">
+            <div class="carousel-spotlight" aria-hidden="true"></div>
+
+            <div class="carousel-track" id="track-motion">
+                <div class="carousel-item">
+                    <div class="carousel-item-thumb">
+                        <iframe src="https://www.youtube.com/embed/LvDhNgPAZPs?autoplay=1&mute=1&loop=1&playlist=LvDhNgPAZPs&controls=0" allow="autoplay" allowfullscreen loading="lazy"></iframe>
                     </div>
-                    <div class="showcase-info">
-                        <div class="client">@aicreatorlabs.id</div>
+                    <div class="carousel-item-info">
+                        <div class="client-tag">@aicreatorlabs.id</div>
                         <h3>Podcast</h3>
                         <p>Dynamic motion graphics for podcast content.</p>
                     </div>
                 </div>
-                <div class="showcase-item">
-                    <div class="showcase-thumbnail">
-                        <iframe src="https://www.youtube.com/embed/4PY48e91FU4?autoplay=1&mute=1&loop=1&playlist=4PY48e91FU4&controls=0" allow="autoplay" allowfullscreen></iframe>
+                <div class="carousel-item">
+                    <div class="carousel-item-thumb">
+                        <iframe src="https://www.youtube.com/embed/4PY48e91FU4?autoplay=1&mute=1&loop=1&playlist=4PY48e91FU4&controls=0" allow="autoplay" allowfullscreen loading="lazy"></iframe>
                     </div>
-                    <div class="showcase-info">
-                        <div class="client">@aicreatorlabs.id</div>
+                    <div class="carousel-item-info">
+                        <div class="client-tag">@aicreatorlabs.id</div>
                         <h3>Podcast</h3>
                         <p>Engaging visual storytelling for audio content.</p>
                     </div>
                 </div>
-                <div class="showcase-item">
-                    <div class="showcase-thumbnail">
-                        <iframe src="https://www.youtube.com/embed/lKmNIRaVSKE?autoplay=1&mute=1&loop=1&playlist=lKmNIRaVSKE&controls=0" allow="autoplay" allowfullscreen></iframe>
+                <div class="carousel-item">
+                    <div class="carousel-item-thumb">
+                        <iframe src="https://www.youtube.com/embed/lKmNIRaVSKE?autoplay=1&mute=1&loop=1&playlist=lKmNIRaVSKE&controls=0" allow="autoplay" allowfullscreen loading="lazy"></iframe>
                     </div>
-                    <div class="showcase-info">
-                        <div class="client">@ruangsepri</div>
+                    <div class="carousel-item-info">
+                        <div class="client-tag">@ruangsepri</div>
                         <h3>Ads Content</h3>
                         <p>Attention-grabbing motion for advertising.</p>
                     </div>
                 </div>
-                <div class="showcase-item">
-                    <div class="showcase-thumbnail">
-                        <iframe src="https://www.youtube.com/embed/qif5BiRmJAA?autoplay=1&mute=1&loop=1&playlist=qif5BiRmJAA&controls=0" allow="autoplay" allowfullscreen></iframe>
+                <div class="carousel-item">
+                    <div class="carousel-item-thumb">
+                        <iframe src="https://www.youtube.com/embed/qif5BiRmJAA?autoplay=1&mute=1&loop=1&playlist=qif5BiRmJAA&controls=0" allow="autoplay" allowfullscreen loading="lazy"></iframe>
                     </div>
-                    <div class="showcase-info">
-                        <div class="client">@ruangsepri</div>
+                    <div class="carousel-item-info">
+                        <div class="client-tag">@ruangsepri</div>
                         <h3>Talking Head</h3>
                         <p>Polished talking head with motion graphics.</p>
                     </div>
                 </div>
-                <!-- Duplicate -->
-                <div class="showcase-item">
-                    <div class="showcase-thumbnail">
-                        <iframe src="https://www.youtube.com/embed/LvDhNgPAZPs?autoplay=1&mute=1&loop=1&playlist=LvDhNgPAZPs&controls=0" allow="autoplay" allowfullscreen></iframe>
-                    </div>
-                    <div class="showcase-info">
-                        <div class="client">@aicreatorlabs.id</div>
-                        <h3>Podcast</h3>
-                        <p>Dynamic motion graphics for podcast content.</p>
-                    </div>
-                </div>
-                <div class="showcase-item">
-                    <div class="showcase-thumbnail">
-                        <iframe src="https://www.youtube.com/embed/4PY48e91FU4?autoplay=1&mute=1&loop=1&playlist=4PY48e91FU4&controls=0" allow="autoplay" allowfullscreen></iframe>
-                    </div>
-                    <div class="showcase-info">
-                        <div class="client">@aicreatorlabs.id</div>
-                        <h3>Podcast</h3>
-                        <p>Engaging visual storytelling for audio content.</p>
-                    </div>
-                </div>
-                <div class="showcase-item">
-                    <div class="showcase-thumbnail">
-                        <iframe src="https://www.youtube.com/embed/lKmNIRaVSKE?autoplay=1&mute=1&loop=1&playlist=lKmNIRaVSKE&controls=0" allow="autoplay" allowfullscreen></iframe>
-                    </div>
-                    <div class="showcase-info">
-                        <div class="client">@ruangsepri</div>
-                        <h3>Ads Content</h3>
-                        <p>Attention-grabbing motion for advertising.</p>
-                    </div>
-                </div>
-                <div class="showcase-item">
-                    <div class="showcase-thumbnail">
-                        <iframe src="https://www.youtube.com/embed/qif5BiRmJAA?autoplay=1&mute=1&loop=1&playlist=qif5BiRmJAA&controls=0" allow="autoplay" allowfullscreen></iframe>
-                    </div>
-                    <div class="showcase-info">
-                        <div class="client">@ruangsepri</div>
-                        <h3>Talking Head</h3>
-                        <p>Polished talking head with motion graphics.</p>
-                    </div>
-                </div>
+            </div><!-- /track-motion -->
+
+            <div class="carousel-nav">
+                <button class="carousel-nav-btn" data-track="track-motion" data-dir="-1" aria-label="Previous">&#8592;</button>
+                <div class="carousel-dots" id="dots-motion"></div>
+                <button class="carousel-nav-btn" data-track="track-motion" data-dir="1" aria-label="Next">&#8594;</button>
             </div>
+        </div><!-- /carousel-wrapper -->
+
+
+        <!-- ── Video Ads ─────────────────────────────── -->
+        <div class="showcase-category">
+            <span class="showcase-category-label">video ads</span>
         </div>
 
-        <!-- Video Ads -->
-        <div class="showcase-inner">
-            <div class="showcase-section-title">video ads</div>
-        </div>
-        <div class="showcase-scroll-wrap">
-            <div class="showcase-scroll-container" id="scroll-ads">
-                <div class="showcase-item">
-                    <div class="showcase-thumbnail">
-                        <iframe src="https://www.youtube.com/embed/PCUFb-glJyM?autoplay=1&mute=1&loop=1&playlist=PCUFb-glJyM&controls=0" allow="autoplay" allowfullscreen></iframe>
+        <div class="carousel-wrapper">
+            <div class="carousel-spotlight" aria-hidden="true"></div>
+
+            <div class="carousel-track" id="track-ads">
+                <div class="carousel-item">
+                    <div class="carousel-item-thumb">
+                        <iframe src="https://www.youtube.com/embed/PCUFb-glJyM?autoplay=1&mute=1&loop=1&playlist=PCUFb-glJyM&controls=0" allow="autoplay" allowfullscreen loading="lazy"></iframe>
                     </div>
-                    <div class="showcase-info">
-                        <div class="client">Video Ads</div>
+                    <div class="carousel-item-info">
+                        <div class="client-tag">Video Ads</div>
                         <h3>Ad Creative</h3>
                         <p>High-conversion short-form ad content.</p>
                     </div>
                 </div>
-                <div class="showcase-item">
-                    <div class="showcase-thumbnail">
-                        <iframe src="https://www.youtube.com/embed/r9wL_3BWFbU?autoplay=1&mute=1&loop=1&playlist=r9wL_3BWFbU&controls=0" allow="autoplay" allowfullscreen></iframe>
+                <div class="carousel-item">
+                    <div class="carousel-item-thumb">
+                        <iframe src="https://www.youtube.com/embed/r9wL_3BWFbU?autoplay=1&mute=1&loop=1&playlist=r9wL_3BWFbU&controls=0" allow="autoplay" allowfullscreen loading="lazy"></iframe>
                     </div>
-                    <div class="showcase-info">
-                        <div class="client">Video Ads</div>
+                    <div class="carousel-item-info">
+                        <div class="client-tag">Video Ads</div>
                         <h3>Ad Creative</h3>
                         <p>Compelling storytelling for brand awareness.</p>
                     </div>
                 </div>
-                <div class="showcase-item">
-                    <div class="showcase-thumbnail">
-                        <iframe src="https://www.youtube.com/embed/29XywKfIhzU?autoplay=1&mute=1&loop=1&playlist=29XywKfIhzU&controls=0" allow="autoplay" allowfullscreen></iframe>
+                <div class="carousel-item">
+                    <div class="carousel-item-thumb">
+                        <iframe src="https://www.youtube.com/embed/29XywKfIhzU?autoplay=1&mute=1&loop=1&playlist=29XywKfIhzU&controls=0" allow="autoplay" allowfullscreen loading="lazy"></iframe>
                     </div>
-                    <div class="showcase-info">
-                        <div class="client">Video Ads</div>
+                    <div class="carousel-item-info">
+                        <div class="client-tag">Video Ads</div>
                         <h3>Ad Creative</h3>
                         <p>Dynamic visual hook optimized for engagement.</p>
                     </div>
                 </div>
-                <!-- Duplicate -->
-                <div class="showcase-item">
-                    <div class="showcase-thumbnail">
-                        <iframe src="https://www.youtube.com/embed/PCUFb-glJyM?autoplay=1&mute=1&loop=1&playlist=PCUFb-glJyM&controls=0" allow="autoplay" allowfullscreen></iframe>
-                    </div>
-                    <div class="showcase-info">
-                        <div class="client">Video Ads</div>
-                        <h3>Ad Creative</h3>
-                        <p>High-conversion short-form ad content.</p>
-                    </div>
-                </div>
-                <div class="showcase-item">
-                    <div class="showcase-thumbnail">
-                        <iframe src="https://www.youtube.com/embed/r9wL_3BWFbU?autoplay=1&mute=1&loop=1&playlist=r9wL_3BWFbU&controls=0" allow="autoplay" allowfullscreen></iframe>
-                    </div>
-                    <div class="showcase-info">
-                        <div class="client">Video Ads</div>
-                        <h3>Ad Creative</h3>
-                        <p>Compelling storytelling for brand awareness.</p>
-                    </div>
-                </div>
-                <div class="showcase-item">
-                    <div class="showcase-thumbnail">
-                        <iframe src="https://www.youtube.com/embed/29XywKfIhzU?autoplay=1&mute=1&loop=1&playlist=29XywKfIhzU&controls=0" allow="autoplay" allowfullscreen></iframe>
-                    </div>
-                    <div class="showcase-info">
-                        <div class="client">Video Ads</div>
-                        <h3>Ad Creative</h3>
-                        <p>Dynamic visual hook optimized for engagement.</p>
-                    </div>
-                </div>
-                <div class="showcase-item">
-                    <div class="showcase-thumbnail">
-                        <iframe src="https://www.youtube.com/embed/PCUFb-glJyM?autoplay=1&mute=1&loop=1&playlist=PCUFb-glJyM&controls=0" allow="autoplay" allowfullscreen></iframe>
-                    </div>
-                    <div class="showcase-info">
-                        <div class="client">Video Ads</div>
-                        <h3>Ad Creative</h3>
-                        <p>High-conversion short-form ad content.</p>
-                    </div>
-                </div>
-                <div class="showcase-item">
-                    <div class="showcase-thumbnail">
-                        <iframe src="https://www.youtube.com/embed/r9wL_3BWFbU?autoplay=1&mute=1&loop=1&playlist=r9wL_3BWFbU&controls=0" allow="autoplay" allowfullscreen></iframe>
-                    </div>
-                    <div class="showcase-info">
-                        <div class="client">Video Ads</div>
-                        <h3>Ad Creative</h3>
-                        <p>Compelling storytelling for brand awareness.</p>
-                    </div>
-                </div>
+            </div><!-- /track-ads -->
+
+            <div class="carousel-nav">
+                <button class="carousel-nav-btn" data-track="track-ads" data-dir="-1" aria-label="Previous">&#8592;</button>
+                <div class="carousel-dots" id="dots-ads"></div>
+                <button class="carousel-nav-btn" data-track="track-ads" data-dir="1" aria-label="Next">&#8594;</button>
             </div>
-        </div>
+        </div><!-- /carousel-wrapper -->
+
     </section>
+
 
     <!-- Skills -->
     <section id="skills">
@@ -851,7 +930,7 @@
             <p style="color: var(--muted); margin-bottom: 2rem;">Ready to create something cinematic? Let's collaborate and bring your vision to life.</p>
             <div class="contact-links">
                 <a href="https://wa.me/6281243532553" target="_blank" class="contact-btn">WhatsApp</a>
-                <a href="/cdn-cgi/l/email-protection#6b060a0f0e1b1e010a0e050f190a2b0c060a020745080406" class="contact-btn">Email</a>
+                <a href="mailto:imadevideo@gmail.com" class="contact-btn">Email</a>
                 <a href="https://instagram.com/imadevideo" target="_blank" class="contact-btn">Instagram</a>
             </div>
         </div>
@@ -863,190 +942,258 @@
         <p>AI-Driven Video Editor & Cinematic Storyteller © 2025</p>
     </footer>
 
-    <script data-cfasync="false" src="/cdn-cgi/scripts/5c5dd728/cloudflare-static/email-decode.min.js"></script><script>
-        // Manual scroll with seamless infinite looping and center highlight
-        function setupInfiniteScroll(containerId) {
-            console.log(`Setting up infinite scroll for: ${containerId}`);
-            
-            const container = document.getElementById(containerId);
-            if (!container) {
-                console.error(`Container not found: ${containerId}`);
-                return;
+
+    <script>
+        /* ================================================================
+           SPOTLIGHT CAROUSEL CLASS
+           Encapsulates all behavior for a single carousel instance.
+           Three carousels share this class; each is independent.
+
+           How "fixed center" works:
+           ─ The .carousel-spotlight (CSS) is position:absolute, never moves.
+           ─ The .carousel-track scrolls horizontally beneath it.
+           ─ padding on the track allows first/last items to reach center.
+           ─ scroll-snap-type:x mandatory snaps items to center natively.
+           ─ JS reads scrollLeft to know which item is centered and applies
+             the .is-active class for CSS styling.
+        ================================================================ */
+        class SpotlightCarousel {
+
+            constructor(trackId) {
+                this.track = document.getElementById(trackId);
+                if (!this.track) return;
+
+                this.items        = Array.from(this.track.querySelectorAll('.carousel-item'));
+                this.total        = this.items.length;
+                this.activeIndex  = 0;
+
+                /* Dots container — id is "dots-<suffix matching track>" */
+                const suffix = trackId.replace('track-', '');
+                this.dotsEl  = document.getElementById('dots-' + suffix);
+
+                /* Internal state */
+                this._dragging     = false;
+                this._dragStartX   = 0;
+                this._dragScrollL  = 0;
+                this._wheelVel     = 0;   // accumulated wheel velocity
+                this._rafId        = null; // rAF handle for wheel momentum
+                this._hovering     = false;
+
+                this._buildDots();
+                this._bindEvents();
+
+                /* Scroll to item 0 after layout, then highlight */
+                requestAnimationFrame(() => {
+                    this._scrollToIndex(0, false); /* no animation on init */
+                    this._syncHighlight();
+                });
             }
-            
-            const items = container.querySelectorAll('.showcase-item');
-            if (items.length === 0) {
-                console.error(`No items found in: ${containerId}`);
-                return;
+
+            /* ── Build dot indicators dynamically ──── */
+            _buildDots() {
+                if (!this.dotsEl) return;
+                this.dotsEl.innerHTML = '';
+                this.dots = this.items.map((_, i) => {
+                    const d = document.createElement('div');
+                    d.className = 'carousel-dot' + (i === 0 ? ' is-active' : '');
+                    /* Click a dot to jump to that item */
+                    d.addEventListener('click', () => this._scrollToIndex(i));
+                    this.dotsEl.appendChild(d);
+                    return d;
+                });
             }
-            
-            console.log(`Found ${items.length} items in ${containerId}`);
-            
-            let isHovering = false;
-            
-            // Track if mouse is over container
-            container.addEventListener('mouseenter', () => {
-                isHovering = true;
-            });
-            container.addEventListener('mouseleave', () => {
-                isHovering = false;
-            });
-            
-            // Smooth wheel scrolling with accumulation
-            let scrollAccumulator = 0;
-            let isAnimating = false;
-            
-            function smoothScroll() {
-                if (Math.abs(scrollAccumulator) > 0.5) {
-                    container.scrollLeft += scrollAccumulator * 0.3;
-                    scrollAccumulator *= 0.8; // Decay
-                    requestAnimationFrame(smoothScroll);
-                } else {
-                    scrollAccumulator = 0;
-                    isAnimating = false;
-                }
+
+            /* ── Which item is closest to center? ────
+               Uses offsetLeft (relative to scroll container)
+               rather than getBoundingClientRect so it works
+               even when the section is off-screen.
+            ─────────────────────────────────────────── */
+            _findCenterItem() {
+                /* Center of the visible window within the scroll container */
+                const visibleCenter = this.track.scrollLeft + this.track.offsetWidth / 2;
+
+                let closest  = null;
+                let minDist  = Infinity;
+
+                this.items.forEach(item => {
+                    const itemCenter = item.offsetLeft + item.offsetWidth / 2;
+                    const dist       = Math.abs(visibleCenter - itemCenter);
+                    if (dist < minDist) { minDist = dist; closest = item; }
+                });
+
+                return closest;
             }
-            
-            // Enable mouse wheel scroll ONLY when hovering - BUTTERY SMOOTH
-            window.addEventListener('wheel', (e) => {
-                if (!isHovering) return;
-                e.preventDefault();
-                
-                scrollAccumulator += e.deltaY * 0.4;
-                
-                if (!isAnimating) {
-                    isAnimating = true;
-                    requestAnimationFrame(smoothScroll);
+
+            /* ── Apply/remove .is-active + sync dots ─ */
+            _syncHighlight() {
+                const center = this._findCenterItem();
+                if (!center) return;
+
+                const idx = this.items.indexOf(center);
+                if (idx === this.activeIndex && center.classList.contains('is-active')) return;
+
+                this.items.forEach(item => item.classList.remove('is-active'));
+                center.classList.add('is-active');
+
+                if (this.dots) {
+                    this.dots.forEach((d, i) => d.classList.toggle('is-active', i === idx));
                 }
-            }, { passive: false });
-            
-            // Enable drag scroll
-            let isDragging = false;
-            let startX, scrollLeft;
-            
-            container.addEventListener('mousedown', (e) => {
-                isDragging = true;
-                startX = e.pageX - container.offsetLeft;
-                scrollLeft = container.scrollLeft;
-                container.style.cursor = 'grabbing';
-            });
-            
-            container.addEventListener('mouseleave', () => {
-                isDragging = false;
-                container.style.cursor = 'grab';
-            });
-            
-            container.addEventListener('mouseup', () => {
-                isDragging = false;
-                container.style.cursor = 'grab';
-            });
-            
-            container.addEventListener('mousemove', (e) => {
-                if (!isDragging) return;
-                e.preventDefault();
-                const x = e.pageX - container.offsetLeft;
-                const walk = (x - startX) * 0.8; // Slower drag for better control
-                container.scrollLeft = scrollLeft - walk;
-            });
-            
-            // Smooth and consistent highlight update with throttle
-            let scrollTimer;
-            let lastUpdate = 0;
-            const throttleDelay = 100;
-            
-            container.addEventListener('scroll', () => {
-                const now = Date.now();
-                
-                // Throttle: update at consistent intervals for predictable behavior
-                if (now - lastUpdate >= throttleDelay) {
-                    lastUpdate = now;
-                    updateCenterHighlight();
-                }
-                
-                // Also update when scroll stops
-                clearTimeout(scrollTimer);
-                scrollTimer = setTimeout(updateCenterHighlight, 150);
-            });
-            
-            // Center highlight function
-            function updateCenterHighlight() {
-                const containerRect = container.getBoundingClientRect();
-                const centerX = containerRect.left + containerRect.width / 2;
-                
-                const allItems = container.querySelectorAll('.showcase-item');
-                let closest = null;
-                let minDist = Infinity;
-                
-                allItems.forEach(item => {
-                    const rect = item.getBoundingClientRect();
-                    const itemCenter = rect.left + rect.width / 2;
-                    const dist = Math.abs(centerX - itemCenter);
-                    
-                    if (dist < minDist) {
-                        minDist = dist;
-                        closest = item;
+
+                this.activeIndex = idx;
+            }
+
+            /* ── Scroll track to center a given index ─
+               Computes the exact scrollLeft so the item
+               sits precisely in the center of the track.
+            ─────────────────────────────────────────── */
+            _scrollToIndex(idx, animate = true) {
+                const item = this.items[idx];
+                if (!item) return;
+
+                const itemCenter  = item.offsetLeft + item.offsetWidth / 2;
+                const trackCenter = this.track.offsetWidth / 2;
+                const target      = itemCenter - trackCenter;
+
+                this.track.scrollTo({ left: target, behavior: animate ? 'smooth' : 'auto' });
+            }
+
+            /* ── Snap to nearest item after free scroll ─
+               Called when wheel momentum dies out or drag ends.
+            ─────────────────────────────────────────────── */
+            _snapToNearest() {
+                const center = this._findCenterItem();
+                if (center) this._scrollToIndex(this.items.indexOf(center));
+            }
+
+            /* ── Bind all event listeners ─────────────── */
+            _bindEvents() {
+                const wrapper = this.track.closest('.carousel-wrapper');
+
+                /* Hover tracking (needed to gate wheel events per-carousel) */
+                wrapper.addEventListener('mouseenter', () => { this._hovering = true; });
+                wrapper.addEventListener('mouseleave', () => { this._hovering = false; });
+
+                /* Drag to scroll */
+                this.track.addEventListener('mousedown', e => {
+                    this._dragging    = true;
+                    this._dragStartX  = e.pageX - this.track.offsetLeft;
+                    this._dragScrollL = this.track.scrollLeft;
+                    this.track.classList.add('is-dragging');
+                });
+                this.track.addEventListener('mouseleave', () => {
+                    if (this._dragging) { this._dragging = false; this.track.classList.remove('is-dragging'); }
+                });
+                this.track.addEventListener('mouseup', () => {
+                    this._dragging = false;
+                    this.track.classList.remove('is-dragging');
+                    this._snapToNearest(); /* snap on release */
+                });
+                this.track.addEventListener('mousemove', e => {
+                    if (!this._dragging) return;
+                    e.preventDefault();
+                    const x    = e.pageX - this.track.offsetLeft;
+                    const walk = (x - this._dragStartX) * 1.3;
+                    this.track.scrollLeft = this._dragScrollL - walk;
+                });
+
+                /* ── Mouse wheel: vertical → horizontal ──
+                   Accumulates deltaY into _wheelVel then
+                   decelerate via requestAnimationFrame.
+                   passive:false is required for preventDefault.
+                ─────────────────────────────────────────── */
+                wrapper.addEventListener('wheel', e => {
+                    if (!this._hovering) return;
+                    e.preventDefault();
+
+                    this._wheelVel += e.deltaY * 0.55; /* sensitivity multiplier */
+
+                    if (!this._rafId) this._runWheelMomentum();
+                }, { passive: false });
+
+                /* Scroll event: throttled via rAF, syncs highlight */
+                let ticking = false;
+                this.track.addEventListener('scroll', () => {
+                    if (!ticking) {
+                        requestAnimationFrame(() => {
+                            this._syncHighlight();
+                            ticking = false;
+                        });
+                        ticking = true;
                     }
                 });
-                
-                // Remove active from all
-                allItems.forEach(item => item.classList.remove('active'));
-                
-                // Add active to closest - always highlight center item
-                if (closest) {
-                    closest.classList.add('active');
-                }
             }
-            
-            // Initial highlight - delayed to ensure items are rendered
-            setTimeout(() => {
-                updateCenterHighlight();
-                console.log('Initial highlight for', containerId);
-            }, 500);
-            
-            // Force update on load
-            window.addEventListener('load', () => {
-                setTimeout(updateCenterHighlight, 200);
-            });
+
+            /* ── Wheel momentum animation loop ────────
+               Applies _wheelVel each frame then decays it.
+               When velocity drops below 0.5 px, stops and snaps.
+            ─────────────────────────────────────────── */
+            _runWheelMomentum() {
+                if (Math.abs(this._wheelVel) < 0.5) {
+                    /* Momentum exhausted — stop and snap to nearest item */
+                    this._wheelVel = 0;
+                    this._rafId    = null;
+                    this._snapToNearest();
+                    return;
+                }
+
+                this.track.scrollLeft += this._wheelVel;
+                this._wheelVel        *= 0.87; /* friction coefficient (0–1) */
+                this._rafId = requestAnimationFrame(() => this._runWheelMomentum());
+            }
+
+            /* ── Public: move by one step ─────────────
+               Called by arrow buttons.
+            ─────────────────────────────────────────── */
+            navigate(direction) {
+                const next = Math.max(0, Math.min(this.total - 1, this.activeIndex + direction));
+                this._scrollToIndex(next);
+            }
         }
 
-        // Setup all carousels
-        setupInfiniteScroll('scroll-main');
-        setupInfiniteScroll('scroll-motion');
-        setupInfiniteScroll('scroll-ads');
-        console.log('✅ All carousels initialized');
 
-        // Smooth scroll for navigation links
-        document.querySelectorAll('a[href^="#"]').forEach(anchor => {
-            anchor.addEventListener('click', function(e) {
-                e.preventDefault();
-                const target = document.querySelector(this.getAttribute('href'));
-                if (target) {
-                    target.scrollIntoView({ behavior: 'smooth', block: 'start' });
-                }
+        /* ================================================================
+           INIT — create one carousel instance per track
+        ================================================================ */
+        const carousels = {
+            'track-main':   new SpotlightCarousel('track-main'),
+            'track-motion': new SpotlightCarousel('track-motion'),
+            'track-ads':    new SpotlightCarousel('track-ads'),
+        };
+
+        /* Arrow button click → delegate to correct instance */
+        document.querySelectorAll('.carousel-nav-btn').forEach(btn => {
+            btn.addEventListener('click', () => {
+                const car = carousels[btn.dataset.track];
+                if (car) car.navigate(parseInt(btn.dataset.dir, 10));
             });
         });
 
-        // Reveal animation on scroll
-        function revealOnScroll() {
-            const reveals = document.querySelectorAll('.reveal');
-            reveals.forEach(element => {
-                const elementTop = element.getBoundingClientRect().top;
-                const windowHeight = window.innerHeight;
-                const revealPoint = 100;
-                
-                if (elementTop < windowHeight - revealPoint) {
-                    element.classList.add('active');
+
+        /* ================================================================
+           REVEAL ANIMATION — IntersectionObserver replaces scroll listener.
+           Observes once; unobserves after reveal to save resources.
+        ================================================================ */
+        const revealObs = new IntersectionObserver(entries => {
+            entries.forEach(entry => {
+                if (entry.isIntersecting) {
+                    entry.target.classList.add('active');
+                    revealObs.unobserve(entry.target);
                 }
             });
-        }
+        }, { threshold: 0.12 });
 
-        // Initial reveal
-        revealOnScroll();
+        document.querySelectorAll('.reveal').forEach(el => revealObs.observe(el));
 
-        // Reveal on scroll
-        window.addEventListener('scroll', revealOnScroll);
 
-        console.log('✅ Reveal animations initialized');
+        /* ================================================================
+           SMOOTH ANCHOR SCROLL
+        ================================================================ */
+        document.querySelectorAll('a[href^="#"]').forEach(a => {
+            a.addEventListener('click', e => {
+                const target = document.querySelector(a.getAttribute('href'));
+                if (target) { e.preventDefault(); target.scrollIntoView({ behavior: 'smooth', block: 'start' }); }
+            });
+        });
     </script>
 </body>
 </html>
