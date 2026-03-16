@@ -157,8 +157,13 @@
       /* Padding = half viewport minus half card width
          This lets first and last cards center in the viewport */
       padding: 2.5rem calc(50% - var(--item-w) / 2);
+      /* scroll-padding tells browser exactly where the snap point is
+         — eliminates the "stuck on last card" delay on mobile */
+      scroll-padding-inline: calc(50% - var(--item-w) / 2);
       /* Prevent scroll from causing page bounce on macOS */
       overscroll-behavior-x: contain;
+      /* Faster snap response — removes the snap "lag" on iOS */
+      -webkit-scroll-snap-type: x mandatory;
     }
     .carousel-scroll::-webkit-scrollbar { display: none; }
 
@@ -375,13 +380,25 @@
           <div class="item-thumb"><iframe src="https://www.youtube.com/embed/zMEycC6PtFo?autoplay=1&mute=1&loop=1&playlist=zMEycC6PtFo&controls=0" allow="autoplay" allowfullscreen loading="lazy" title="techpreneurboi"></iframe></div>
           <div class="item-info"><div class="item-client">@techpreneurboi</div><h3 class="item-title">Automation Expert</h3><p class="item-desc">Fast-paced tech content optimized for retention.</p></div>
         </div>
+        <div class="carousel-item" data-idx="4">
+          <div class="item-thumb"><iframe src="https://www.youtube.com/embed/opAnJJo5L_0?autoplay=1&mute=1&loop=1&playlist=opAnJJo5L_0&controls=0" allow="autoplay" allowfullscreen loading="lazy" title="aicreatorlabs podcast"></iframe></div>
+          <div class="item-info"><div class="item-client">@aicreatorlabs.id</div><h3 class="item-title">Podcast</h3><p class="item-desc">Dynamic storytelling for audio content.</p></div>
+        </div>
+        <div class="carousel-item" data-idx="5">
+          <div class="item-thumb"><iframe src="https://www.youtube.com/embed/pXFzX43_-HA?autoplay=1&mute=1&loop=1&playlist=pXFzX43_-HA&controls=0" allow="autoplay" allowfullscreen loading="lazy" title="imadevideo ai editor 1"></iframe></div>
+          <div class="item-info"><div class="item-client">@imadevideo</div><h3 class="item-title">AI Driven Video Editor</h3><p class="item-desc">Showcase of AI-assisted editing workflow.</p></div>
+        </div>
+        <div class="carousel-item" data-idx="6">
+          <div class="item-thumb"><iframe src="https://www.youtube.com/embed/o-BEgPxOPKg?autoplay=1&mute=1&loop=1&playlist=o-BEgPxOPKg&controls=0" allow="autoplay" allowfullscreen loading="lazy" title="imadevideo ai editor 2"></iframe></div>
+          <div class="item-info"><div class="item-client">@imadevideo</div><h3 class="item-title">AI Driven Video Editor</h3><p class="item-desc">Cinematic edits powered by AI tools.</p></div>
+        </div>
       </div>
     </div>
     <div class="carousel-ui">
       <button class="c-arrow" data-scroll="scroll-main" data-dir="-1">&#8592;</button>
       <div class="c-dots" id="dots-main"></div>
       <button class="c-arrow" data-scroll="scroll-main" data-dir="1">&#8594;</button>
-      <span class="c-counter" id="counter-main">01 / 04</span>
+      <span class="c-counter" id="counter-main">01 / 07</span>
     </div>
   </div>
 
@@ -433,13 +450,33 @@
           <div class="item-thumb"><iframe src="https://www.youtube.com/embed/29XywKfIhzU?autoplay=1&mute=1&loop=1&playlist=29XywKfIhzU&controls=0" allow="autoplay" allowfullscreen loading="lazy" title="ad3"></iframe></div>
           <div class="item-info"><div class="item-client">Video Ads</div><h3 class="item-title">Ad Creative</h3><p class="item-desc">Dynamic visual hook optimized for engagement.</p></div>
         </div>
+        <div class="carousel-item" data-idx="3">
+          <div class="item-thumb"><iframe src="https://www.youtube.com/embed/neYetCz-ufc?autoplay=1&mute=1&loop=1&playlist=neYetCz-ufc&controls=0" allow="autoplay" allowfullscreen loading="lazy" title="ad4"></iframe></div>
+          <div class="item-info"><div class="item-client">Video Ads</div><h3 class="item-title">Ad Creative</h3><p class="item-desc">Scroll-stopping creative for paid campaigns.</p></div>
+        </div>
+        <div class="carousel-item" data-idx="4">
+          <div class="item-thumb"><iframe src="https://www.youtube.com/embed/12rWFCWH21k?autoplay=1&mute=1&loop=1&playlist=12rWFCWH21k&controls=0" allow="autoplay" allowfullscreen loading="lazy" title="ad5"></iframe></div>
+          <div class="item-info"><div class="item-client">Video Ads</div><h3 class="item-title">Ad Creative</h3><p class="item-desc">Brand-forward visual with strong hook.</p></div>
+        </div>
+        <div class="carousel-item" data-idx="5">
+          <div class="item-thumb"><iframe src="https://www.youtube.com/embed/pJLD4QQkD98?autoplay=1&mute=1&loop=1&playlist=pJLD4QQkD98&controls=0" allow="autoplay" allowfullscreen loading="lazy" title="ad6"></iframe></div>
+          <div class="item-info"><div class="item-client">Video Ads</div><h3 class="item-title">Ad Creative</h3><p class="item-desc">High-impact short ad built for conversion.</p></div>
+        </div>
+        <div class="carousel-item" data-idx="6">
+          <div class="item-thumb"><iframe src="https://www.youtube.com/embed/Kffngyi4Krc?autoplay=1&mute=1&loop=1&playlist=Kffngyi4Krc&controls=0" allow="autoplay" allowfullscreen loading="lazy" title="ad7"></iframe></div>
+          <div class="item-info"><div class="item-client">Video Ads</div><h3 class="item-title">Ad Creative</h3><p class="item-desc">Engaging product storytelling for social ads.</p></div>
+        </div>
+        <div class="carousel-item" data-idx="7">
+          <div class="item-thumb"><iframe src="https://www.youtube.com/embed/DSTK-ylSf_0?autoplay=1&mute=1&loop=1&playlist=DSTK-ylSf_0&controls=0" allow="autoplay" allowfullscreen loading="lazy" title="ad8"></iframe></div>
+          <div class="item-info"><div class="item-client">Video Ads</div><h3 class="item-title">Ad Creative</h3><p class="item-desc">Fast-cut visual hook for maximum retention.</p></div>
+        </div>
       </div>
     </div>
     <div class="carousel-ui">
       <button class="c-arrow" data-scroll="scroll-ads" data-dir="-1">&#8592;</button>
       <div class="c-dots" id="dots-ads"></div>
       <button class="c-arrow" data-scroll="scroll-ads" data-dir="1">&#8594;</button>
-      <span class="c-counter" id="counter-ads">01 / 03</span>
+      <span class="c-counter" id="counter-ads">01 / 08</span>
     </div>
   </div>
 </div>
@@ -617,7 +654,7 @@ document.querySelectorAll('a[href^="#"]').forEach(a => {
 
 /* Mobile menu */
 function closeMobileMenu() { document.getElementById('nav-mobile').classList.remove('open'); }
-document.getElementById('hamburger').addEventListener('click', () => { document.getElementById('nav-mobile').classList.add('open'); });
+document.getElementById('hamburger').addEventListener('click', () => { document.getElementById('nav-mobile').classList.toggle('open'); });
 document.getElementById('nav-close').addEventListener('click', closeMobileMenu);
 </script>
 </body>
