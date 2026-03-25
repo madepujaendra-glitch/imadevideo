@@ -757,100 +757,79 @@
       border-radius: 0 0 16px 16px;
     }
 
-    /* ── DESKTOP: disable section carousels, show as normal grid ───── */
+    /* ── DESKTOP: all carousels → normal grid, no spotlight effects ── */
     @media (min-width: 769px) {
 
-      /* Clients — show as flex wrap grid */
-      .sec-carousel-wrap { max-width: 1200px; overflow: visible; }
-      .sec-carousel-scroll.clients-scroll {
-        flex-wrap: wrap; overflow-x: visible;
-        scroll-snap-type: none;
-        padding: 1rem 0;
-        justify-content: center;
-        gap: 1.2rem;
-      }
-      .clients-scroll .ig-card {
-        flex: 0 0 var(--clients-w); scroll-snap-align: none; scroll-snap-stop: unset;
-        transform: none !important; opacity: 1 !important; filter: none !important;
-      }
-      .clients-scroll .ig-card.is-active {
-        transform: none !important;
-        border: 1px solid rgba(195,255,0,0.3) !important;
-        box-shadow: 0 8px 30px rgba(0,0,0,0.3), 0 0 20px rgba(195,255,0,0.08) !important;
-      }
-
-      /* Portfolio — show as grid */
-      .sec-carousel-scroll.portfolio-scroll {
-        flex-wrap: wrap; overflow-x: visible;
-        scroll-snap-type: none;
-        padding: 1rem 0;
-        justify-content: center;
-        gap: 1.2rem;
-      }
-      .portfolio-scroll .portfolio-card {
-        flex: 0 0 var(--portfolio-w); scroll-snap-align: none; scroll-snap-stop: unset;
-        transform: none !important; opacity: 1 !important; filter: none !important;
-      }
-      .portfolio-scroll .portfolio-card.is-active {
-        transform: none !important;
-        border-color: rgba(195,255,0,0.25) !important;
-      }
-
-      /* Testi — show as grid */
-      .sec-carousel-scroll.testi-scroll {
-        flex-wrap: wrap; overflow-x: visible;
-        scroll-snap-type: none;
-        padding: 1rem 0;
-        justify-content: center;
-        gap: 1.2rem;
-      }
-      .testi-scroll .testi-card {
-        flex: 0 0 var(--testi-w); scroll-snap-align: none; scroll-snap-stop: unset;
-        transform: none !important; opacity: 1 !important; filter: none !important;
-      }
-      .testi-scroll .testi-card.is-active {
-        transform: none !important;
-        border-color: rgba(195,255,0,0.25) !important;
-      }
-
-      /* Skills — show as 3-col grid */
-      .skill-carousel-wrap { max-width: 1200px; overflow: visible; }
-      .skill-carousel-scroll {
-        flex-wrap: wrap; overflow-x: visible;
-        scroll-snap-type: none;
-        padding: 1rem 0;
-        justify-content: center;
-        gap: 1.5rem;
-      }
+      /* Reset ALL carousel items to normal on desktop */
+      .carousel-item,
+      .sec-carousel-scroll .ig-card,
+      .sec-carousel-scroll .portfolio-card,
+      .sec-carousel-scroll .testi-card,
+      .wide-carousel-scroll .wide-card,
       .skill-carousel-scroll .skill-card {
-        flex: 0 0 var(--skill-w); scroll-snap-align: none; scroll-snap-stop: unset;
-        transform: none !important; opacity: 1 !important; filter: none !important;
-      }
-      .skill-carousel-scroll .skill-card.is-active {
         transform: none !important;
-        border-color: rgba(195,255,0,0.25) !important;
+        opacity: 1 !important;
+        filter: none !important;
+        box-shadow: none !important;
+        border-color: rgba(195,255,0,0.07) !important;
+        scroll-snap-align: unset !important;
+        scroll-snap-stop: unset !important;
       }
 
-      /* Wide cards (longform, BTS) — show side by side */
-      .wide-carousel-wrap { max-width: 1100px; overflow: visible; }
-      .wide-carousel-scroll {
-        flex-wrap: wrap; overflow-x: visible;
-        scroll-snap-type: none;
-        padding: 1rem 0;
+      /* Restore hover effects on desktop */
+      .sec-carousel-scroll .ig-card:hover,
+      .sec-carousel-scroll .portfolio-card:hover,
+      .sec-carousel-scroll .testi-card:hover,
+      .skill-carousel-scroll .skill-card:hover {
+        transform: translateY(-6px) !important;
+        border-color: rgba(195,255,0,0.25) !important;
+        box-shadow: 0 16px 40px rgba(0,0,0,0.3) !important;
+      }
+
+      /* Original showcase carousel — show all items normally */
+      .carousel-stage { overflow: visible; cursor: default; padding: 0; }
+      .carousel-track {
+        flex-wrap: wrap; gap: 1rem;
         justify-content: center;
-        gap: 2rem;
-      }
-      .wide-carousel-scroll .wide-card {
-        flex: 0 0 calc(50% - 1rem); scroll-snap-align: none; scroll-snap-stop: unset;
-        transform: none !important; opacity: 1 !important; filter: none !important;
-      }
-      .wide-carousel-scroll .wide-card.is-active {
         transform: none !important;
-        border-color: rgba(195,255,0,0.25) !important;
       }
+      .carousel-item {
+        flex: 0 0 220px; width: 220px;
+        border: 1px solid rgba(195,255,0,0.07);
+        border-radius: var(--item-r);
+      }
+      .carousel-item:hover {
+        transform: translateY(-4px) !important;
+        border-color: rgba(195,255,0,0.25) !important;
+        box-shadow: 0 12px 30px rgba(0,0,0,0.3) !important;
+      }
+      .stage-fade-left, .stage-fade-right { display: none; }
 
-      /* Hide carousel arrows/dots on desktop for these sections */
-      .carousel-ui:has(+ *) { display: none; }
+      /* All sec carousels → flex wrap grid */
+      .sec-carousel-wrap,
+      .skill-carousel-wrap,
+      .wide-carousel-wrap {
+        max-width: 1200px;
+        overflow: visible !important;
+      }
+      .sec-carousel-scroll,
+      .skill-carousel-scroll,
+      .wide-carousel-scroll {
+        flex-wrap: wrap !important;
+        overflow-x: visible !important;
+        overflow-y: visible !important;
+        scroll-snap-type: none !important;
+        padding: 1rem 0 !important;
+        justify-content: center;
+      }
+      .sec-carousel-scroll .ig-card { flex: 0 0 var(--clients-w); }
+      .sec-carousel-scroll .portfolio-card { flex: 0 0 var(--portfolio-w); }
+      .sec-carousel-scroll .testi-card { flex: 0 0 var(--testi-w); }
+      .skill-carousel-scroll .skill-card { flex: 0 0 var(--skill-w); }
+      .wide-carousel-scroll .wide-card { flex: 0 0 calc(50% - 1rem) !important; }
+
+      /* Hide arrows/dots for ALL carousels on desktop */
+      .carousel-ui { display: none; }
     }
 
   </style>
