@@ -506,6 +506,9 @@
       .section-sub { font-size: 0.85rem; margin-bottom: 2rem; }
       .achievements-title, .relations-title { font-size: 0.7rem; margin: 2.5rem auto 0.8rem; }
 
+      /* Wide card — responsive on mobile */
+      :root { --wide-w: calc(100vw - 80px); }
+
       /* Float button — bottom center, smaller */
       .float-contact { bottom: 1.2rem; }
       .float-contact a { padding: 0.6rem 1.4rem; font-size: 0.72rem; }
@@ -637,7 +640,7 @@
     }
 
     /* ── WIDE CARD CAROUSEL (longform, BTS) ─────────────────── */
-    :root { --wide-w: min(400px, calc(100vw - 80px)); --skill-w: 300px; }
+    :root { --wide-w: 400px; --skill-w: 300px; }
 
     .wide-carousel-wrap {
       position: relative; width: 100%; overflow: hidden;
