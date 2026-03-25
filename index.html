@@ -240,23 +240,22 @@
     /* RESPONSIVE */
 
     /* RESPONSIVE */
+
+    /* ══════════════════════════════════════════
+       RESPONSIVE — single clean block
+    ══════════════════════════════════════════ */
+
     @media (max-width: 1024px) {
       .hero-inner { grid-template-columns: 1fr; }
-      .skills-grid { grid-template-columns: 1fr; }
       .award-spotlight { grid-template-columns: 1fr; gap: 1.5rem; }
       .wide-row.two-col { grid-template-columns: 1fr; gap: 1.5rem; }
-      .wide-row.one-col { max-width: 100%; }
     }
 
     @media (max-width: 768px) {
       :root { --item-w: 220px; --item-gap: 20px; }
-
-      /* Nav */
       .nav-links, .nav-cta { display: none; }
       .nav-hamburger { display: flex; }
       .nav-inner { grid-template-columns: 1fr auto; }
-
-      /* Hero */
       .hero { padding: 5.5rem 5% 3rem; min-height: auto; }
       .hero h1 { font-size: clamp(2.2rem, 10vw, 3.5rem); white-space: normal; }
       .hero-desc { padding: 1.2rem 1.4rem; font-size: 0.88rem; margin-bottom: 1.5rem; }
@@ -264,86 +263,89 @@
       .hero-cta, .hero-cta-secondary { width: 100%; text-align: center; justify-content: center; }
       .hero-video { display: block; }
       .hero-video img { border-radius: 12px; }
-
-      /* Sections */
       .section { padding: 3rem 5%; }
       .about-card { padding: 1.4rem 1.6rem; }
-      .about-card p { font-size: 0.9rem; line-height: 1.75; }
+      .about-card p { font-size: 0.9rem; }
       .edu-block { padding: 1.2rem 1.4rem; gap: 1rem; }
       .achievements-grid { grid-template-columns: repeat(2, 1fr); gap: 0.8rem; }
       .relations-grid { grid-template-columns: repeat(2, 1fr); gap: 0.8rem; }
-      .section-title { font-size: clamp(1.5rem, 6vw, 2rem); letter-spacing: -0.5px; }
+      .section-title { font-size: clamp(1.5rem, 6vw, 2rem); }
       .section-sub { font-size: 0.85rem; margin-bottom: 2rem; }
-      .achievements-title, .relations-title { font-size: 0.7rem; margin: 2.5rem auto 0.8rem; }
-
-      /* Showcase */
+      .achievements-title, .relations-title { font-size: 0.7rem; }
       #showcase { padding: 3rem 0 2rem; }
       .showcase-header { margin-bottom: 2rem; }
       .section-full { padding: 2.5rem 5%; }
-
-      /* Skills/Portfolio */
-      .skills-grid { grid-template-columns: 1fr; gap: 1rem; }
       .skill-card { padding: 1.4rem 1.6rem; }
-      .portfolio-grid { grid-template-columns: 1fr; gap: 1rem; }
       .portfolio-section { padding: 3rem 5%; }
-
-      /* Float button */
       .float-contact { bottom: 1.2rem; }
       .float-contact a { padding: 0.6rem 1.4rem; font-size: 0.72rem; }
     }
 
-    /* ── DESKTOP: normal grid layouts, no carousel effects ──────────── */
+    /* ══════════════════════════════════════════
+       DESKTOP — disable all carousel effects
+    ══════════════════════════════════════════ */
     @media (min-width: 769px) {
 
-      /* Original showcase carousel — all cards visible, no dim/blur */
+      /* ── Original showcase carousel ── */
+      .carousel-wrap { overflow: visible !important; }
       .carousel-scroll {
+        display: flex !important;
         flex-wrap: wrap !important;
         overflow: visible !important;
         scroll-snap-type: none !important;
-        padding: 1.5rem calc(50% - 680px) !important;
+        padding: 1rem !important;
         gap: 1rem !important;
-        justify-content: center;
+        justify-content: center !important;
+        -webkit-overflow-scrolling: auto !important;
       }
       .carousel-item {
+        position: static !important;
+        flex: 0 0 var(--item-w) !important;
+        width: var(--item-w) !important;
         transform: none !important;
         opacity: 1 !important;
         filter: none !important;
         box-shadow: none !important;
-        scroll-snap-align: unset !important;
+        border: 1px solid rgba(195,255,0,0.08) !important;
+        scroll-snap-align: none !important;
         scroll-snap-stop: unset !important;
-        flex: 0 0 var(--item-w) !important;
-      }
-      .carousel-item:hover {
-        transform: translateY(-4px) scale(1.02) !important;
-        border-color: rgba(195,255,0,0.2) !important;
-        box-shadow: 0 12px 30px rgba(0,0,0,0.3) !important;
-        opacity: 1 !important; filter: none !important;
+        transition: transform 0.3s ease, box-shadow 0.3s ease !important;
       }
       .carousel-item.is-active {
         transform: none !important;
-        opacity: 1 !important; filter: none !important;
+        opacity: 1 !important;
+        filter: none !important;
         box-shadow: none !important;
-        border-color: rgba(195,255,0,0.07) !important;
+        border: 1px solid rgba(195,255,0,0.08) !important;
       }
-      .stage-fade-left, .stage-fade-right { display: none; }
-      .carousel-wrap { overflow: visible; }
+      .carousel-item:hover {
+        transform: translateY(-5px) !important;
+        box-shadow: 0 12px 30px rgba(0,0,0,0.3) !important;
+        border-color: rgba(195,255,0,0.2) !important;
+        opacity: 1 !important; filter: none !important;
+      }
+      .stage-fade-left, .stage-fade-right { display: none !important; }
 
-      /* Section carousels → grid */
+      /* ── Section carousels → grid ── */
       .sec-carousel-wrap,
       .skill-carousel-wrap,
       .wide-carousel-wrap {
-        max-width: 1200px;
+        max-width: 1200px !important;
         overflow: visible !important;
       }
       .sec-carousel-scroll,
       .skill-carousel-scroll,
       .wide-carousel-scroll {
+        display: flex !important;
         flex-wrap: wrap !important;
         overflow: visible !important;
         scroll-snap-type: none !important;
-        padding: 1rem 0 !important;
-        justify-content: center;
+        padding: 1rem !important;
+        gap: 1.5rem !important;
+        justify-content: center !important;
       }
+
+      /* Reset all cards in section carousels */
       .sec-carousel-scroll .ig-card,
       .sec-carousel-scroll .portfolio-card,
       .sec-carousel-scroll .testi-card,
@@ -353,17 +355,29 @@
         opacity: 1 !important;
         filter: none !important;
         box-shadow: none !important;
-        border-color: rgba(195,255,0,0.07) !important;
-        scroll-snap-align: unset !important;
+        border: 1px solid rgba(195,255,0,0.08) !important;
+        scroll-snap-align: none !important;
         scroll-snap-stop: unset !important;
+        flex-shrink: 0 !important;
       }
+      .sec-carousel-scroll .ig-card.is-active,
+      .sec-carousel-scroll .portfolio-card.is-active,
+      .sec-carousel-scroll .testi-card.is-active,
+      .wide-carousel-scroll .wide-card.is-active,
+      .skill-carousel-scroll .skill-card.is-active {
+        transform: none !important;
+        opacity: 1 !important;
+        filter: none !important;
+      }
+
+      /* Card sizes in grid */
       .sec-carousel-scroll .ig-card { flex: 0 0 var(--clients-w) !important; }
       .sec-carousel-scroll .portfolio-card { flex: 0 0 var(--portfolio-w) !important; }
       .sec-carousel-scroll .testi-card { flex: 0 0 var(--testi-w) !important; }
       .skill-carousel-scroll .skill-card { flex: 0 0 var(--skill-w) !important; }
-      .wide-carousel-scroll .wide-card { flex: 0 0 calc(50% - 1rem) !important; max-width: 520px; }
+      .wide-carousel-scroll .wide-card { flex: 0 0 calc(50% - 2rem) !important; max-width: 500px; }
 
-      /* Hover effects on desktop */
+      /* Hover on desktop */
       .sec-carousel-scroll .ig-card:hover,
       .sec-carousel-scroll .portfolio-card:hover,
       .sec-carousel-scroll .testi-card:hover,
@@ -371,12 +385,14 @@
         transform: translateY(-6px) !important;
         border-color: rgba(195,255,0,0.25) !important;
         box-shadow: 0 16px 40px rgba(0,0,0,0.3) !important;
+        opacity: 1 !important; filter: none !important;
       }
 
-      /* Hide carousel UI (arrows/dots) on desktop */
+      /* Hide dots/arrows on desktop */
       .carousel-ui { display: none !important; }
     }
-</style>
+
+  </style>
 </head>
 <body>
 
