@@ -30,7 +30,7 @@
     .nav-links a:hover { color: var(--primary); }
     .nav-cta { justify-self: end; display: inline-block; padding: 0.55rem 1.4rem; border: 1px solid rgba(195,255,0,0.35); border-radius: 100px; color: var(--primary); font-size: 0.78rem; font-weight: 700; letter-spacing: 0.5px; text-decoration: none; text-transform: uppercase; transition: all 0.25s var(--ease); white-space: nowrap; }
     .nav-cta:hover { background: rgba(195,255,0,0.1); border-color: var(--primary); box-shadow: 0 0 18px rgba(195,255,0,0.2); }
-    .nav-hamburger { display: none; flex-direction: column; gap: 5px; cursor: pointer; justify-self: end; padding: 4px; background: none; border: none; }
+    .nav-hamburger { display: none; flex-direction: column; gap: 5px; cursor: pointer; justify-self: end; padding: 4px; background: none; border: 1px solid rgba(255,255,255,0.04); }
     .nav-hamburger span { display: block; width: 22px; height: 2px; background: var(--primary); border-radius: 2px; }
     .nav-mobile { display: none; position: fixed; inset: 0; background: rgba(5,5,8,0.98); backdrop-filter: blur(32px); -webkit-backdrop-filter: blur(32px); z-index: 999; flex-direction: column; align-items: center; justify-content: center; gap: 0; }
     .nav-mobile.open { display: flex; }
@@ -52,7 +52,7 @@
     .hero { min-height: 100vh; padding: 8rem 5% 5rem; background: linear-gradient(145deg, #030308 0%, #08080f 50%, #0b0b1a 100%); position: relative; overflow: hidden; }
     .hero::before { content: ''; position: absolute; width: 600px; height: 600px; border-radius: 50%; background: radial-gradient(circle, rgba(195,255,0,0.06) 0%, transparent 70%); top: -100px; left: -200px; pointer-events: none; }
     .hero-inner { max-width: 1400px; margin: 0 auto; display: grid; grid-template-columns: 1.15fr 1fr; gap: 5rem; align-items: center; position: relative; z-index: 1; }
-    .hero-eyebrow { display: inline-block; background: rgba(195,255,0,0.07); border: none; border-radius: 100px; padding: 0.38rem 1rem; font-size: 0.72rem; font-weight: 700; color: var(--primary); letter-spacing: 1.5px; text-transform: uppercase; margin-bottom: 1.5rem; }
+    .hero-eyebrow { display: inline-block; background: rgba(195,255,0,0.07); border: 1px solid rgba(255,255,255,0.04); border-radius: 100px; padding: 0.38rem 1rem; font-size: 0.72rem; font-weight: 700; color: var(--primary); letter-spacing: 1.5px; text-transform: uppercase; margin-bottom: 1.5rem; }
     .hero h1 { font-family: 'Montserrat', sans-serif; font-size: clamp(2.4rem, 5.5vw, 4.8rem); font-weight: 800; line-height: 1.02; letter-spacing: -2px; margin-bottom: 1.8rem; white-space: nowrap; }
     .hero-desc { background: rgba(12,12,20,0.75); border: 1px solid rgba(195,255,0,0.09); border-radius: 16px; padding: 1.8rem 2.2rem; margin-bottom: 2.5rem; color: rgba(240,240,240,0.7); font-size: 0.98rem; line-height: 1.85; }
     .hero-cta { display: inline-block; background: var(--primary); color: #050505; font-weight: 700; font-size: 0.9rem; padding: 0.9rem 2.6rem; border-radius: 100px; text-decoration: none; box-shadow: 0 4px 20px rgba(195,255,0,0.28); transition: all 0.3s var(--ease); }
@@ -85,7 +85,7 @@
     .section-sub { text-align: center; color: var(--muted); font-size: 0.95rem; max-width: 520px; margin: 0 auto 3.5rem; }
 
     /* ABOUT */
-    .about-card { max-width: 820px; margin: 0 auto; background: rgba(12,12,20,0.55); border: none; border-radius: 20px; padding: 2.4rem 2.8rem; transition: transform 0.4s var(--ease), box-shadow 0.4s; }
+    .about-card { max-width: 820px; margin: 0 auto; background: rgba(12,12,20,0.55); border: 1px solid rgba(255,255,255,0.04); border-radius: 20px; padding: 2.4rem 2.8rem; transition: transform 0.4s var(--ease), box-shadow 0.4s; }
     .about-card:hover { transform: translateY(-5px); box-shadow: 0 24px 60px rgba(0,0,0,0.3), 0 0 30px rgba(195,255,0,0.04); }
     .about-card p { color: var(--muted); font-size: 1.02rem; line-height: 1.95; margin-bottom: 1.1rem; }
     .about-card p:last-child { margin-bottom: 0; }
@@ -125,7 +125,9 @@
       scroll-snap-type: x mandatory;
       -webkit-overflow-scrolling: touch;
       scrollbar-width: none;
-      padding: 2.5rem calc(50% - var(--item-w) / 2);
+      padding-top: 2.5rem; padding-bottom: 2.5rem;
+      padding-left: calc(50% - var(--item-w) / 2);
+      padding-right: calc(50% - var(--item-w) / 2);
       scroll-padding-inline: calc(50% - var(--item-w) / 2);
       overscroll-behavior-x: contain;
       -webkit-scroll-snap-type: x mandatory;
@@ -139,7 +141,7 @@
       background: var(--card);
       border-radius: var(--item-r);
       overflow: hidden;
-      border: none;
+      border: 1px solid rgba(255,255,255,0.04);
       /* Each card snaps to the center of the scroll container */
       scroll-snap-align: center;
       /* Visual inactive state */
@@ -165,7 +167,7 @@
     }
 
     .item-thumb { width: 100%; aspect-ratio: 9/16; background: #000; overflow: hidden; }
-    .item-thumb iframe { display: block; width: 100%; height: 100%; border: none; pointer-events: none; }
+    .item-thumb iframe { display: block; width: 100%; height: 100%; border: 1px solid rgba(255,255,255,0.04); pointer-events: none; }
     .item-info { padding: 1.1rem 1.3rem 1.3rem; }
     .item-client { font-size: 0.68rem; font-weight: 700; letter-spacing: 1.2px; text-transform: uppercase; color: var(--primary); margin-bottom: 0.3rem; }
     .item-title  { font-size: 0.9rem; font-weight: 600; line-height: 1.35; margin-bottom: 0.25rem; color: var(--text); }
@@ -196,7 +198,7 @@
     .c-arrow:hover { background: rgba(195,255,0,0.08); border-color: rgba(195,255,0,0.5); transform: scale(1.12); }
     .c-arrow:active { transform: scale(0.96); }
     .c-dots { display: flex; align-items: center; gap: 6px; }
-    .c-dot { width: 6px; height: 6px; border-radius: 3px; background: rgba(195,255,0,0.18); cursor: pointer; border: none; padding: 0; transition: all 0.35s var(--ease); }
+    .c-dot { width: 6px; height: 6px; border-radius: 3px; background: rgba(195,255,0,0.18); cursor: pointer; border: 1px solid rgba(255,255,255,0.04); padding: 0; transition: all 0.35s var(--ease); }
     .c-dot.is-active { background: var(--primary); width: 22px; }
     .c-counter { font-size: 0.72rem; font-weight: 600; color: var(--muted); letter-spacing: 1px; font-variant-numeric: tabular-nums; min-width: 44px; }
 
@@ -320,7 +322,7 @@
       display: grid; grid-template-columns: 1.4fr 1fr; gap: 3rem; align-items: center;
     }
     .award-video { border-radius: 16px; overflow: hidden; box-shadow: 0 24px 60px rgba(0,0,0,0.5); }
-    .award-video iframe { display: block; width: 100%; aspect-ratio: 16/9; border: none; }
+    .award-video iframe { display: block; width: 100%; aspect-ratio: 16/9; border: 1px solid rgba(255,255,255,0.04); }
     .award-info { display: flex; flex-direction: column; gap: 1.2rem; }
     .award-badge {
       display: inline-flex; align-items: center; gap: 0.6rem;
@@ -346,7 +348,7 @@
     .wide-row.two-col { grid-template-columns: 1fr 1fr; }
     .wide-row.one-col { grid-template-columns: 1fr; max-width: 800px; }
     .wide-card { border-radius: 16px; overflow: hidden; }
-    .wide-card iframe { display: block; width: 100%; aspect-ratio: 16/9; border: none; }
+    .wide-card iframe { display: block; width: 100%; aspect-ratio: 16/9; border: 1px solid rgba(255,255,255,0.04); }
     .wide-card-label { padding: 1rem 0; }
     .wide-card-client { font-size: 0.68rem; font-weight: 700; letter-spacing: 1.2px; text-transform: uppercase; color: var(--primary); margin-bottom: 0.25rem; }
     .wide-card-title { font-size: 0.95rem; font-weight: 600; color: var(--text); margin-bottom: 0.2rem; }
@@ -367,7 +369,7 @@
       width: 272px;
     }
     .ig-card {
-      background: rgba(12,12,20,0.6); border-radius: 16px;
+      background: rgba(12,12,20,0.6); border: 1px solid rgba(195,255,0,0.07); border-radius: 16px;
       overflow: hidden; transition: transform 0.3s var(--ease), box-shadow 0.3s;
     }
     .ig-card:hover { transform: translateY(-6px); box-shadow: 0 20px 40px rgba(0,0,0,0.3); }
@@ -388,7 +390,7 @@
       background: #000;
       overflow: hidden;
     }
-    .ig-thumb iframe { display: block; width: 100%; height: 100%; border: none; pointer-events: none; }
+    .ig-thumb iframe { display: block; width: 100%; height: 100%; border: 1px solid rgba(255,255,255,0.04); pointer-events: none; }
     .ig-link {
       display: block; text-align: center; padding: 0.8rem;
       font-size: 0.75rem; font-weight: 600; color: var(--primary);
@@ -407,8 +409,8 @@
       gap: 1.4rem;
     }
     .testi-card {
-      background: rgba(12,12,20,0.6); border-radius: 16px;
-      padding: 1.6rem; display: flex; flex-direction: column; gap: 1rem;
+      background: rgba(12,12,20,0.55); border: 1px solid rgba(195,255,0,0.07); border-radius: 16px;
+      padding: 1.8rem; display: flex; flex-direction: column; gap: 1rem;
       transition: transform 0.3s var(--ease), box-shadow 0.3s;
     }
     .testi-card:hover { transform: translateY(-4px); box-shadow: 0 16px 40px rgba(0,0,0,0.3), 0 0 20px rgba(195,255,0,0.04); }
@@ -431,6 +433,323 @@
       .achievements-grid { grid-template-columns: repeat(2, 1fr); }
       .relations-grid { grid-template-columns: repeat(2, 1fr); }
       .ig-grid { grid-template-columns: 1fr; }
+    }
+    /* RESPONSIVE */
+    @media (max-width: 1024px) { .hero-inner { grid-template-columns: 1fr; } .skills-grid { grid-template-columns: 1fr; } }
+    @media (max-width: 768px) {
+      :root { --item-w: 220px; --item-gap: 20px; }
+
+      /* Nav */
+      .nav-links, .nav-cta { display: none; }
+      .nav-hamburger { display: flex; }
+      .nav-inner { grid-template-columns: 1fr auto; }
+
+      /* Hero — tighter */
+      .hero { padding: 5.5rem 5% 3rem; min-height: auto; }
+      .hero h1 { font-size: clamp(2.2rem, 10vw, 3.5rem); white-space: normal; }
+      .hero-desc { padding: 1.2rem 1.4rem; font-size: 0.88rem; margin-bottom: 1.5rem; }
+      .hero-ctas { flex-direction: column; gap: 0.8rem; }
+      .hero-cta, .hero-cta-secondary { width: 100%; text-align: center; justify-content: center; }
+      /* Profile photo — keep visible on mobile */
+      .hero-video { display: block; }
+      .hero-video img { border-radius: 12px; }
+
+      /* About — compact */
+      .section { padding: 3rem 5%; }
+      .about-card { padding: 1.4rem 1.6rem; }
+      .about-card p { font-size: 0.9rem; line-height: 1.75; }
+      .edu-block { padding: 1.2rem 1.4rem; gap: 1rem; }
+
+      /* Certs grid — 2 col on mobile */
+      .achievements-grid { grid-template-columns: repeat(2, 1fr); gap: 0.8rem; }
+      /* Relations grid — 2 col */
+      .relations-grid { grid-template-columns: repeat(2, 1fr); gap: 0.8rem; }
+
+      /* IG grid — single column, scrollable row */
+      .ig-grid { flex-wrap: nowrap; overflow-x: auto; justify-content: flex-start;
+        padding-bottom: 1rem; scroll-snap-type: x mandatory; -webkit-overflow-scrolling: touch; }
+      .ig-grid .ig-card { flex: 0 0 240px; width: 240px; scroll-snap-align: start; }
+      .ig-grid::-webkit-scrollbar { display: none; }
+
+
+
+      /* Longform sections — stack single col, reduce padding */
+      .section-full { padding: 2.5rem 5%; }
+      .award-spotlight { grid-template-columns: 1fr; gap: 1.5rem; }
+      .wide-row.two-col { grid-template-columns: 1fr; gap: 1.5rem; }
+      .wide-row.one-col { max-width: 100%; }
+
+      /* Skills — compact */
+      .skills-grid { grid-template-columns: 1fr; gap: 1rem; }
+      .skill-card { padding: 1.4rem 1.6rem; }
+
+      /* Portfolio grid — horizontal scroll on mobile */
+      .portfolio-grid {
+        display: flex; flex-wrap: nowrap; overflow-x: auto;
+        scroll-snap-type: x mandatory; -webkit-overflow-scrolling: touch;
+        gap: 1rem; padding-bottom: 1rem;
+      }
+      .portfolio-grid .portfolio-card { flex: 0 0 260px; width: 260px; scroll-snap-align: start; }
+      .portfolio-grid::-webkit-scrollbar { display: none; }
+
+      /* Testimonials — horizontal scroll like IG */
+      .testimonials-grid {
+        display: flex; flex-wrap: nowrap; overflow-x: auto;
+        scroll-snap-type: x mandatory; -webkit-overflow-scrolling: touch;
+        gap: 1rem; padding-bottom: 1rem;
+      }
+      .testi-card { flex: 0 0 280px; width: 280px; scroll-snap-align: start; }
+      .testimonials-grid::-webkit-scrollbar { display: none; }
+
+      /* Section titles — smaller */
+      .section-title { font-size: clamp(1.5rem, 6vw, 2rem); letter-spacing: -0.5px; }
+      .section-sub { font-size: 0.85rem; margin-bottom: 2rem; }
+      .achievements-title, .relations-title { font-size: 0.7rem; margin: 2.5rem auto 0.8rem; }
+
+      /* Float button — bottom center, smaller */
+      .float-contact { bottom: 1.2rem; }
+      .float-contact a { padding: 0.6rem 1.4rem; font-size: 0.72rem; }
+
+      /* Portfolio section padding */
+      .portfolio-section { padding: 3rem 5%; }
+    }
+
+    /* ── SECTION CAROUSELS (clients, portfolio, testi) ─────────── */
+    :root {
+      --clients-w:   272px;
+      --portfolio-w: 280px;
+      --testi-w:     300px;
+    }
+
+    /* Shared scroll container — same mechanics as showcase */
+    .sec-carousel-scroll {
+      display: flex;
+      align-items: stretch;
+      overflow-x: scroll;
+      scroll-snap-type: x mandatory;
+      -webkit-overflow-scrolling: touch;
+      scrollbar-width: none;
+      overscroll-behavior-x: contain;
+    }
+    .sec-carousel-scroll::-webkit-scrollbar { display: none; }
+
+    /* Clients */
+    .sec-carousel-scroll.clients-scroll {
+      padding-top: 1.5rem; padding-bottom: 1.5rem;
+      padding-left: calc(50% - var(--clients-w) / 2);
+      padding-right: calc(50% - var(--clients-w) / 2);
+      scroll-padding-inline: calc(50% - var(--clients-w) / 2);
+      gap: 20px;
+    }
+    .clients-scroll .ig-card {
+      flex: 0 0 var(--clients-w); width: var(--clients-w);
+      scroll-snap-align: center;
+      scroll-snap-stop: always;
+    }
+
+    /* Portfolio */
+    .sec-carousel-scroll.portfolio-scroll {
+      padding-top: 1.5rem; padding-bottom: 1.5rem;
+      padding-left: calc(50% - var(--portfolio-w) / 2);
+      padding-right: calc(50% - var(--portfolio-w) / 2);
+      scroll-padding-inline: calc(50% - var(--portfolio-w) / 2);
+      gap: 20px;
+    }
+    .portfolio-scroll .portfolio-card {
+      flex: 0 0 var(--portfolio-w); width: var(--portfolio-w);
+      scroll-snap-align: center;
+      scroll-snap-stop: always;
+    }
+
+    /* Testimonials */
+    .sec-carousel-scroll.testi-scroll {
+      padding-top: 1.5rem; padding-bottom: 1.5rem;
+      padding-left: calc(50% - var(--testi-w) / 2);
+      padding-right: calc(50% - var(--testi-w) / 2);
+      scroll-padding-inline: calc(50% - var(--testi-w) / 2);
+      gap: 20px;
+    }
+    .testi-scroll .testi-card {
+      flex: 0 0 var(--testi-w); width: var(--testi-w);
+      scroll-snap-align: center;
+      scroll-snap-stop: always;
+    }
+
+    /* Edge fades for section carousels */
+    .sec-carousel-wrap {
+      position: relative; width: 100%; overflow: hidden;
+    }
+    .sec-carousel-wrap::before,
+    .sec-carousel-wrap::after {
+      content: ''; position: absolute; top: 0; bottom: 0;
+      width: clamp(60px, 18vw, 200px); pointer-events: none; z-index: 5;
+    }
+    .sec-carousel-wrap::before { left:  0; background: linear-gradient(to right, var(--bg) 0%, rgba(5,5,8,0.7) 50%, transparent 100%); }
+    .sec-carousel-wrap::after  { right: 0; background: linear-gradient(to left,  var(--bg) 0%, rgba(5,5,8,0.7) 50%, transparent 100%); }
+    /* Use bg-mid for sections with dark mid bg */
+    .sec-carousel-wrap.mid::before { background: linear-gradient(to right, var(--bg-mid) 0%, rgba(8,8,16,0.7) 50%, transparent 100%); }
+    .sec-carousel-wrap.mid::after  { background: linear-gradient(to left,  var(--bg-mid) 0%, rgba(8,8,16,0.7) 50%, transparent 100%); }
+
+    /* ── SECTION CAROUSEL SPOTLIGHT EFFECT ─────────────────────
+       Same inactive/active treatment as .carousel-item
+    ──────────────────────────────────────────────────────────── */
+    .wide-carousel-scroll .wide-card,
+    .skill-carousel-scroll .skill-card,
+    .sec-carousel-scroll .ig-card,
+    .sec-carousel-scroll .portfolio-card,
+    .sec-carousel-scroll .testi-card {
+      scroll-snap-align: center;
+      transform: scale(0.78);
+      opacity: 0.2;
+      filter: blur(3px) brightness(0.25) saturate(0.2);
+      transition:
+        transform    0.5s cubic-bezier(0.16, 1, 0.3, 1),
+        opacity      0.5s cubic-bezier(0.16, 1, 0.3, 1),
+        filter       0.5s cubic-bezier(0.16, 1, 0.3, 1),
+        box-shadow   0.5s cubic-bezier(0.16, 1, 0.3, 1),
+        border-color 0.5s cubic-bezier(0.16, 1, 0.3, 1);
+      /* Remove hover transform while in carousel */
+    }
+    .wide-carousel-scroll .wide-card.is-active,
+    .skill-carousel-scroll .skill-card.is-active,
+    .sec-carousel-scroll .ig-card.is-active,
+    .sec-carousel-scroll .portfolio-card.is-active,
+    .sec-carousel-scroll .testi-card.is-active {
+      transform: scale(1.05);
+      opacity: 1;
+      filter: brightness(1.04) saturate(1.05) blur(0);
+      border: 1px solid rgba(195,255,0,0.5) !important;
+      box-shadow:
+        0 28px 80px rgba(0,0,0,0.65),
+        0 0  40px rgba(195,255,0,0.22),
+        0 0  80px rgba(195,255,0,0.10);
+    }
+    /* Neutralise hover effects inside carousel */
+    .sec-carousel-scroll .ig-card:hover,
+    .sec-carousel-scroll .portfolio-card:hover,
+    .sec-carousel-scroll .testi-card:hover {
+      transform: scale(0.78);
+    }
+    .sec-carousel-scroll .ig-card.is-active:hover,
+    .sec-carousel-scroll .portfolio-card.is-active:hover,
+    .sec-carousel-scroll .testi-card.is-active:hover {
+      transform: scale(1.05);
+    }
+
+    /* ── WIDE CARD CAROUSEL (longform, BTS) ─────────────────── */
+    :root { --wide-w: min(400px, calc(100vw - 80px)); --skill-w: 300px; }
+
+    .wide-carousel-wrap {
+      position: relative; width: 100%; overflow: hidden;
+    }
+    .wide-carousel-wrap::before,
+    .wide-carousel-wrap::after {
+      content: ''; position: absolute; top: 0; bottom: 0;
+      width: clamp(40px, 10vw, 120px); pointer-events: none; z-index: 5;
+    }
+    .wide-carousel-wrap::before { left: 0;  background: linear-gradient(to right, var(--bg) 0%, transparent 100%); }
+    .wide-carousel-wrap::after  { right: 0; background: linear-gradient(to left,  var(--bg) 0%, transparent 100%); }
+
+    .wide-carousel-wrap { overflow: visible !important; }
+    .wide-carousel-wrap::before,
+    .wide-carousel-wrap::after { display: none; }
+    .wide-carousel-scroll {
+      display: flex; align-items: flex-start;
+      overflow-x: scroll; overflow-y: visible; scroll-snap-type: x mandatory;
+      -webkit-overflow-scrolling: touch; scrollbar-width: none;
+      overscroll-behavior-x: contain;
+      padding-top: 2rem; padding-bottom: 2rem;
+      padding-left: calc(50% - var(--wide-w) / 2);
+      padding-right: calc(50% - var(--wide-w) / 2);
+      scroll-padding-inline: calc(50% - var(--wide-w) / 2);
+      padding-top: 1rem; padding-bottom: 1.5rem;
+      gap: 24px;
+    }
+    .wide-carousel-scroll::-webkit-scrollbar { display: none; }
+
+    .wide-carousel-scroll .wide-card {
+      flex: 0 0 var(--wide-w); width: var(--wide-w);
+      border: 1px solid rgba(195,255,0,0.07); border-radius: 16px; overflow: visible;
+      scroll-snap-align: center;
+      scroll-snap-stop: always;
+      transform: scale(0.82); opacity: 0.2;
+      filter: blur(2px) brightness(0.25) saturate(0.2);
+      transition:
+        transform  0.5s cubic-bezier(0.16, 1, 0.3, 1),
+        opacity    0.5s cubic-bezier(0.16, 1, 0.3, 1),
+        filter     0.5s cubic-bezier(0.16, 1, 0.3, 1),
+        box-shadow 0.5s cubic-bezier(0.16, 1, 0.3, 1);
+    }
+    .wide-carousel-scroll .wide-card.is-active {
+      transform: scale(1.03); opacity: 1;
+      filter: brightness(1.02) saturate(1.05) blur(0);
+      box-shadow: 0 28px 80px rgba(0,0,0,0.65), 0 0 50px rgba(195,255,0,0.08);
+    }
+
+    /* ── SKILL CARD CAROUSEL ─────────────────────────────────── */
+    .skill-carousel-wrap {
+      position: relative; width: 100%; overflow: hidden;
+    }
+    .skill-carousel-wrap::before,
+    .skill-carousel-wrap::after {
+      content: ''; position: absolute; top: 0; bottom: 0;
+      width: clamp(40px, 10vw, 120px); pointer-events: none; z-index: 5;
+    }
+    .skill-carousel-wrap::before { left: 0;  background: linear-gradient(to right, var(--bg) 0%, transparent 100%); }
+    .skill-carousel-wrap::after  { right: 0; background: linear-gradient(to left,  var(--bg) 0%, transparent 100%); }
+
+    .skill-carousel-scroll {
+      display: flex; align-items: center;
+      overflow-x: scroll; scroll-snap-type: x mandatory;
+      -webkit-overflow-scrolling: touch; scrollbar-width: none;
+      overscroll-behavior-x: contain;
+      padding-top: 2rem; padding-bottom: 2rem;
+      padding-left: calc(50% - var(--skill-w) / 2);
+      padding-right: calc(50% - var(--skill-w) / 2);
+      scroll-padding-inline: calc(50% - var(--skill-w) / 2);
+      gap: 24px;
+    }
+    .skill-carousel-scroll::-webkit-scrollbar { display: none; }
+
+    .skill-carousel-scroll .skill-card {
+      flex: 0 0 var(--skill-w); width: var(--skill-w);
+      scroll-snap-align: center;
+      scroll-snap-stop: always;
+      transform: scale(0.82); opacity: 0.2;
+      filter: blur(2px) brightness(0.25) saturate(0.2);
+      transition:
+        transform  0.5s cubic-bezier(0.16, 1, 0.3, 1),
+        opacity    0.5s cubic-bezier(0.16, 1, 0.3, 1),
+        filter     0.5s cubic-bezier(0.16, 1, 0.3, 1),
+        box-shadow 0.5s cubic-bezier(0.16, 1, 0.3, 1);
+    }
+    .skill-carousel-scroll .skill-card.is-active {
+      transform: scale(1.05); opacity: 1;
+      filter: brightness(1.04) saturate(1.05) blur(0);
+      box-shadow: 0 28px 80px rgba(0,0,0,0.65), 0 0 50px rgba(195,255,0,0.10);
+    }
+
+    /* Wide card active — no scale to prevent clipping, just border+glow */
+    .wide-carousel-scroll .wide-card.is-active {
+      transform: scale(1.0) !important;
+      opacity: 1 !important;
+      filter: brightness(1.04) saturate(1.05) blur(0) !important;
+      border: 1px solid rgba(195,255,0,0.5) !important;
+      box-shadow:
+        0 20px 60px rgba(0,0,0,0.6),
+        0 0 40px rgba(195,255,0,0.18),
+        0 0 80px rgba(195,255,0,0.08) !important;
+    }
+
+    /* Clip only the video part of wide-card, not the text below */
+    .wide-carousel-scroll .wide-card iframe {
+      border-radius: 12px 12px 0 0;
+      overflow: hidden;
+    }
+    .wide-carousel-scroll .wide-card .wide-card-label {
+      padding: 1rem 1.2rem 1.2rem;
+      background: rgba(12,12,20,0.55);
+      border-radius: 0 0 16px 16px;
     }
   </style>
 </head>
@@ -645,43 +964,44 @@
 
   </div>
 
-  <!-- Client Instagram Profiles — inside About -->
+  <!-- Client Instagram Profiles — Carousel -->
   <div class="relations-title reveal" style="margin-top:3.5rem;">Creators &amp; Brands I've Collaborated With</div>
-  <div class="ig-grid reveal" id="clients" style="max-width:820px; margin:0 auto;">
+  <div class="sec-carousel-wrap" id="clients">
+    <div class="sec-carousel-scroll clients-scroll" id="scroll-clients">
 
-    <div class="ig-card">
-      <div class="ig-header">
-        <div class="ig-avatar">
-          <img src="https://res.cloudinary.com/drfokzzbf/image/upload/v1773749193/profilruangsepri_toigvr.jpg" alt="ruangsepri">
+      <div class="ig-card" data-idx="0">
+        <div class="ig-header">
+          <div class="ig-avatar">
+            <img src="https://res.cloudinary.com/drfokzzbf/image/upload/v1773749193/profilruangsepri_toigvr.jpg" alt="ruangsepri">
+          </div>
+          <div>
+            <div class="ig-handle">@ruangsepri</div>
+            <div class="ig-followers">192K Followers</div>
+          </div>
         </div>
-        <div>
-          <div class="ig-handle">@ruangsepri</div>
-          <div class="ig-followers">192K Followers</div>
+        <div class="ig-videos">
+          <div class="ig-thumb"><iframe src="https://www.youtube.com/embed/rNZyRjAqnEc?autoplay=1&mute=1&loop=1&playlist=rNZyRjAqnEc&controls=0" allow="autoplay" allowfullscreen loading="lazy"></iframe></div>
         </div>
+        <a href="https://instagram.com/ruangsepri" target="_blank" class="ig-link">View on Instagram →</a>
       </div>
-      <div class="ig-videos">
-        <div class="ig-thumb"><iframe src="https://www.youtube.com/embed/rNZyRjAqnEc?autoplay=1&mute=1&loop=1&playlist=rNZyRjAqnEc&controls=0" allow="autoplay" allowfullscreen loading="lazy"></iframe></div>
-      </div>
-      <a href="https://instagram.com/ruangsepri" target="_blank" class="ig-link">View on Instagram →</a>
-    </div>
 
-    <div class="ig-card">
-      <div class="ig-header">
-        <div class="ig-avatar">
-          <img src="https://res.cloudinary.com/drfokzzbf/image/upload/v1773749308/profiltechpreneurboi_zbrtr1.jpg" alt="techpreneurboi">
+      <div class="ig-card" data-idx="1">
+        <div class="ig-header">
+          <div class="ig-avatar">
+            <img src="https://res.cloudinary.com/drfokzzbf/image/upload/v1773749308/profiltechpreneurboi_zbrtr1.jpg" alt="techpreneurboi">
+          </div>
+          <div>
+            <div class="ig-handle">@techpreneurboi</div>
+            <div class="ig-followers">35.2K Followers</div>
+          </div>
         </div>
-        <div>
-          <div class="ig-handle">@techpreneurboi</div>
-          <div class="ig-followers">35.2K Followers</div>
+        <div class="ig-videos">
+          <div class="ig-thumb"><iframe src="https://www.youtube.com/embed/zMEycC6PtFo?autoplay=1&mute=1&loop=1&playlist=zMEycC6PtFo&controls=0" allow="autoplay" allowfullscreen loading="lazy"></iframe></div>
         </div>
+        <a href="https://instagram.com/techpreneurboi" target="_blank" class="ig-link">View on Instagram →</a>
       </div>
-      <div class="ig-videos">
-        <div class="ig-thumb"><iframe src="https://www.youtube.com/embed/zMEycC6PtFo?autoplay=1&mute=1&loop=1&playlist=zMEycC6PtFo&controls=0" allow="autoplay" allowfullscreen loading="lazy"></iframe></div>
-      </div>
-      <a href="https://instagram.com/techpreneurboi" target="_blank" class="ig-link">View on Instagram →</a>
-    </div>
 
-    <div class="ig-card">
+    <div class="ig-card" data-idx="2">
       <div class="ig-header">
         <div class="ig-avatar">
           <img src="https://res.cloudinary.com/drfokzzbf/image/upload/v1773749314/profilvictoriawong68_o9wy3y.jpg" alt="victoriawong68">
@@ -697,7 +1017,7 @@
       <a href="https://instagram.com/victoriawong68" target="_blank" class="ig-link">View on Instagram →</a>
     </div>
 
-    <div class="ig-card">
+    <div class="ig-card" data-idx="3">
       <div class="ig-header">
         <div class="ig-avatar">
           <img src="https://res.cloudinary.com/drfokzzbf/image/upload/v1773749698/profilcreatecontent.club_dkwkeh.jpg" alt="createcontent.club">
@@ -713,7 +1033,7 @@
       <a href="https://instagram.com/createcontentclub" target="_blank" class="ig-link">View on Instagram →</a>
     </div>
 
-    <div class="ig-card">
+    <div class="ig-card" data-idx="4">
       <div class="ig-header">
         <div class="ig-avatar">
           <img src="https://res.cloudinary.com/drfokzzbf/image/upload/v1773749702/profilaicreatorlabs.id_nu6p8h.jpg" alt="aicreatorlabs.id">
@@ -729,7 +1049,7 @@
       <a href="https://instagram.com/aicreatorlabs.id" target="_blank" class="ig-link">View on Instagram →</a>
     </div>
 
-    <div class="ig-card">
+    <div class="ig-card" data-idx="5">
       <div class="ig-header">
         <div class="ig-avatar">
           <img src="https://res.cloudinary.com/drfokzzbf/image/upload/v1773771273/472416709_1083279420216121_6462226940629783718_n_ankpjd.jpg" alt="abedsteady">
@@ -743,8 +1063,15 @@
         <div class="ig-thumb"><iframe src="https://www.youtube.com/embed/AePTI039t5A?autoplay=1&mute=1&loop=1&playlist=AePTI039t5A&controls=0" allow="autoplay" allowfullscreen loading="lazy"></iframe></div>
       </div>
       <a href="https://instagram.com/abedsteady" target="_blank" class="ig-link">View on Instagram →</a>
-    </div>
+      </div><!-- /.ig-card abedsteady -->
 
+    </div><!-- /.sec-carousel-scroll clients-scroll -->
+  </div><!-- /.sec-carousel-wrap -->
+  <div class="carousel-ui" style="padding:0.5rem 0 2rem;">
+    <button class="c-arrow" data-sec-scroll="scroll-clients" data-dir="-1">&#8592;</button>
+    <div class="c-dots" id="dots-clients"></div>
+    <button class="c-arrow" data-sec-scroll="scroll-clients" data-dir="1">&#8594;</button>
+    <span class="c-counter" id="counter-clients">01 / 06</span>
   </div>
 
 </div>
@@ -912,69 +1239,76 @@
 </div>
 
 <!-- SHOWCASE: Long-form Education -->
-<div class="section-full reveal">
-  <div style="text-align:center; margin-bottom:2rem;">
+<div class="section-full">
+  <div style="text-align:center; margin-bottom:1rem;">
     <span class="carousel-label-pill">long-form education</span>
   </div>
-  <div class="wide-row two-col" style="max-width:1100px; margin:0 auto;">
-
-    <div class="wide-card">
-      <!-- ★ REPLACE: ganti VIDEO_ID_PODCAST dengan ID YouTube video podcast -->
-      <iframe src="https://www.youtube.com/embed/MlHmBB-ezrk?autoplay=1&mute=1&loop=1&playlist=MlHmBB-ezrk&rel=0&controls=1"
-        allow="autoplay" allowfullscreen title="Podcast"
-        style="display:block; width:100%; aspect-ratio:16/9; border:none; border-radius:16px;"></iframe>
-      <div class="wide-card-label">
-        <div class="wide-card-client">Podcast</div>
-        <div class="wide-card-title">Podcast Episode</div>
-        <div class="wide-card-desc">Long-form podcast edit — motion graphics, captions, and cinematic cuts.</div>
+  <div class="wide-carousel-wrap">
+    <div class="wide-carousel-scroll" id="scroll-edu">
+      <div class="wide-card" data-idx="0">
+        <iframe src="https://www.youtube.com/embed/MlHmBB-ezrk?autoplay=1&mute=1&loop=1&playlist=MlHmBB-ezrk&rel=0&controls=1"
+          allow="autoplay" allowfullscreen title="Podcast"
+          style="display:block; width:100%; aspect-ratio:16/9; border:none; border-radius:16px;"></iframe>
+        <div class="wide-card-label">
+          <div class="wide-card-client">Podcast</div>
+          <div class="wide-card-title">Podcast Episode</div>
+          <div class="wide-card-desc">Long-form podcast edit, motion graphics, captions, and cinematic cuts.</div>
+        </div>
+      </div>
+      <div class="wide-card" data-idx="1">
+        <iframe src="https://www.youtube.com/embed/CaceK21sxQg?autoplay=1&mute=1&loop=1&playlist=CaceK21sxQg&rel=0&controls=1"
+          allow="autoplay" allowfullscreen title="E-Course"
+          style="display:block; width:100%; aspect-ratio:16/9; border:none; border-radius:16px;"></iframe>
+        <div class="wide-card-label">
+          <div class="wide-card-client">E-Course</div>
+          <div class="wide-card-title">Educational Course Video</div>
+          <div class="wide-card-desc">Structured e-course editing, clean pacing, graphics, and engaging flow.</div>
+        </div>
       </div>
     </div>
-
-    <div class="wide-card">
-      <iframe src="https://www.youtube.com/embed/CaceK21sxQg?autoplay=1&mute=1&loop=1&playlist=CaceK21sxQg&rel=0&controls=1"
-        allow="autoplay" allowfullscreen title="E-Course"
-        style="display:block; width:100%; aspect-ratio:16/9; border:none; border-radius:16px;"></iframe>
-      <div class="wide-card-label">
-        <div class="wide-card-client">E-Course</div>
-        <div class="wide-card-title">Educational Course Video</div>
-        <div class="wide-card-desc">Structured e-course editing — clean pacing, graphics, and engaging flow.</div>
-      </div>
-    </div>
-
+  </div>
+  <div class="carousel-ui" style="padding:0.5rem 0 1rem;">
+    <button class="c-arrow" data-sec-scroll="scroll-edu" data-dir="-1">&#8592;</button>
+    <div class="c-dots" id="dots-edu"></div>
+    <button class="c-arrow" data-sec-scroll="scroll-edu" data-dir="1">&#8594;</button>
+    <span class="c-counter" id="counter-edu">01 / 02</span>
   </div>
 </div>
 
 <!-- SHOWCASE: Fun / Behind the Scene -->
-<div class="section-full reveal">
-  <div style="text-align:center; margin-bottom:2rem;">
+<div class="section-full">
+  <div style="text-align:center; margin-bottom:1rem;">
     <span class="carousel-label-pill">fun &amp; behind the scene</span>
   </div>
-  <div class="wide-row two-col" style="max-width:1100px; margin:0 auto;">
-
-    <div class="wide-card">
-      <!-- ★ REPLACE: ganti VIDEO_ID_BTS_1 dengan ID YouTube BTS pertama -->
-      <iframe src="https://www.youtube.com/embed/-k9_zr8lpjA?autoplay=1&mute=1&loop=1&playlist=-k9_zr8lpjA&rel=0&controls=1"
-        allow="autoplay" allowfullscreen title="BTS 1"
-        style="display:block; width:100%; aspect-ratio:16/9; border:none; border-radius:16px;"></iframe>
-      <div class="wide-card-label">
-        <div class="wide-card-client">@imadevideo</div>
-        <div class="wide-card-title">Behind the Scene: Editing Process</div>
-        <div class="wide-card-desc">A peek into the workflow and creative process behind the edits.</div>
+  <div class="wide-carousel-wrap">
+    <div class="wide-carousel-scroll" id="scroll-bts">
+      <div class="wide-card" data-idx="0">
+        <iframe src="https://www.youtube.com/embed/-k9_zr8lpjA?autoplay=1&mute=1&loop=1&playlist=-k9_zr8lpjA&rel=0&controls=1"
+          allow="autoplay" allowfullscreen title="BTS 1"
+          style="display:block; width:100%; aspect-ratio:16/9; border:none; border-radius:16px;"></iframe>
+        <div class="wide-card-label">
+          <div class="wide-card-client">@imadevideo</div>
+          <div class="wide-card-title">Behind the Scene: Editing Process</div>
+          <div class="wide-card-desc">A peek into the workflow and creative process behind the edits.</div>
+        </div>
+      </div>
+      <div class="wide-card" data-idx="1">
+        <iframe src="https://www.youtube.com/embed/cbt-vTxaVEk?autoplay=1&mute=1&loop=1&playlist=cbt-vTxaVEk&rel=0&controls=1"
+          allow="autoplay" allowfullscreen title="BTS 2"
+          style="display:block; width:100%; aspect-ratio:16/9; border:none; border-radius:16px;"></iframe>
+        <div class="wide-card-label">
+          <div class="wide-card-client">@imadevideo</div>
+          <div class="wide-card-title">Fun Moment: On Set</div>
+          <div class="wide-card-desc">Candid moments and fun clips from real productions.</div>
+        </div>
       </div>
     </div>
-
-    <div class="wide-card">
-      <!-- ★ REPLACE: ganti VIDEO_ID_BTS_2 dengan ID YouTube BTS kedua -->
-      <iframe src="https://www.youtube.com/embed/cbt-vTxaVEk?autoplay=1&mute=1&loop=1&playlist=cbt-vTxaVEk&rel=0&controls=1"
-        allow="autoplay" allowfullscreen title="BTS 2"
-        style="display:block; width:100%; aspect-ratio:16/9; border:none; border-radius:16px;"></iframe>
-      <div class="wide-card-label">
-        <div class="wide-card-client">@imadevideo</div>
-        <div class="wide-card-title">Fun Moment: On Set</div>
-        <div class="wide-card-desc">Candid moments and fun clips from real productions.</div>
-      </div>
-    </div>
-
+  </div>
+  <div class="carousel-ui" style="padding:0.5rem 0 1rem;">
+    <button class="c-arrow" data-sec-scroll="scroll-bts" data-dir="-1">&#8592;</button>
+    <div class="c-dots" id="dots-bts"></div>
+    <button class="c-arrow" data-sec-scroll="scroll-bts" data-dir="1">&#8594;</button>
+    <span class="c-counter" id="counter-bts">01 / 02</span>
   </div>
 </div>
 
@@ -999,12 +1333,20 @@
 </div>
 
 <!-- SKILLS -->
-<div class="section" id="skills">
-  <h2 class="section-title reveal">Skills &amp; Experience</h2>
-  <div class="skills-grid">
-    <div class="skill-card reveal"><h3>Editing Software</h3><ul><li>CapCut PC</li><li>Adobe Premiere Pro</li><li>After Effects</li></ul></div>
-    <div class="skill-card reveal"><h3>Design Tools</h3><ul><li>Canva</li><li>Dreamina AI</li><li>Pipit AI</li></ul></div>
-    <div class="skill-card reveal"><h3>What I Do</h3><ul><li>Short form &amp; Long form editing</li><li>Cinematic look &amp; color grading</li><li>AI assisted workflow</li><li>Motion graphics</li><li>Brand &amp; creator content</li></ul></div>
+<div class="section" id="skills" style="padding-left:0; padding-right:0; max-width:100%;">
+  <h2 class="section-title reveal" style="padding:0 5%;">Skills &amp; Experience</h2>
+  <div class="skill-carousel-wrap">
+    <div class="skill-carousel-scroll" id="scroll-skills">
+      <div class="skill-card" data-idx="0"><h3>Editing Software</h3><ul><li>CapCut PC</li><li>Adobe Premiere Pro</li><li>After Effects</li></ul></div>
+      <div class="skill-card" data-idx="1"><h3>Design Tools</h3><ul><li>Canva</li><li>Dreamina AI</li><li>Pipit AI</li></ul></div>
+      <div class="skill-card" data-idx="2"><h3>What I Do</h3><ul><li>Short form &amp; Long form editing</li><li>Cinematic look &amp; color grading</li><li>AI assisted workflow</li><li>Motion graphics</li><li>Brand &amp; creator content</li></ul></div>
+    </div>
+  </div>
+  <div class="carousel-ui" style="padding:0.5rem 0 1rem;">
+    <button class="c-arrow" data-sec-scroll="scroll-skills" data-dir="-1">&#8592;</button>
+    <div class="c-dots" id="dots-skills"></div>
+    <button class="c-arrow" data-sec-scroll="scroll-skills" data-dir="1">&#8594;</button>
+    <span class="c-counter" id="counter-skills">01 / 03</span>
   </div>
 </div>
 
@@ -1013,15 +1355,23 @@
   <div class="portfolio-inner">
     <h2 class="section-title reveal">Full Portfolio</h2>
     <p class="section-sub reveal">Explore my complete collection across all categories</p>
-    <div class="portfolio-grid">
-      <a href="https://drive.google.com/drive/folders/1o5he3i43HemiBZ_Ca1R-KvqgP1O161Tz?usp=sharing" target="_blank" class="portfolio-card reveal"><div class="portfolio-thumb" style="background-image:linear-gradient(rgba(0,0,0,0.2),rgba(12,12,20,0.95)),url('https://images.unsplash.com/photo-1492619375914-88005aa9e8fb?w=800')"></div><div class="portfolio-info"><h3>Reels Content Editing</h3><p>Full collection of short-form editing projects.</p></div></a>
-      <a href="https://drive.google.com/drive/folders/1vM12mUcVI84mk8kFkxMgoxaRjVQwBkvE?usp=sharing" target="_blank" class="portfolio-card reveal"><div class="portfolio-thumb" style="background-image:linear-gradient(rgba(0,0,0,0.2),rgba(12,12,20,0.95)),url('https://images.unsplash.com/photo-1574717024653-61fd2cf4d44d?w=800')"></div><div class="portfolio-info"><h3>Long-form Video</h3><p>Full-length edits, documentaries, and deep-form content.</p></div></a>
-      <a href="https://drive.google.com/drive/folders/1SUs8FpWyKMan2lNLkXFMQfeX9qtPfw40?usp=sharing" target="_blank" class="portfolio-card reveal"><div class="portfolio-thumb" style="background-image:linear-gradient(rgba(0,0,0,0.2),rgba(12,12,20,0.95)),url('https://images.unsplash.com/photo-1516035069371-29a1b244cc32?w=800')"></div><div class="portfolio-info"><h3>1st Place Creative Video</h3><p>Award-winning creative video project.</p></div></a>
-      <a href="https://drive.google.com/drive/folders/11f5Oa8MIq5mrFU3_qxLaE3gGVnVj8C3c?usp=sharing" target="_blank" class="portfolio-card reveal"><div class="portfolio-thumb" style="background-image:linear-gradient(rgba(0,0,0,0.2),rgba(12,12,20,0.95)),url('https://images.unsplash.com/photo-1485846234645-a62644f84728?w=800')"></div><div class="portfolio-info"><h3>Best Film Production Award</h3><p>Film production recognized with Best Film award.</p></div></a>
-      <a href="https://drive.google.com/drive/folders/1-hm1iBLPnW0Uh045z-5s922fR99Jg9KX?usp=sharing" target="_blank" class="portfolio-card reveal"><div class="portfolio-thumb" style="background-image:linear-gradient(rgba(0,0,0,0.2),rgba(12,12,20,0.95)),url('https://images.unsplash.com/photo-1440404653325-ab127d49abc1?w=800')"></div><div class="portfolio-info"><h3>Cinematic Video</h3><p>Cinematic edits with storytelling and mood grading.</p></div></a>
-      <a href="https://drive.google.com/drive/folders/1zubPlV0JR7sXFKm1f23kKRteKEHD0rT2?usp=sharing" target="_blank" class="portfolio-card reveal"><div class="portfolio-thumb" style="background-image:linear-gradient(rgba(0,0,0,0.2),rgba(12,12,20,0.95)),url('https://images.unsplash.com/photo-1497366216548-37526070297c?w=800')"></div><div class="portfolio-info"><h3>Company Profile Video</h3><p>Profile videos for brands and businesses.</p></div></a>
-      <a href="https://drive.google.com/drive/folders/1lQfraJ2X0hf99E_9trLVWO5Ws66kZL5G?usp=sharing" target="_blank" class="portfolio-card reveal"><div class="portfolio-thumb" style="background-image:linear-gradient(rgba(0,0,0,0.2),rgba(12,12,20,0.95)),url('https://images.unsplash.com/photo-1579532537598-459ecdaf39cc?w=800')"></div><div class="portfolio-info"><h3>Documentary Video</h3><p>Documentary-style storytelling with real narratives.</p></div></a>
-      <a href="https://drive.google.com/drive/folders/10o_XKYlLNSiDZEks3s9qLTdGiUf-43bG?usp=sharing" target="_blank" class="portfolio-card reveal"><div class="portfolio-thumb" style="background-image:linear-gradient(rgba(0,0,0,0.2),rgba(12,12,20,0.95)),url('https://images.unsplash.com/photo-1452780212940-6f5c0d14d848?w=800')"></div><div class="portfolio-info"><h3>Videographer</h3><p>On-location shoots, event coverage, and raw cinematography.</p></div></a>
+    <div class="sec-carousel-wrap mid">
+      <div class="sec-carousel-scroll portfolio-scroll" id="scroll-portfolio">
+        <a href="https://drive.google.com/drive/folders/1o5he3i43HemiBZ_Ca1R-KvqgP1O161Tz?usp=sharing" target="_blank" class="portfolio-card" data-idx="0"><div class="portfolio-thumb" style="background-image:linear-gradient(rgba(0,0,0,0.2),rgba(12,12,20,0.95)),url('https://images.unsplash.com/photo-1492619375914-88005aa9e8fb?w=800')"></div><div class="portfolio-info"><h3>Reels Content Editing</h3><p>Full collection of short-form editing projects.</p></div></a>
+        <a href="https://drive.google.com/drive/folders/1vM12mUcVI84mk8kFkxMgoxaRjVQwBkvE?usp=sharing" target="_blank" class="portfolio-card" data-idx="1"><div class="portfolio-thumb" style="background-image:linear-gradient(rgba(0,0,0,0.2),rgba(12,12,20,0.95)),url('https://images.unsplash.com/photo-1574717024653-61fd2cf4d44d?w=800')"></div><div class="portfolio-info"><h3>Long-form Video</h3><p>Full-length edits, documentaries, and deep-form content.</p></div></a>
+        <a href="https://drive.google.com/drive/folders/1SUs8FpWyKMan2lNLkXFMQfeX9qtPfw40?usp=sharing" target="_blank" class="portfolio-card" data-idx="2"><div class="portfolio-thumb" style="background-image:linear-gradient(rgba(0,0,0,0.2),rgba(12,12,20,0.95)),url('https://images.unsplash.com/photo-1516035069371-29a1b244cc32?w=800')"></div><div class="portfolio-info"><h3>1st Place Creative Video</h3><p>Award-winning creative video project.</p></div></a>
+        <a href="https://drive.google.com/drive/folders/11f5Oa8MIq5mrFU3_qxLaE3gGVnVj8C3c?usp=sharing" target="_blank" class="portfolio-card" data-idx="3"><div class="portfolio-thumb" style="background-image:linear-gradient(rgba(0,0,0,0.2),rgba(12,12,20,0.95)),url('https://images.unsplash.com/photo-1485846234645-a62644f84728?w=800')"></div><div class="portfolio-info"><h3>Best Film Production Award</h3><p>Film production recognized with Best Film award.</p></div></a>
+        <a href="https://drive.google.com/drive/folders/1-hm1iBLPnW0Uh045z-5s922fR99Jg9KX?usp=sharing" target="_blank" class="portfolio-card" data-idx="4"><div class="portfolio-thumb" style="background-image:linear-gradient(rgba(0,0,0,0.2),rgba(12,12,20,0.95)),url('https://images.unsplash.com/photo-1440404653325-ab127d49abc1?w=800')"></div><div class="portfolio-info"><h3>Cinematic Video</h3><p>Cinematic edits with storytelling and mood grading.</p></div></a>
+        <a href="https://drive.google.com/drive/folders/1zubPlV0JR7sXFKm1f23kKRteKEHD0rT2?usp=sharing" target="_blank" class="portfolio-card" data-idx="5"><div class="portfolio-thumb" style="background-image:linear-gradient(rgba(0,0,0,0.2),rgba(12,12,20,0.95)),url('https://images.unsplash.com/photo-1497366216548-37526070297c?w=800')"></div><div class="portfolio-info"><h3>Company Profile Video</h3><p>Profile videos for brands and businesses.</p></div></a>
+        <a href="https://drive.google.com/drive/folders/1lQfraJ2X0hf99E_9trLVWO5Ws66kZL5G?usp=sharing" target="_blank" class="portfolio-card" data-idx="6"><div class="portfolio-thumb" style="background-image:linear-gradient(rgba(0,0,0,0.2),rgba(12,12,20,0.95)),url('https://images.unsplash.com/photo-1579532537598-459ecdaf39cc?w=800')"></div><div class="portfolio-info"><h3>Documentary Video</h3><p>Documentary-style storytelling with real narratives.</p></div></a>
+        <a href="https://drive.google.com/drive/folders/10o_XKYlLNSiDZEks3s9qLTdGiUf-43bG?usp=sharing" target="_blank" class="portfolio-card" data-idx="7"><div class="portfolio-thumb" style="background-image:linear-gradient(rgba(0,0,0,0.2),rgba(12,12,20,0.95)),url('https://images.unsplash.com/photo-1452780212940-6f5c0d14d848?w=800')"></div><div class="portfolio-info"><h3>Videographer</h3><p>On-location shoots, event coverage, and raw cinematography.</p></div></a>
+      </div>
+    </div>
+    <div class="carousel-ui" style="padding:0.5rem 0 1rem;">
+      <button class="c-arrow" data-sec-scroll="scroll-portfolio" data-dir="-1">&#8592;</button>
+      <div class="c-dots" id="dots-portfolio"></div>
+      <button class="c-arrow" data-sec-scroll="scroll-portfolio" data-dir="1">&#8594;</button>
+      <span class="c-counter" id="counter-portfolio">01 / 08</span>
     </div>
   </div>
 </div>
@@ -1032,9 +1382,10 @@
     <h2 class="section-title reveal">What Clients Say</h2>
     <p class="section-sub reveal">Real words from real people I've worked with</p>
 
-    <div class="testimonials-grid">
+    <div class="sec-carousel-wrap">
+    <div class="sec-carousel-scroll testi-scroll" id="scroll-testi">
 
-      <div class="testi-card reveal">
+      <div class="testi-card" data-idx="0">
         <div class="testi-stars">★★★★★</div>
         <div class="testi-text">
           "Imade just gets it. Every edit he delivers matches exactly the vibe I'm going
@@ -1052,7 +1403,7 @@
         </div>
       </div>
 
-      <div class="testi-card reveal">
+      <div class="testi-card" data-idx="1">
         <div class="testi-stars">★★★★★</div>
         <div class="testi-text">
           "Fast, clean, and easy to work with. Since I started working with Imade,
@@ -1070,7 +1421,7 @@
         </div>
       </div>
 
-      <div class="testi-card reveal">
+      <div class="testi-card" data-idx="2">
         <div class="testi-stars">★★★★★</div>
         <div class="testi-text">
           "The edits look so clean and premium, exactly the kind of quality I was
@@ -1088,7 +1439,7 @@
         </div>
       </div>
 
-      <div class="testi-card reveal">
+      <div class="testi-card" data-idx="3">
         <div class="testi-stars">★★★★★</div>
         <div class="testi-text">
           "Super consistent, barely any revisions, always on time. We trust Imade
@@ -1106,7 +1457,7 @@
         </div>
       </div>
 
-      <div class="testi-card reveal">
+      <div class="testi-card" data-idx="4">
         <div class="testi-stars">★★★★★</div>
         <div class="testi-text">
           "I was looking for someone who could keep up with the pace of my content
@@ -1124,7 +1475,7 @@
         </div>
       </div>
 
-      <div class="testi-card reveal">
+      <div class="testi-card" data-idx="5">
         <div class="testi-stars">★★★★★</div>
         <div class="testi-text">
           "Imade gets the brand instantly. No lengthy briefings needed, he just
@@ -1142,6 +1493,13 @@
         </div>
       </div>
 
+    </div><!-- /.testi-scroll -->
+    </div><!-- /.sec-carousel-wrap -->
+    <div class="carousel-ui" style="padding:0.5rem 0 2rem;">
+      <button class="c-arrow" data-sec-scroll="scroll-testi" data-dir="-1">&#8592;</button>
+      <div class="c-dots" id="dots-testi"></div>
+      <button class="c-arrow" data-sec-scroll="scroll-testi" data-dir="1">&#8594;</button>
+      <span class="c-counter" id="counter-testi">01 / 06</span>
     </div>
   </div>
 </div>
@@ -1165,7 +1523,7 @@
   <p>AI-Driven Video Editor &amp; Cinematic Storyteller © 2025</p>
 </footer>
 
-<script data-cfasync="false" src="/cdn-cgi/scripts/5c5dd728/cloudflare-static/email-decode.min.js"></script><script data-cfasync="false" src="/cdn-cgi/scripts/5c5dd728/cloudflare-static/email-decode.min.js"></script><script>
+<script>
 /* ═══════════════════════════════════════════════════════════════
    CAROUSEL — native scroll-snap controller
 
@@ -1251,6 +1609,84 @@ class NativeCarousel {
 
   navigate(dir) { this.goTo(this.activeIdx + dir); }
 }
+
+/* Bootstrap section carousels (clients, portfolio, testi) */
+class SecCarousel {
+  constructor(scrollEl) {
+    this.el    = scrollEl;
+    this.items = [...scrollEl.querySelectorAll('[data-idx]')];
+    if (!this.items.length) this.items = [...scrollEl.children];
+    this.n     = this.items.length;
+    this.activeIdx = 0;
+
+    const suffix = scrollEl.id.replace('scroll-', '');
+    this.dotsEl    = document.getElementById('dots-'    + suffix);
+    this.counterEl = document.getElementById('counter-' + suffix);
+
+    this._buildDots();
+    this._observe();
+    /* Set first card active immediately */
+    if (this.items[0]) {
+      this.items[0].classList.add('is-active');
+      this._syncUI(0);
+    }
+  }
+
+  _buildDots() {
+    if (!this.dotsEl) return;
+    this.dots = this.items.map((_, i) => {
+      const b = document.createElement('button');
+      b.className = 'c-dot' + (i === 0 ? ' is-active' : '');
+      b.setAttribute('aria-label', 'Item ' + (i+1));
+      b.addEventListener('click', () => this.goTo(i));
+      this.dotsEl.appendChild(b);
+      return b;
+    });
+  }
+
+  _observe() {
+    const io = new IntersectionObserver((entries) => {
+      entries.forEach(entry => {
+        if (entry.isIntersecting) {
+          const idx = this.items.indexOf(entry.target);
+          if (idx === -1) return;
+          /* Toggle is-active — same as NativeCarousel */
+          this.items.forEach(el => el.classList.remove('is-active'));
+          entry.target.classList.add('is-active');
+          this._syncUI(idx);
+        }
+      });
+    }, { root: this.el, threshold: 0.6 });
+    this.items.forEach(item => io.observe(item));
+  }
+
+  _syncUI(idx) {
+    this.activeIdx = idx;
+    if (this.dots) this.dots.forEach((d, i) => d.classList.toggle('is-active', i === idx));
+    if (this.counterEl) {
+      this.counterEl.textContent =
+        String(idx + 1).padStart(2, '0') + ' / ' + String(this.n).padStart(2, '0');
+    }
+  }
+
+  goTo(i) {
+    const idx = Math.max(0, Math.min(this.n - 1, i));
+    this.items[idx].scrollIntoView({ behavior: 'smooth', block: 'nearest', inline: 'center' });
+  }
+
+  navigate(dir) { this.goTo(this.activeIdx + dir); }
+}
+
+const secCarousels = {};
+document.querySelectorAll('.sec-carousel-scroll, .wide-carousel-scroll, .skill-carousel-scroll').forEach(el => {
+  secCarousels[el.id] = new SecCarousel(el);
+});
+document.querySelectorAll('.c-arrow[data-sec-scroll]').forEach(btn => {
+  btn.addEventListener('click', () => {
+    const car = secCarousels[btn.dataset.secScroll];
+    if (car) car.navigate(parseInt(btn.dataset.dir, 10));
+  });
+});
 
 /* Bootstrap */
 const carousels = {};
