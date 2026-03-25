@@ -581,6 +581,7 @@
     /* Edge fades for section carousels */
     .sec-carousel-wrap {
       position: relative; width: 100%; overflow: hidden;
+      max-width: 900px; margin-left: auto; margin-right: auto;
     }
     .sec-carousel-wrap::before,
     .sec-carousel-wrap::after {
@@ -653,7 +654,7 @@
     .wide-carousel-wrap::before { left: 0;  background: linear-gradient(to right, var(--bg) 0%, transparent 100%); }
     .wide-carousel-wrap::after  { right: 0; background: linear-gradient(to left,  var(--bg) 0%, transparent 100%); }
 
-    .wide-carousel-wrap { overflow: visible !important; }
+    .wide-carousel-wrap { overflow: visible !important; max-width: 1000px; margin-left: auto; margin-right: auto; }
     .wide-carousel-wrap::before,
     .wide-carousel-wrap::after { display: none; }
     .wide-carousel-scroll {
@@ -692,6 +693,7 @@
     /* ── SKILL CARD CAROUSEL ─────────────────────────────────── */
     .skill-carousel-wrap {
       position: relative; width: 100%; overflow: hidden;
+      max-width: 900px; margin-left: auto; margin-right: auto;
     }
     .skill-carousel-wrap::before,
     .skill-carousel-wrap::after {
