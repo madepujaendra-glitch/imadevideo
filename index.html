@@ -756,6 +756,103 @@
       background: rgba(12,12,20,0.55);
       border-radius: 0 0 16px 16px;
     }
+
+    /* ── DESKTOP: disable section carousels, show as normal grid ───── */
+    @media (min-width: 769px) {
+
+      /* Clients — show as flex wrap grid */
+      .sec-carousel-wrap { max-width: 1200px; overflow: visible; }
+      .sec-carousel-scroll.clients-scroll {
+        flex-wrap: wrap; overflow-x: visible;
+        scroll-snap-type: none;
+        padding: 1rem 0;
+        justify-content: center;
+        gap: 1.2rem;
+      }
+      .clients-scroll .ig-card {
+        flex: 0 0 var(--clients-w); scroll-snap-align: none; scroll-snap-stop: unset;
+        transform: none !important; opacity: 1 !important; filter: none !important;
+      }
+      .clients-scroll .ig-card.is-active {
+        transform: none !important;
+        border: 1px solid rgba(195,255,0,0.3) !important;
+        box-shadow: 0 8px 30px rgba(0,0,0,0.3), 0 0 20px rgba(195,255,0,0.08) !important;
+      }
+
+      /* Portfolio — show as grid */
+      .sec-carousel-scroll.portfolio-scroll {
+        flex-wrap: wrap; overflow-x: visible;
+        scroll-snap-type: none;
+        padding: 1rem 0;
+        justify-content: center;
+        gap: 1.2rem;
+      }
+      .portfolio-scroll .portfolio-card {
+        flex: 0 0 var(--portfolio-w); scroll-snap-align: none; scroll-snap-stop: unset;
+        transform: none !important; opacity: 1 !important; filter: none !important;
+      }
+      .portfolio-scroll .portfolio-card.is-active {
+        transform: none !important;
+        border-color: rgba(195,255,0,0.25) !important;
+      }
+
+      /* Testi — show as grid */
+      .sec-carousel-scroll.testi-scroll {
+        flex-wrap: wrap; overflow-x: visible;
+        scroll-snap-type: none;
+        padding: 1rem 0;
+        justify-content: center;
+        gap: 1.2rem;
+      }
+      .testi-scroll .testi-card {
+        flex: 0 0 var(--testi-w); scroll-snap-align: none; scroll-snap-stop: unset;
+        transform: none !important; opacity: 1 !important; filter: none !important;
+      }
+      .testi-scroll .testi-card.is-active {
+        transform: none !important;
+        border-color: rgba(195,255,0,0.25) !important;
+      }
+
+      /* Skills — show as 3-col grid */
+      .skill-carousel-wrap { max-width: 1200px; overflow: visible; }
+      .skill-carousel-scroll {
+        flex-wrap: wrap; overflow-x: visible;
+        scroll-snap-type: none;
+        padding: 1rem 0;
+        justify-content: center;
+        gap: 1.5rem;
+      }
+      .skill-carousel-scroll .skill-card {
+        flex: 0 0 var(--skill-w); scroll-snap-align: none; scroll-snap-stop: unset;
+        transform: none !important; opacity: 1 !important; filter: none !important;
+      }
+      .skill-carousel-scroll .skill-card.is-active {
+        transform: none !important;
+        border-color: rgba(195,255,0,0.25) !important;
+      }
+
+      /* Wide cards (longform, BTS) — show side by side */
+      .wide-carousel-wrap { max-width: 1100px; overflow: visible; }
+      .wide-carousel-scroll {
+        flex-wrap: wrap; overflow-x: visible;
+        scroll-snap-type: none;
+        padding: 1rem 0;
+        justify-content: center;
+        gap: 2rem;
+      }
+      .wide-carousel-scroll .wide-card {
+        flex: 0 0 calc(50% - 1rem); scroll-snap-align: none; scroll-snap-stop: unset;
+        transform: none !important; opacity: 1 !important; filter: none !important;
+      }
+      .wide-carousel-scroll .wide-card.is-active {
+        transform: none !important;
+        border-color: rgba(195,255,0,0.25) !important;
+      }
+
+      /* Hide carousel arrows/dots on desktop for these sections */
+      .carousel-ui:has(+ *) { display: none; }
+    }
+
   </style>
 </head>
 <body>
