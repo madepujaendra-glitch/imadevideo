@@ -109,21 +109,6 @@
       border: 1px solid rgba(255,255,255,0.04);
       scroll-snap-align: center;
       scroll-snap-stop: always;
-      transform: scale(0.78);
-      opacity: 0.2;
-      filter: blur(3px) brightness(0.25) saturate(0.2);
-      transition:
-        transform  0.5s cubic-bezier(0.16, 1, 0.3, 1),
-        opacity    0.5s cubic-bezier(0.16, 1, 0.3, 1),
-        filter     0.5s cubic-bezier(0.16, 1, 0.3, 1),
-        box-shadow 0.5s cubic-bezier(0.16, 1, 0.3, 1);
-    }
-
-    .carousel-item.is-active {
-      transform: scale(1.05);
-      opacity: 1;
-      filter: brightness(1.04) saturate(1.05) blur(0);
-      box-shadow: 0 28px 80px rgba(0,0,0,0.65), 0 0 50px rgba(195,255,0,0.10), 0 0 100px rgba(195,255,0,0.05);
     }
 
     .item-thumb { width: 100%; aspect-ratio: 9/16; background: #000; overflow: hidden; }
@@ -321,33 +306,47 @@
     }
     .skill-carousel-scroll .skill-card { flex: 0 0 var(--skill-w); width: var(--skill-w); scroll-snap-align: center; scroll-snap-stop: always; }
 
-    /* Spotlight: inactive dim, active bright — igcard / portfolio / testi / skills */
-    .sec-carousel-scroll .ig-card,
-    .sec-carousel-scroll .portfolio-card,
-    .sec-carousel-scroll .testi-card,
-    .skill-carousel-scroll .skill-card {
-      transform: scale(0.82); opacity: 0.25; filter: blur(2px) brightness(0.3);
-      transition: transform 0.3s cubic-bezier(0.16,1,0.3,1), opacity 0.3s cubic-bezier(0.16,1,0.3,1), filter 0.3s cubic-bezier(0.16,1,0.3,1), box-shadow 0.3s cubic-bezier(0.16,1,0.3,1), border-color 0.3s cubic-bezier(0.16,1,0.3,1);
-    }
-    .sec-carousel-scroll .ig-card.is-active,
-    .sec-carousel-scroll .portfolio-card.is-active,
-    .sec-carousel-scroll .testi-card.is-active,
-    .skill-carousel-scroll .skill-card.is-active {
-      transform: scale(1.0); opacity: 1; filter: none;
-      border-color: rgba(195,255,0,0.45) !important;
-      box-shadow: 0 20px 60px rgba(0,0,0,0.6), 0 0 40px rgba(195,255,0,0.18), 0 0 80px rgba(195,255,0,0.08);
-    }
-
-    /* Wide-card: opacity+blur only — NO transform, so label never clips or floats */
-    .wide-carousel-scroll .wide-card {
-      opacity: 0.3;
-      filter: blur(1.5px) brightness(0.3);
-      transition: opacity 0.3s cubic-bezier(0.16,1,0.3,1), filter 0.3s cubic-bezier(0.16,1,0.3,1), box-shadow 0.3s cubic-bezier(0.16,1,0.3,1);
-    }
-    .wide-carousel-scroll .wide-card.is-active {
-      opacity: 1;
-      filter: none;
-      box-shadow: 0 20px 60px rgba(0,0,0,0.55), 0 0 36px rgba(195,255,0,0.14);
+    /* ── Spotlight: MOBILE ONLY (≤1024px) ─────────────────── */
+    @media (max-width: 1024px) {
+      .sec-carousel-scroll .ig-card,
+      .sec-carousel-scroll .portfolio-card,
+      .sec-carousel-scroll .testi-card,
+      .skill-carousel-scroll .skill-card {
+        transform: scale(0.82); opacity: 0.25; filter: blur(2px) brightness(0.3);
+        transition: transform 0.3s cubic-bezier(0.16,1,0.3,1), opacity 0.3s cubic-bezier(0.16,1,0.3,1), filter 0.3s cubic-bezier(0.16,1,0.3,1), box-shadow 0.3s cubic-bezier(0.16,1,0.3,1), border-color 0.3s cubic-bezier(0.16,1,0.3,1);
+      }
+      .sec-carousel-scroll .ig-card.is-active,
+      .sec-carousel-scroll .portfolio-card.is-active,
+      .sec-carousel-scroll .testi-card.is-active,
+      .skill-carousel-scroll .skill-card.is-active {
+        transform: scale(1.0); opacity: 1; filter: none;
+        border-color: rgba(195,255,0,0.45) !important;
+        box-shadow: 0 20px 60px rgba(0,0,0,0.6), 0 0 40px rgba(195,255,0,0.18), 0 0 80px rgba(195,255,0,0.08);
+      }
+      /* Wide-card: opacity+blur only, no transform so label never clips */
+      .wide-carousel-scroll .wide-card {
+        opacity: 0.3;
+        filter: blur(1.5px) brightness(0.3);
+        transition: opacity 0.3s cubic-bezier(0.16,1,0.3,1), filter 0.3s cubic-bezier(0.16,1,0.3,1), box-shadow 0.3s cubic-bezier(0.16,1,0.3,1);
+      }
+      .wide-carousel-scroll .wide-card.is-active {
+        opacity: 1;
+        filter: none;
+        box-shadow: 0 20px 60px rgba(0,0,0,0.55), 0 0 36px rgba(195,255,0,0.14);
+      }
+      /* carousel-item (9:16 showcase rows) */
+      .carousel-item {
+        transform: scale(0.78);
+        opacity: 0.2;
+        filter: blur(3px) brightness(0.25) saturate(0.2);
+        transition: transform 0.5s cubic-bezier(0.16,1,0.3,1), opacity 0.5s cubic-bezier(0.16,1,0.3,1), filter 0.5s cubic-bezier(0.16,1,0.3,1), box-shadow 0.5s cubic-bezier(0.16,1,0.3,1);
+      }
+      .carousel-item.is-active {
+        transform: scale(1.05);
+        opacity: 1;
+        filter: brightness(1.04) saturate(1.05) blur(0);
+        box-shadow: 0 28px 80px rgba(0,0,0,0.65), 0 0 50px rgba(195,255,0,0.10), 0 0 100px rgba(195,255,0,0.05);
+      }
     }
 
     @media (max-width: 1024px) {
@@ -383,50 +382,42 @@
       .float-contact a { padding: 0.6rem 1.4rem; font-size: 0.72rem; }
     }
 
+
     @media (min-width: 1025px) {
-      .carousel-wrap { overflow: visible !important; }
+      /* Kill carousel scroll — show as static grid */
+      .carousel-wrap { overflow: visible; }
       .carousel-scroll {
-        display: flex !important; flex-wrap: wrap !important; overflow: visible !important;
-        scroll-snap-type: none !important; padding: 1.5rem !important;
-        gap: 1rem !important; justify-content: center !important;
+        display: flex; flex-wrap: wrap; overflow: visible;
+        scroll-snap-type: none; padding: 1.5rem;
+        gap: 1rem; justify-content: center;
       }
-      .carousel-item, .carousel-item.is-active, .carousel-item:hover {
-        transform: none !important; opacity: 1 !important; filter: none !important;
-        box-shadow: none !important; border-color: rgba(195,255,0,0.07) !important;
-        flex: 0 0 var(--item-w) !important; width: var(--item-w) !important;
-        scroll-snap-align: unset !important;
+      .carousel-wrap::before, .carousel-wrap::after { display: none; }
+
+      .carousel-item {
+        flex: 0 0 var(--item-w); width: var(--item-w);
+        scroll-snap-align: unset; transition: transform 0.3s var(--ease), box-shadow 0.3s, border-color 0.3s;
       }
-      .carousel-item:hover { transform: translateY(-4px) !important; border-color: rgba(195,255,0,0.2) !important; box-shadow: 0 12px 30px rgba(0,0,0,0.3) !important; }
-      .carousel-wrap::before, .carousel-wrap::after { display: none !important; }
-      .sec-carousel-wrap, .skill-carousel-wrap { max-width: 1200px; overflow: visible !important; }
-      .wide-carousel-wrap { max-width: 1100px; overflow: visible !important; }
+      .carousel-item:hover { transform: translateY(-4px); border-color: rgba(195,255,0,0.2); box-shadow: 0 12px 30px rgba(0,0,0,0.3); }
+
+      .sec-carousel-wrap, .skill-carousel-wrap { max-width: 1200px; overflow: visible; }
+      .wide-carousel-wrap { max-width: 1100px; overflow: visible; }
       .sec-carousel-scroll, .skill-carousel-scroll, .wide-carousel-scroll {
-        flex-wrap: wrap !important; overflow: visible !important;
-        scroll-snap-type: none !important; padding: 1rem 0 !important;
-        justify-content: center !important;
+        flex-wrap: wrap; overflow: visible;
+        scroll-snap-type: none; padding: 1rem 0;
+        justify-content: center;
       }
-      .sec-carousel-scroll .ig-card, .sec-carousel-scroll .ig-card.is-active,
-      .sec-carousel-scroll .portfolio-card, .sec-carousel-scroll .portfolio-card.is-active,
-      .sec-carousel-scroll .testi-card, .sec-carousel-scroll .testi-card.is-active,
-      .wide-carousel-scroll .wide-card, .wide-carousel-scroll .wide-card.is-active,
-      .skill-carousel-scroll .skill-card, .skill-carousel-scroll .skill-card.is-active {
-        transform: none !important; opacity: 1 !important; filter: none !important;
-        border-color: rgba(195,255,0,0.07) !important; box-shadow: none !important;
-        scroll-snap-align: unset !important; scroll-snap-stop: unset !important;
-      }
+
+      .sec-carousel-scroll .ig-card       { flex: 0 0 var(--clients-w); scroll-snap-align: unset; scroll-snap-stop: unset; transition: transform 0.3s var(--ease), box-shadow 0.3s, border-color 0.3s; }
+      .sec-carousel-scroll .portfolio-card { flex: 0 0 var(--portfolio-w); scroll-snap-align: unset; scroll-snap-stop: unset; transition: transform 0.3s var(--ease), box-shadow 0.3s, border-color 0.3s; }
+      .sec-carousel-scroll .testi-card     { flex: 0 0 var(--testi-w); scroll-snap-align: unset; scroll-snap-stop: unset; transition: transform 0.3s var(--ease), box-shadow 0.3s, border-color 0.3s; }
+      .skill-carousel-scroll .skill-card   { flex: 0 0 var(--skill-w); scroll-snap-align: unset; scroll-snap-stop: unset; }
+      .wide-carousel-scroll .wide-card     { flex: 0 0 calc(50% - 1rem); max-width: 520px; scroll-snap-align: unset; scroll-snap-stop: unset; }
+
       .sec-carousel-scroll .ig-card:hover, .sec-carousel-scroll .portfolio-card:hover,
-      .sec-carousel-scroll .testi-card:hover, .skill-carousel-scroll .skill-card:hover {
-        transform: translateY(-6px) !important; border-color: rgba(195,255,0,0.25) !important;
-        box-shadow: 0 16px 40px rgba(0,0,0,0.3) !important;
-      }
-      .sec-carousel-scroll .ig-card       { flex: 0 0 var(--clients-w) !important; }
-      .sec-carousel-scroll .portfolio-card { flex: 0 0 var(--portfolio-w) !important; }
-      .sec-carousel-scroll .testi-card     { flex: 0 0 var(--testi-w) !important; }
-      .skill-carousel-scroll .skill-card   { flex: 0 0 var(--skill-w) !important; }
-      .wide-carousel-scroll .wide-card     { flex: 0 0 calc(50% - 1rem) !important; max-width: 520px !important; }
-      .wide-carousel-scroll .wide-card     { box-shadow: none !important; }
-      .wide-carousel-scroll .wide-card:hover { box-shadow: 0 12px 30px rgba(0,0,0,0.3) !important; border-color: rgba(195,255,0,0.2) !important; }
-      .carousel-ui { display: none !important; }
+      .sec-carousel-scroll .testi-card:hover { transform: translateY(-6px); border-color: rgba(195,255,0,0.25); box-shadow: 0 16px 40px rgba(0,0,0,0.3); }
+      .wide-carousel-scroll .wide-card:hover { box-shadow: 0 12px 30px rgba(0,0,0,0.3); border-color: rgba(195,255,0,0.2); }
+
+      .carousel-ui { display: none; }
     }
   </style>
 </head>
