@@ -162,9 +162,10 @@
     footer { text-align: center; padding: 2.8rem 5%; background: var(--card); border-top: 1px solid rgba(195,255,0,0.05); }
     footer p { color: var(--muted); font-size: 0.84rem; line-height: 2; }
 
-    /* REVEAL */
-    .reveal { opacity: 0; transform: translateY(36px); transition: opacity 0.75s var(--ease), transform 0.75s var(--ease); }
-    .reveal.visible { opacity: 1; transform: none; }
+    /* REVEAL — default visible; JS progressively enhances with scroll animation */
+    .reveal { opacity: 1; transform: none; transition: opacity 0.75s var(--ease), transform 0.75s var(--ease); }
+    .js-reveal-ready .reveal { opacity: 0; transform: translateY(36px); }
+    .js-reveal-ready .reveal.visible { opacity: 1; transform: none; }
 
     /* ABOUT: Education */
     .edu-block { max-width: 820px; margin: 2.5rem auto 0; display: flex; align-items: flex-start; gap: 1.4rem; background: rgba(12,12,20,0.55); border-radius: 16px; padding: 1.6rem 2rem; }
@@ -1030,20 +1031,34 @@ document.addEventListener('DOMContentLoaded', function() {
   });
 });
 
-/* ── Reveal on scroll ────────────────────────────────────── */
-var revealObs = new IntersectionObserver(function(entries) {
-  entries.forEach(function(e) {
-    if (e.isIntersecting) { e.target.classList.add('visible'); revealObs.unobserve(e.target); }
-  });
-}, { threshold: 0.1, rootMargin: '0px 0px -40px 0px' });
-document.querySelectorAll('.reveal').forEach(function(el) { revealObs.observe(el); });
+/* ── Reveal on scroll (progressive enhancement) ─────────── */
+(function() {
+  // Only enable hide-then-reveal if IntersectionObserver is available
+  if (!window.IntersectionObserver) return;
 
-/* Fallback: force-reveal all if IntersectionObserver doesn't fire (sandboxed iframe) */
-setTimeout(function() {
-  document.querySelectorAll('.reveal:not(.visible)').forEach(function(el) {
-    el.classList.add('visible');
-  });
-}, 600);
+  // Mark body so CSS hides elements — only now do they start invisible
+  document.body.classList.add('js-reveal-ready');
+
+  // Immediately reveal anything already in the viewport (hero section etc.)
+  var els = document.querySelectorAll('.reveal');
+  var revealObs = new IntersectionObserver(function(entries) {
+    entries.forEach(function(e) {
+      if (e.isIntersecting) {
+        e.target.classList.add('visible');
+        revealObs.unobserve(e.target);
+      }
+    });
+  }, { threshold: 0.05, rootMargin: '0px 0px -20px 0px' });
+
+  els.forEach(function(el) { revealObs.observe(el); });
+
+  // Hard safety net: after 1.5s show everything regardless
+  setTimeout(function() {
+    document.querySelectorAll('.reveal:not(.visible)').forEach(function(el) {
+      el.classList.add('visible');
+    });
+  }, 1500);
+})();
 
 /* ── Smooth anchors ──────────────────────────────────────── */
 document.querySelectorAll('a[href^="#"]').forEach(function(a) {
