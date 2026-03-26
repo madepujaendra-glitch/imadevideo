@@ -302,48 +302,48 @@
     .skill-carousel-scroll .skill-card { flex: 0 0 var(--skill-w); width: var(--skill-w); scroll-snap-align: center; scroll-snap-stop: normal; }
 
     /* ── Spotlight: ALL screen sizes ──────────────────────── */
+    /* ── Spotlight — scale+opacity only, no filter (GPU-friendly) ── */
     .sec-carousel-scroll .ig-card,
     .sec-carousel-scroll .portfolio-card,
     .sec-carousel-scroll .testi-card,
     .skill-carousel-scroll .skill-card {
-      transform: scale(0.82); opacity: 0.25; filter: blur(2px) brightness(0.3);
-      transition: transform 0.18s ease-out, opacity 0.18s ease-out, filter 0.18s ease-out, box-shadow 0.18s ease-out, border-color 0.18s ease-out;
+      transform: scale(0.82); opacity: 0.3;
+      transition: transform 0.15s ease-out, opacity 0.15s ease-out, box-shadow 0.15s ease-out, border-color 0.15s ease-out;
+      will-change: transform, opacity;
     }
     .sec-carousel-scroll .ig-card.is-active,
     .sec-carousel-scroll .portfolio-card.is-active,
     .sec-carousel-scroll .testi-card.is-active,
     .skill-carousel-scroll .skill-card.is-active {
-      transform: scale(1.0); opacity: 1; filter: none;
+      transform: scale(1.0); opacity: 1;
       border-color: rgba(195,255,0,0.45) !important;
-      box-shadow: 0 20px 60px rgba(0,0,0,0.6), 0 0 40px rgba(195,255,0,0.18), 0 0 80px rgba(195,255,0,0.08);
+      box-shadow: 0 20px 60px rgba(0,0,0,0.6), 0 0 40px rgba(195,255,0,0.18);
     }
-    /* Wide-card: split into video + label so label never gets clipped */
+    /* Wide-card: video wrapper + label outside overflow clip */
     .wide-card { overflow: visible; border-radius: 0; }
     .wide-card-video { border-radius: 16px; overflow: hidden; box-shadow: 0 2px 8px rgba(0,0,0,0.4); }
     .wide-card-label { padding: 1rem 0 0.5rem; }
     .wide-carousel-scroll .wide-card {
-      transform: scale(0.82);
-      opacity: 0.25;
-      filter: blur(2px) brightness(0.3);
+      transform: scale(0.82); opacity: 0.3;
       transform-origin: center top;
-      transition: transform 0.18s ease-out, opacity 0.18s ease-out, filter 0.18s ease-out, box-shadow 0.18s ease-out;
+      transition: transform 0.15s ease-out, opacity 0.15s ease-out, box-shadow 0.15s ease-out;
+      will-change: transform, opacity;
     }
     .wide-carousel-scroll .wide-card.is-active {
-      transform: scale(1.0);
-      opacity: 1; filter: none;
+      transform: scale(1.0); opacity: 1;
       box-shadow: 0 20px 60px rgba(0,0,0,0.55), 0 0 36px rgba(195,255,0,0.14);
     }
+    /* Showcase carousel-item — keep filter for cinematic look, slightly faster */
     .carousel-item {
-      transform: scale(0.78);
-      opacity: 0.2;
+      transform: scale(0.78); opacity: 0.2;
       filter: blur(3px) brightness(0.25) saturate(0.2);
-      transition: transform 0.2s ease-out, opacity 0.2s ease-out, filter 0.2s ease-out, box-shadow 0.2s ease-out;
+      transition: transform 0.15s ease-out, opacity 0.15s ease-out, filter 0.15s ease-out, box-shadow 0.15s ease-out;
+      will-change: transform, opacity, filter;
     }
     .carousel-item.is-active {
-      transform: scale(1.05);
-      opacity: 1;
+      transform: scale(1.05); opacity: 1;
       filter: brightness(1.04) saturate(1.05) blur(0);
-      box-shadow: 0 28px 80px rgba(0,0,0,0.65), 0 0 50px rgba(195,255,0,0.10), 0 0 100px rgba(195,255,0,0.05);
+      box-shadow: 0 28px 80px rgba(0,0,0,0.65), 0 0 50px rgba(195,255,0,0.10);
     }
 
     @media (max-width: 1024px) {
@@ -881,6 +881,9 @@ class NativeCarousel {
     if (this.items[0]) {
       this.items[0].classList.add('is-active');
       this._syncUI(0);
+      // Auto-play first item
+      var firstLazy = this.items[0].querySelector('.yt-lazy[data-vid]');
+      if (firstLazy) { var _self = this; setTimeout(function() { loadYT(firstLazy); }, 200); }
     }
 
     var self = this;
@@ -888,6 +891,9 @@ class NativeCarousel {
       self.items.forEach(function(el) { el.classList.remove('is-active'); });
       self.items[idx].classList.add('is-active');
       self._syncUI(idx);
+      // Auto-play video on active item
+      var lazy = self.items[idx].querySelector('.yt-lazy[data-vid]');
+      if (lazy) loadYT(lazy);
     });
   }
 
@@ -937,6 +943,9 @@ class SecCarousel {
     if (this.items[0]) {
       this.items[0].classList.add('is-active');
       this._syncUI(0);
+      // Auto-play first item
+      var firstLazy = this.items[0].querySelector('.yt-lazy[data-vid]');
+      if (firstLazy) { setTimeout(function() { loadYT(firstLazy); }, 300); }
     }
 
     var self = this;
@@ -944,6 +953,9 @@ class SecCarousel {
       self.items.forEach(function(el) { el.classList.remove('is-active'); });
       self.items[idx].classList.add('is-active');
       self._syncUI(idx);
+      // Auto-play video on active item
+      var lazy = self.items[idx].querySelector('.yt-lazy[data-vid]');
+      if (lazy) loadYT(lazy);
     });
   }
 
