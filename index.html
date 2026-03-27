@@ -30,7 +30,7 @@
     .nav-links a:hover { color: var(--primary); }
     .nav-cta { justify-self: end; display: inline-block; padding: 0.55rem 1.4rem; border: 1px solid rgba(195,255,0,0.35); border-radius: 100px; color: var(--primary); font-size: 0.78rem; font-weight: 700; letter-spacing: 0.5px; text-decoration: none; text-transform: uppercase; transition: all 0.25s var(--ease); white-space: nowrap; }
     .nav-cta:hover { background: rgba(195,255,0,0.1); border-color: var(--primary); box-shadow: 0 0 18px rgba(195,255,0,0.2); }
-    .nav-hamburger { display: flex; flex-direction: column; gap: 5px; cursor: pointer; justify-self: end; padding: 8px 10px; background: none; border: 1px solid rgba(195,255,0,0.15); border-radius: 8px; transition: border-color 0.2s, background 0.2s; }
+    .nav-hamburger { display: none; flex-direction: column; gap: 5px; cursor: pointer; justify-self: end; padding: 8px 10px; background: none; border: 1px solid rgba(195,255,0,0.15); border-radius: 8px; transition: border-color 0.2s, background 0.2s; }
     .nav-hamburger span { display: block; width: 22px; height: 2px; background: var(--primary); border-radius: 2px; }
     .nav-hamburger:hover { border-color: var(--primary); background: rgba(195,255,0,0.07); }
     .nav-mobile { display: none; position: fixed; inset: 0; background: rgba(5,5,8,0.98); backdrop-filter: blur(32px); -webkit-backdrop-filter: blur(32px); z-index: 999; flex-direction: column; align-items: center; justify-content: center; gap: 0; }
@@ -361,6 +361,7 @@
     @media (max-width: 768px) {
       :root { --item-w: 220px; }
       .nav-links, .nav-cta { display: none; }
+      .nav-hamburger { display: flex; }
       .nav-inner { grid-template-columns: 1fr auto; }
       .hero { padding: 5.5rem 5% 3rem; min-height: auto; }
       .hero h1 { font-size: clamp(2.2rem, 10vw, 3.5rem); white-space: normal; }
@@ -382,7 +383,7 @@
       .portfolio-section { padding: 3rem 5%; }
       .float-contact { bottom: 1.2rem; }
       .float-contact a { padding: 0.6rem 1.4rem; font-size: 0.72rem; }
-      .contact-link-email { width: 100%; justify-content: center; }
+      .contact-link-email { flex-basis: 100%; justify-content: center; max-width: calc(50% - 0.6rem); }
     }
 
     @media (min-width: 1025px) {
