@@ -81,6 +81,7 @@
     .showcase-header { max-width: 1400px; margin: 0 auto; padding: 0 5%; text-align: center; margin-bottom: 2rem; }
 
     .carousel-block { margin-bottom: 0.5rem; }
+
     .carousel-label-row { text-align: center; margin-bottom: 1.2rem; }
     .carousel-label-pill { display: inline-block; font-size: 0.65rem; font-weight: 700; letter-spacing: 4px; text-transform: uppercase; color: var(--muted); border: 1px solid rgba(255,255,255,0.07); border-radius: 100px; padding: 0.35rem 1.1rem; }
 
@@ -107,7 +108,7 @@
       background: var(--card);
       border-radius: var(--item-r);
       overflow: hidden;
-      border: 1px solid rgba(255,255,255,0.04);
+      border: 1px solid rgba(195,255,0,0.07);
       scroll-snap-align: center;
       scroll-snap-stop: normal;
     }
@@ -347,7 +348,8 @@
     .carousel-item.is-active {
       transform: scale(1.05); opacity: 1;
       filter: brightness(1.04) saturate(1.05) blur(0);
-      box-shadow: 0 28px 80px rgba(0,0,0,0.65), 0 0 50px rgba(195,255,0,0.10);
+      border-color: rgba(195,255,0,0.45) !important;
+      box-shadow: 0 20px 60px rgba(0,0,0,0.6), 0 0 40px rgba(195,255,0,0.18);
     }
 
     @media (max-width: 1024px) {
@@ -380,6 +382,7 @@
       .portfolio-section { padding: 3rem 5%; }
       .float-contact { bottom: 1.2rem; }
       .float-contact a { padding: 0.6rem 1.4rem; font-size: 0.72rem; }
+      .contact-link-email { width: 100%; justify-content: center; }
     }
 
     @media (min-width: 1025px) {
@@ -600,7 +603,7 @@
   <div class="relations-title reveal" style="margin-top:3.5rem;">Creators &amp; Brands I've Collaborated With</div>
   <div id="clients">
   <!-- creators &amp; brands -->
-  <div class="carousel-block">
+  <div class="carousel-block carousel-block-framed">
     <div class="carousel-label-row"><span class="carousel-label-pill">creators &amp; brands</span></div>
     <div class="carousel-wrap">
       <div class="carousel-scroll" id="scroll-clients">
@@ -625,7 +628,7 @@
   </div>
 
   <!-- Row 1 -->
-  <div class="carousel-block">
+  <div class="carousel-block carousel-block-framed">
     <div class="carousel-label-row"><span class="carousel-label-pill">short-form content</span></div>
     <div class="carousel-wrap">
       <div class="carousel-scroll" id="scroll-main">
@@ -647,7 +650,7 @@
   </div>
 
   <!-- Row 2 -->
-  <div class="carousel-block">
+  <div class="carousel-block carousel-block-framed">
     <div class="carousel-label-row"><span class="carousel-label-pill">motion graphic</span></div>
     <div class="carousel-wrap">
       <div class="carousel-scroll" id="scroll-motion">
@@ -666,7 +669,7 @@
   </div>
 
   <!-- Row 3 -->
-  <div class="carousel-block">
+  <div class="carousel-block carousel-block-framed">
     <div class="carousel-label-row"><span class="carousel-label-pill">video ads</span></div>
     <div class="carousel-wrap">
       <div class="carousel-scroll" id="scroll-ads">
@@ -706,7 +709,7 @@
 <!-- Long-form Education -->
 <div class="section-full" style="padding-left:0;padding-right:0;">
   <!-- long-form education -->
-  <div class="carousel-block">
+  <div class="carousel-block carousel-block-framed">
     <div class="carousel-label-row"><span class="carousel-label-pill">long-form education</span></div>
     <div class="carousel-wrap">
       <div class="carousel-scroll" id="scroll-edu">
@@ -725,7 +728,7 @@
 <!-- Fun & BTS -->
 <div class="section-full" style="padding-left:0;padding-right:0;">
   <!-- fun &amp; behind the scene -->
-  <div class="carousel-block">
+  <div class="carousel-block carousel-block-framed">
     <div class="carousel-label-row"><span class="carousel-label-pill">fun &amp; behind the scene</span></div>
     <div class="carousel-wrap">
       <div class="carousel-scroll" id="scroll-bts">
@@ -824,8 +827,8 @@
     <p>Ready to create something cinematic? Let's collaborate and bring your vision to life.</p>
     <div class="contact-links">
       <a href="https://wa.me/6281243532553" target="_blank" class="contact-link">WhatsApp</a>
-      <a href="/cdn-cgi/l/email-protection#365f5b57525346435c57535852445776515b575f5a1855595b" class="contact-link">Email</a>
       <a href="https://instagram.com/imadevideo" target="_blank" class="contact-link">Instagram</a>
+      <a href="/cdn-cgi/l/email-protection#365f5b57525346435c57535852445776515b575f5a1855595b" class="contact-link contact-link-email">Email</a>
     </div>
   </div>
 </div>
