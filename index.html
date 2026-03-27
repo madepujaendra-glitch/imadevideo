@@ -115,6 +115,17 @@
 
     .item-thumb { width: 100%; aspect-ratio: 9/16; background: #000; overflow: hidden; }
     .item-thumb--wide { aspect-ratio: 16/9; }
+
+    /* Wide video carousels (edu, bts) — bigger items */
+    #scroll-edu, #scroll-bts {
+      --item-w: min(85vw, 640px);
+      padding-inline: calc((100% - min(85vw, 640px)) / 2);
+      scroll-padding-inline: calc((100% - min(85vw, 640px)) / 2);
+    }
+    #scroll-edu .carousel-item, #scroll-bts .carousel-item {
+      flex: 0 0 min(85vw, 640px);
+      width: min(85vw, 640px);
+    }
     .item-thumb iframe { display: block; width: 100%; height: 100%; border: 1px solid rgba(255,255,255,0.04); pointer-events: none; }
     .item-info { padding: 1.1rem 1.3rem 1.3rem; }
     .item-client { font-size: 0.68rem; font-weight: 700; letter-spacing: 1.2px; text-transform: uppercase; color: var(--primary); margin-bottom: 0.3rem; }
@@ -396,6 +407,15 @@
         --portfolio-w: 300px;
       }
       .hero-inner { grid-template-columns: 1.15fr 1fr; }
+      #scroll-edu, #scroll-bts {
+        --item-w: min(70vw, 860px);
+        padding-inline: calc((100% - min(70vw, 860px)) / 2);
+        scroll-padding-inline: calc((100% - min(70vw, 860px)) / 2);
+      }
+      #scroll-edu .carousel-item, #scroll-bts .carousel-item {
+        flex: 0 0 min(70vw, 860px);
+        width: min(70vw, 860px);
+      }
       .award-spotlight { grid-template-columns: 1.4fr 1fr; gap: 3rem; }
       .wide-row.two-col { grid-template-columns: 1fr 1fr; }
     }
