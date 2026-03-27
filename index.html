@@ -403,7 +403,7 @@
       .portfolio-section { padding: 3rem 5%; }
       .float-contact { bottom: 1.2rem; }
       .float-contact a { padding: 0.6rem 1.4rem; font-size: 0.72rem; }
-      .contact-link-email { flex-basis: 100%; justify-content: center; max-width: calc(50% - 0.6rem); }
+      .contact-link-email { flex-basis: calc(50% - 0.6rem); justify-content: center; }
     }
 
     @media (min-width: 1025px) {
@@ -416,6 +416,7 @@
         --portfolio-w: 300px;
       }
       .hero-inner { grid-template-columns: 1.15fr 1fr; }
+      .contact-link-email { flex-basis: auto; }
       #scroll-edu, #scroll-bts {
         --item-w: min(70vw, 860px);
         padding-inline: calc((100% - min(70vw, 860px)) / 2);
