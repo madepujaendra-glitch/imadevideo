@@ -116,6 +116,15 @@
     .item-thumb { width: 100%; aspect-ratio: 9/16; background: #000; overflow: hidden; }
     .item-thumb--wide { aspect-ratio: 16/9; }
 
+    /* Wide video carousels (edu, bts) — no side gradients */
+    #scroll-edu + .carousel-wrap::before, #scroll-edu + .carousel-wrap::after,
+    #scroll-bts + .carousel-wrap::before, #scroll-bts + .carousel-wrap::after { display: none; }
+    /* The carousel-wrap wraps the scroll, so target parent */
+    .carousel-block:has(#scroll-edu) .carousel-wrap::before,
+    .carousel-block:has(#scroll-edu) .carousel-wrap::after,
+    .carousel-block:has(#scroll-bts) .carousel-wrap::before,
+    .carousel-block:has(#scroll-bts) .carousel-wrap::after { display: none; }
+
     /* Wide video carousels (edu, bts) — bigger items */
     #scroll-edu, #scroll-bts {
       --item-w: min(72vw, 400px);
@@ -416,6 +425,8 @@
         flex: 0 0 min(70vw, 860px);
         width: min(70vw, 860px);
       }
+      #scroll-edu ~ .carousel-wrap::before, #scroll-edu ~ .carousel-wrap::after,
+      #scroll-bts ~ .carousel-wrap::before, #scroll-bts ~ .carousel-wrap::after { display: none; }
       .award-spotlight { grid-template-columns: 1.4fr 1fr; gap: 3rem; }
       .wide-row.two-col { grid-template-columns: 1fr 1fr; }
     }
