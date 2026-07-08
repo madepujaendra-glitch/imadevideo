@@ -759,10 +759,10 @@
         </a>
       </div>
       <div class="hero-stats">
-        <div><div class="hero-stat-num">100+</div><div class="hero-stat-label">Clients</div></div>
-        <div><div class="hero-stat-num">3+</div><div class="hero-stat-label">Years</div></div>
-        <div><div class="hero-stat-num">1K+</div><div class="hero-stat-label">Videos</div></div>
-        <div><div class="hero-stat-num">1M+</div><div class="hero-stat-label">Views</div></div>
+        <div><div class="hero-stat-num" data-count-target="100">0+</div><div class="hero-stat-label">Clients</div></div>
+        <div><div class="hero-stat-num" data-count-target="3">0+</div><div class="hero-stat-label">Years</div></div>
+        <div><div class="hero-stat-num" data-count-target="1000">0+</div><div class="hero-stat-label">Videos</div></div>
+        <div><div class="hero-stat-num" data-count-target="1000000">0+</div><div class="hero-stat-label">Views</div></div>
       </div>
     </div>
     <div class="hero-video reveal">
@@ -1908,6 +1908,46 @@ document.addEventListener('DOMContentLoaded', function() {
   }, 2000);
 
 
+})();
+
+/* ── Hero stat count-up animation ──────────────────────── */
+(function() {
+  if (!window.IntersectionObserver) return;
+
+  function formatCount(n) {
+    if (n >= 1000000) return Math.round(n / 1000000) + 'M';
+    if (n >= 1000) return Math.round(n / 1000) + 'K';
+    return Math.round(n);
+  }
+
+  function animateCount(el, target, duration) {
+    var startTime = null;
+    function step(ts) {
+      if (!startTime) startTime = ts;
+      var progress = Math.min((ts - startTime) / duration, 1);
+      var eased = 1 - Math.pow(1 - progress, 3);
+      var current = eased * target;
+      el.textContent = formatCount(current) + '+';
+      if (progress < 1) requestAnimationFrame(step);
+      else el.textContent = formatCount(target) + '+';
+    }
+    requestAnimationFrame(step);
+  }
+
+  var statsEl = document.querySelector('.hero-stats');
+  if (!statsEl) return;
+  var statObs = new IntersectionObserver(function(entries) {
+    entries.forEach(function(e) {
+      if (e.isIntersecting) {
+        document.querySelectorAll('.hero-stat-num[data-count-target]').forEach(function(el, i) {
+          var target = parseInt(el.dataset.countTarget, 10);
+          setTimeout(function() { animateCount(el, target, 1300); }, i * 100);
+        });
+        statObs.unobserve(e.target);
+      }
+    });
+  }, { threshold: 0.4 });
+  statObs.observe(statsEl);
 })();
 
 /* ── Staggered card entrance (problem / what-you-get / checklist) ──── */
