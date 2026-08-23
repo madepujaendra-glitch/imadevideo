@@ -25,6 +25,11 @@
     }
     *, *::before, *::after { margin: 0; padding: 0; box-sizing: border-box; }
     html { scroll-behavior: smooth; overflow-x: hidden; }
+    /* Lenis smooth scroll */
+    html.lenis, html.lenis body { height: auto; }
+    .lenis.lenis-smooth { scroll-behavior: auto !important; }
+    .lenis.lenis-smooth [data-lenis-prevent] { overscroll-behavior: contain; }
+    .lenis.lenis-stopped { overflow: hidden; }
     body { font-family: 'Manrope', system-ui, sans-serif; background: var(--bg); color: var(--text); line-height: 1.6; overflow-x: hidden; }
     /* Unify all type to Manrope (overrides legacy inline Poppins/Montserrat); serif accents stay Instrument Serif */
     body, body *:not(.serif):not(.rotator-word) { font-family: 'Manrope', system-ui, -apple-system, Arial, sans-serif !important; }
@@ -357,9 +362,14 @@
     footer p { color: var(--muted); font-size: 0.84rem; line-height: 2; }
 
     /* REVEAL */
-    .reveal { opacity: 1; transform: none; transition: opacity 0.5s cubic-bezier(0.33,1,0.68,1), transform 0.5s cubic-bezier(0.33,1,0.68,1); will-change: opacity, transform; }
-    .js-reveal-ready .reveal { opacity: 0; transform: translateY(18px); }
+    .reveal { opacity: 1; transform: none; transition: opacity 0.85s cubic-bezier(0.16,1,0.3,1), transform 0.85s cubic-bezier(0.16,1,0.3,1); will-change: opacity, transform; }
+    .js-reveal-ready .reveal { opacity: 0; transform: translateY(40px); }
     .js-reveal-ready .reveal.visible { opacity: 1; transform: translateY(0); }
+    /* Staggered cascade for grouped items (Services / Benefits / Process) */
+    .svc-row.reveal:nth-child(2), .proc-step.reveal:nth-child(2) { transition-delay: 0.09s; }
+    .svc-row.reveal:nth-child(3), .proc-step.reveal:nth-child(3) { transition-delay: 0.18s; }
+    .ben-grid .ben-card.reveal:nth-child(2) { transition-delay: 0.1s; }
+    .ben-grid .ben-card.reveal:nth-child(3) { transition-delay: 0.2s; }
     @media (prefers-reduced-motion: reduce) {
       .reveal, .js-reveal-ready .reveal { opacity: 1 !important; transform: none !important; transition: none !important; }
     }
@@ -2731,6 +2741,46 @@ document.getElementById('nav-close').addEventListener('click', closeMobileMenu);
   }, 2600);
 })();
 
+</script>
+
+<!-- ── Lenis smooth scroll (premium momentum) ── -->
+<script src="https://unpkg.com/lenis@1.1.14/dist/lenis.min.js"></script>
+<script>
+(function(){
+  if (!window.Lenis) return;
+  if (window.matchMedia && window.matchMedia('(prefers-reduced-motion: reduce)').matches) return;
+  var lenis = new Lenis({
+    duration: 1.15,
+    easing: function(t){ return Math.min(1, 1.001 - Math.pow(2, -10 * t)); },
+    smoothWheel: true,
+    wheelMultiplier: 1,
+    touchMultiplier: 1.5
+  });
+  window.__lenis = lenis;
+  function raf(time){ lenis.raf(time); requestAnimationFrame(raf); }
+  requestAnimationFrame(raf);
+
+  /* Let overlay pages keep their own native inner scroll */
+  document.querySelectorAll('.overlay-page').forEach(function(p){ p.setAttribute('data-lenis-prevent', ''); });
+
+  /* Smooth in-page anchor jumps (Explore My Work, Scroll to Work, etc.) */
+  document.addEventListener('click', function(e){
+    var a = e.target.closest('a[href^="#"]');
+    if (!a) return;
+    var href = a.getAttribute('href');
+    if (!href || href.length < 2) return;               // "#" links (openPage) are left alone
+    var target = document.querySelector(href);
+    if (target){ e.preventDefault(); lenis.scrollTo(target, { offset: -20, duration: 1.25 }); }
+  });
+
+  /* Pause Lenis while an overlay page is open, resume when all are closed */
+  var _op = window.openPage, _cp = window.closePage;
+  if (typeof _op === 'function') window.openPage = function(id){ _op(id); lenis.stop(); };
+  if (typeof _cp === 'function') window.closePage = function(id){
+    _cp(id);
+    setTimeout(function(){ if (!document.querySelector('.overlay-page.is-open')) lenis.start(); }, 60);
+  };
+})();
 </script>
 
 </body>
