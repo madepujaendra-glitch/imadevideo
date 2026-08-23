@@ -4,7 +4,9 @@
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
   <title>imadevideo, AI Driven Video Editor &amp; Cinematic Storyteller</title>
-  <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500;600;700;800&family=Montserrat:wght@400;500;600;700;800;900&display=swap" rel="stylesheet" />
+  <link rel="preconnect" href="https://fonts.googleapis.com" />
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+  <link href="https://fonts.googleapis.com/css2?family=Manrope:wght@300;400;500;600;700;800&family=Instrument+Serif:ital@0;1&display=swap" rel="stylesheet" />
   <style>
     :root {
       --primary:  #C3FF00;
@@ -17,11 +19,16 @@
       --item-w:   272px;
       --item-r:   20px;
       --ease:     cubic-bezier(0.25, 0.46, 0.45, 0.94);
-      --font-display: 'Helvetica Neue', Helvetica, Arial, sans-serif;
+      --font-display: 'Manrope', system-ui, -apple-system, Arial, sans-serif;
+      --font-serif: 'Instrument Serif', Georgia, 'Times New Roman', serif;
+      --primary-glow: rgba(195,255,0,0.35);
     }
     *, *::before, *::after { margin: 0; padding: 0; box-sizing: border-box; }
-    html { scroll-behavior: smooth; }
-    body { font-family: 'Poppins', sans-serif; background: var(--bg); color: var(--text); line-height: 1.6; overflow-x: hidden; }
+    html { scroll-behavior: smooth; overflow-x: hidden; }
+    body { font-family: 'Manrope', system-ui, sans-serif; background: var(--bg); color: var(--text); line-height: 1.6; overflow-x: hidden; }
+    /* Unify all type to Manrope (overrides legacy inline Poppins/Montserrat); serif accents stay Instrument Serif */
+    body, body *:not(.serif):not(.rotator-word) { font-family: 'Manrope', system-ui, -apple-system, Arial, sans-serif !important; }
+    .serif, .rotator-word { font-family: var(--font-serif) !important; font-style: italic !important; font-weight: 400 !important; }
 
     /* NAV */
     nav { position: fixed; inset: 0 0 auto 0; background: rgba(5,5,8,0.93); backdrop-filter: blur(24px); -webkit-backdrop-filter: blur(24px); padding: 1.1rem 5%; z-index: 1000; }
@@ -160,8 +167,8 @@
     .stagger-parent .relation-item,
     .stagger-parent .price-card,
     .stagger-parent .bundle-card {
-      opacity: 0; transform: scale(0.85);
-      transition: opacity 0.4s ease-out, transform 0.5s cubic-bezier(0.34, 1.4, 0.64, 1);
+      opacity: 0; transform: translateY(30px);
+      transition: opacity 0.6s cubic-bezier(0.22,0.61,0.36,1), transform 0.7s cubic-bezier(0.22,0.61,0.36,1);
     }
     .stagger-parent.in-view .problem-card,
     .stagger-parent.in-view .wyg-card,
@@ -350,9 +357,12 @@
     footer p { color: var(--muted); font-size: 0.84rem; line-height: 2; }
 
     /* REVEAL */
-    .reveal { opacity: 1; transform: none; transition: opacity 0.45s ease-out, transform 0.55s cubic-bezier(0.34, 1.4, 0.64, 1); }
-    .js-reveal-ready .reveal { opacity: 0; transform: scale(0.88); }
-    .js-reveal-ready .reveal.visible { opacity: 1; transform: scale(1); }
+    .reveal { opacity: 1; transform: none; transition: opacity 0.5s cubic-bezier(0.33,1,0.68,1), transform 0.5s cubic-bezier(0.33,1,0.68,1); will-change: opacity, transform; }
+    .js-reveal-ready .reveal { opacity: 0; transform: translateY(18px); }
+    .js-reveal-ready .reveal.visible { opacity: 1; transform: translateY(0); }
+    @media (prefers-reduced-motion: reduce) {
+      .reveal, .js-reveal-ready .reveal { opacity: 1 !important; transform: none !important; transition: none !important; }
+    }
 
 
 
@@ -558,7 +568,9 @@
 
     @media (max-width: 768px) {
       :root { --item-w: 220px; }
-      .nav-inner { grid-template-columns: unset; }
+      nav { padding: 0.8rem 3% !important; }
+      .nav-inner { grid-template-columns: unset; padding: 0.45rem 0.55rem 0.45rem 1.1rem; gap: 0.6rem; }
+      .logo { font-size: 1.15rem; }
       .hero { padding: 5.5rem 5% 3rem; min-height: auto; }
       .hero h1 { font-size: clamp(2.2rem, 10vw, 3.5rem); white-space: normal; }
       .hero-desc { padding: 1.2rem 1.4rem; font-size: 0.88rem; margin-bottom: 1.5rem; }
@@ -661,7 +673,357 @@
 
     @media (max-width: 480px) {
       .page-btn { min-width: 100%; }
+      nav { padding: 0.7rem 2.5% !important; }
+      .nav-inner { padding: 0.4rem 0.5rem 0.4rem 1rem; }
+      .logo { font-size: 1.05rem; }
     }
+
+    /* ═══════════════════════════════════════════════════════════
+       EDITORIAL RESTYLE LAYER — serif accents, floating pill nav,
+       glowing CTA, hero doodles, custom cursor.  (BassCreative-inspired,
+       keeping imadevideo's lime identity.)
+    ═══════════════════════════════════════════════════════════ */
+
+    /* Serif italic accent used inside sans-serif headlines */
+    .serif {
+      font-family: var(--font-serif);
+      font-style: italic;
+      font-weight: 500;
+      letter-spacing: 0;
+      text-transform: none;
+    }
+    .serif.tint { color: var(--primary); }
+
+    /* Floating pill navigation */
+    nav {
+      background: transparent !important;
+      backdrop-filter: none !important;
+      -webkit-backdrop-filter: none !important;
+      padding: 1rem 4% !important;
+    }
+    .nav-inner {
+      background: rgba(12,12,20,0.72);
+      backdrop-filter: blur(22px); -webkit-backdrop-filter: blur(22px);
+      border: 1px solid rgba(255,255,255,0.08);
+      border-radius: 100px;
+      padding: 0.5rem 0.6rem 0.5rem 1.5rem;
+      box-shadow: 0 10px 34px rgba(0,0,0,0.45), inset 0 1px 0 rgba(255,255,255,0.05);
+    }
+
+    /* Glowing filled primary CTA */
+    .hero-cta {
+      background: linear-gradient(135deg, #e3ff66 0%, var(--primary) 55%, #b6f000 100%);
+      color: #06060a !important;
+      border: none;
+      border-radius: 100px;
+      padding: 0.95rem 0.95rem 0.95rem 2rem;
+      font-weight: 700;
+      letter-spacing: 1.5px;
+      box-shadow: 0 10px 34px rgba(195,255,0,0.28), inset 0 0 0 1px rgba(255,255,255,0.25);
+    }
+    .hero-cta::after {
+      content: '→';
+      display: inline-flex; align-items: center; justify-content: center;
+      width: 30px; height: 30px; margin-left: 1rem;
+      border-radius: 50%;
+      background: rgba(6,6,10,0.16);
+      font-size: 0.95rem; font-weight: 700;
+      transition: transform 0.3s var(--ease);
+    }
+    .hero-cta:hover {
+      background: linear-gradient(135deg, #ecff8f 0%, #d4ff3a 55%, #c3ff00 100%);
+      transform: translateY(-3px);
+      box-shadow: 0 16px 46px rgba(195,255,0,0.42);
+    }
+    .hero-cta:hover::after { transform: translateX(4px); }
+
+    /* Hero editorial tagline with rotating serif word */
+    .hero-tagline {
+      font-family: var(--font-display);
+      font-weight: 800;
+      font-size: clamp(1.35rem, 3vw, 2.15rem);
+      line-height: 1.15;
+      letter-spacing: -0.5px;
+      color: var(--text);
+      margin: 0.2rem 0 1.7rem;
+    }
+    .rotator {
+      display: inline-block;
+      position: relative;
+      min-width: 1ch;
+    }
+    .rotator-word {
+      font-family: var(--font-serif);
+      font-style: italic;
+      font-weight: 500;
+      color: var(--primary);
+      display: inline-block;
+      transition: opacity 0.32s var(--ease), transform 0.32s var(--ease);
+      text-shadow: 0 0 26px rgba(195,255,0,0.28);
+    }
+    .rotator-word.swap { opacity: 0; transform: translateY(8px); }
+
+    /* Basquiat-style hand-drawn doodles flanking the hero */
+    .hero-doodle {
+      position: absolute;
+      stroke: var(--primary);
+      fill: none;
+      opacity: 0.42;
+      pointer-events: none;
+      z-index: 0;
+    }
+    .hero-doodle--crown { top: 15%; right: 5%; width: 74px; height: auto; }
+    .hero-doodle--squiggle { top: 24%; left: 3%; width: 62px; height: auto; }
+    @media (max-width: 900px) { .hero-doodle { display: none; } }
+
+    /* Custom cursor ring (pointer devices only) */
+    .cursor-ring {
+      position: fixed; top: 0; left: 0;
+      width: 30px; height: 30px;
+      border: 1.5px solid var(--primary);
+      border-radius: 50%;
+      transform: translate(-50%, -50%);
+      pointer-events: none;
+      z-index: 99999;
+      opacity: 0;
+      transition: width 0.18s var(--ease), height 0.18s var(--ease),
+                  opacity 0.25s, background 0.18s;
+      will-change: transform;
+    }
+    .cursor-ring.active { opacity: 0.9; }
+    .cursor-ring.hovering {
+      width: 52px; height: 52px;
+      background: rgba(195,255,0,0.08);
+    }
+    @media (hover: none), (pointer: coarse) { .cursor-ring { display: none !important; } }
+
+    @media (prefers-reduced-motion: reduce) {
+      .rotator-word { transition: none; }
+      .cursor-ring { display: none !important; }
+    }
+
+    /* ═══════════════════════════════════════════════════════════
+       BASSCREATIVE-STYLE SECTIONS  (lime identity)
+       Services · Why Choose Me · Testimonials · Process · Start a project
+    ═══════════════════════════════════════════════════════════ */
+    .bc-section { padding: 5rem 5%; max-width: 1280px; margin: 0 auto; }
+    .bc-badge-wrap { text-align: center; margin-bottom: 1.4rem; }
+    .bc-badge {
+      display: inline-block;
+      font-family: 'Poppins', sans-serif;
+      font-size: 0.78rem; font-weight: 500; letter-spacing: 0.4px;
+      color: var(--primary);
+      border: 1px solid rgba(195,255,0,0.38);
+      background: rgba(195,255,0,0.05);
+      border-radius: 100px; padding: 0.42rem 1.25rem;
+    }
+    .bc-headline {
+      font-family: var(--font-display);
+      font-weight: 800;
+      font-size: clamp(2.1rem, 5.6vw, 4.3rem);
+      line-height: 1.02; letter-spacing: -1.5px;
+      text-align: center; color: var(--text);
+      text-wrap: balance; margin: 0 auto;
+      max-width: 16ch;
+    }
+    .bc-lead { text-align: center; color: var(--muted); font-size: 0.98rem; line-height: 1.8; max-width: 620px; margin: 1.2rem auto 0; }
+
+    /* Services — numbered rows */
+    .svc-list { max-width: 1180px; margin: 3.2rem auto 0; border-top: 1px solid var(--hairline); }
+    .svc-row {
+      display: grid; grid-template-columns: 3rem minmax(190px, 1fr) 1.6fr;
+      gap: 2rem; align-items: start;
+      padding: 2.1rem 1rem; border-bottom: 1px solid var(--hairline);
+      transition: background 0.3s var(--ease);
+    }
+    .svc-row:hover { background: rgba(195,255,0,0.025); }
+    .svc-num { font-size: 0.78rem; font-weight: 600; color: var(--primary); letter-spacing: 1px; padding-top: 0.4rem; }
+    .svc-title { font-family: 'Poppins', sans-serif; font-weight: 600; font-size: clamp(1.15rem, 2vw, 1.45rem); color: var(--text); letter-spacing: -0.3px; }
+    .svc-desc { color: var(--muted); font-size: 0.95rem; line-height: 1.7; max-width: 48ch; }
+    @media (max-width: 760px) {
+      .svc-row { grid-template-columns: 2.2rem 1fr; gap: 0.6rem 1rem; padding: 1.6rem 0.4rem; }
+      .svc-desc { grid-column: 2 / -1; margin-top: 0.5rem; }
+    }
+
+    /* Why Choose Me — glowing cards with numbered badge */
+    .ben-grid { display: grid; grid-template-columns: repeat(3, 1fr); gap: 1.4rem; max-width: 1200px; margin: 3.2rem auto 0; }
+    .ben-card {
+      position: relative; overflow: hidden;
+      background: linear-gradient(180deg, rgba(22,22,32,0.62), rgba(12,12,20,0.42));
+      border: 1px solid rgba(255,255,255,0.06);
+      border-radius: 22px; padding: 2.2rem 2rem 2.6rem;
+      transition: transform 0.4s var(--ease), border-color 0.4s, box-shadow 0.4s;
+    }
+    .ben-card::after {
+      content: ''; position: absolute; left: 50%; bottom: -45%;
+      transform: translateX(-50%); width: 78%; height: 62%;
+      background: radial-gradient(ellipse at center, rgba(195,255,0,0.12), transparent 70%);
+      pointer-events: none; opacity: 0.7;
+    }
+    .ben-card:hover { transform: translateY(-6px); border-color: rgba(195,255,0,0.26); box-shadow: 0 26px 60px rgba(0,0,0,0.4), 0 0 42px rgba(195,255,0,0.07); }
+    .ben-badge {
+      position: relative; z-index: 1;
+      width: 62px; height: 62px; border-radius: 50%;
+      display: flex; align-items: center; justify-content: center;
+      font-weight: 700; font-size: 0.85rem; color: var(--text);
+      background: radial-gradient(circle at 32% 30%, rgba(44,44,60,0.95), rgba(14,14,22,0.95));
+      border: 1px solid rgba(195,255,0,0.32);
+      box-shadow: inset 0 0 22px rgba(195,255,0,0.07);
+      margin-bottom: 4.5rem;
+    }
+    .ben-title { position: relative; z-index: 1; font-family: 'Poppins', sans-serif; font-weight: 600; font-size: 1.22rem; margin-bottom: 0.9rem; color: var(--text); }
+    .ben-desc { position: relative; z-index: 1; color: var(--muted); font-size: 0.92rem; line-height: 1.75; }
+    @media (max-width: 860px) { .ben-grid { grid-template-columns: 1fr; } .ben-badge { margin-bottom: 2rem; } }
+
+    /* Process — horizontal timeline */
+    .proc-wrap { max-width: 1200px; margin: 3.6rem auto 0; position: relative; }
+    .proc-line { position: absolute; top: 6px; left: 4%; right: 4%; height: 1px; background: linear-gradient(90deg, rgba(242,240,234,0.03), rgba(242,240,234,0.22) 12%, rgba(242,240,234,0.22) 88%, rgba(242,240,234,0.03)); }
+    .proc-grid { display: grid; grid-template-columns: repeat(3, 1fr); gap: 2.4rem; position: relative; }
+    .proc-step { padding-right: 1.4rem; }
+    .proc-dot { width: 13px; height: 13px; border-radius: 50%; background: var(--primary); box-shadow: 0 0 14px rgba(195,255,0,0.55); margin-bottom: 2.6rem; }
+    .proc-num { font-size: 0.78rem; font-weight: 600; color: var(--primary); letter-spacing: 1px; margin-bottom: 1rem; }
+    .proc-title { font-family: 'Poppins', sans-serif; font-weight: 600; font-size: 1.2rem; margin-bottom: 0.7rem; color: var(--text); }
+    .proc-desc { color: var(--muted); font-size: 0.92rem; line-height: 1.7; max-width: 36ch; }
+    @media (max-width: 760px) {
+      .proc-wrap { padding-left: 1.6rem; }
+      .proc-grid { grid-template-columns: 1fr; gap: 2.4rem; }
+      .proc-line { display: block; top: 6px; bottom: 6px; left: 6px; right: auto; width: 2px; height: auto;
+        background: linear-gradient(180deg, transparent, rgba(242,240,234,0.22) 5%, rgba(242,240,234,0.22) 95%, transparent); }
+      .proc-dot { margin-left: -1.6rem; margin-bottom: 1rem; }
+    }
+
+    /* Testimonials — chat bubbles (masonry) */
+    .tst-grid { display: flex; flex-wrap: wrap; justify-content: center; align-items: stretch; gap: 1.4rem; max-width: 1180px; margin: 3.2rem auto 0; }
+    .chat-card { flex: 0 1 calc((100% - 2.8rem) / 3); display: flex; flex-direction: column; background: linear-gradient(180deg, rgba(20,20,30,0.72), rgba(12,12,20,0.55)); border: 1px solid rgba(255,255,255,0.07); border-radius: 20px; padding: 1.6rem; transition: transform 0.4s var(--ease), border-color 0.4s, box-shadow 0.4s; }
+    .chat-card:hover { transform: translateY(-5px); border-color: rgba(195,255,0,0.24); box-shadow: 0 22px 50px rgba(0,0,0,0.4), 0 0 30px rgba(195,255,0,0.05); }
+    .chat-head { display: flex; align-items: center; gap: 0.75rem; margin-bottom: 1rem; }
+    .chat-avatar { width: 42px; height: 42px; border-radius: 50%; overflow: hidden; background: linear-gradient(135deg, #e3ff66, var(--primary)); color: #06060a; font-weight: 800; display: flex; align-items: center; justify-content: center; font-size: 0.85rem; flex-shrink: 0; }
+    .chat-name { font-size: 0.9rem; font-weight: 600; color: var(--text); line-height: 1.25; }
+    .chat-handle { font-size: 0.75rem; color: var(--muted); }
+    .chat-stars { color: var(--primary); font-size: 0.9rem; letter-spacing: 3px; margin-bottom: 0.85rem; }
+    .chat-bubble { font-size: 0.94rem; line-height: 1.72; color: rgba(240,240,240,0.9); }
+    .chat-time { display: flex; align-items: center; justify-content: flex-end; gap: 4px; font-size: 0.7rem; color: var(--muted); margin-top: auto; padding-top: 1.1rem; }
+    .chat-time .ticks { color: var(--primary); letter-spacing: -2px; }
+    @media (max-width: 900px) { .chat-card { flex-basis: calc((100% - 1.4rem) / 2); } }
+    @media (max-width: 560px) { .chat-card { flex-basis: 100%; } }
+
+    /* Start a project — brief form */
+    .spf { display: grid; grid-template-columns: 0.9fr 1.15fr; gap: 3rem; max-width: 1200px; margin: 0 auto; align-items: start; }
+    .spf-left { position: sticky; top: 6rem; }
+    .spf-badge-wrap { text-align: left; margin-bottom: 1.3rem; }
+    .spf-headline { font-family: var(--font-display); font-weight: 800; font-size: clamp(2rem, 4.6vw, 3.5rem); line-height: 1.04; letter-spacing: -1px; color: var(--text); margin: 0 0 1.3rem; }
+    .spf-sub { color: var(--muted); font-size: 0.95rem; line-height: 1.85; max-width: 42ch; }
+    .spf-card { background: rgba(14,14,22,0.6); border: 1px solid rgba(255,255,255,0.07); border-radius: 22px; padding: 2rem; }
+    .spf-grid2 { display: grid; grid-template-columns: 1fr 1fr; gap: 1.1rem; }
+    .spf-field { margin-bottom: 1.1rem; }
+    .spf-label { display: block; font-size: 0.74rem; color: var(--muted); margin-bottom: 0.5rem; letter-spacing: 0.3px; }
+    .spf-input, .spf-select, .spf-textarea {
+      width: 100%; background: rgba(8,8,14,0.6);
+      border: 1px solid rgba(255,255,255,0.1); border-radius: 12px;
+      padding: 0.85rem 1rem; color: var(--text);
+      font-family: 'Poppins', sans-serif; font-size: 0.9rem;
+      transition: border-color 0.2s, box-shadow 0.2s;
+    }
+    .spf-input:focus, .spf-select:focus, .spf-textarea:focus { outline: none; border-color: var(--primary); box-shadow: 0 0 0 3px rgba(195,255,0,0.12); }
+    .spf-input::placeholder, .spf-textarea::placeholder { color: rgba(112,110,104,0.85); }
+    .spf-select { appearance: none; -webkit-appearance: none; background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='12' height='8' viewBox='0 0 12 8' fill='none' stroke='%23C3FF00' stroke-width='2'%3E%3Cpath d='M1 1l5 5 5-5'/%3E%3C/svg%3E"); background-repeat: no-repeat; background-position: right 1rem center; padding-right: 2.4rem; cursor: pointer; }
+    .spf-select option { background: #0e0e18; color: var(--text); }
+    .spf-textarea { min-height: 120px; resize: vertical; }
+    .spf-btn { width: 100%; margin-top: 0.5rem; display: flex; align-items: center; justify-content: space-between; gap: 1rem; background: linear-gradient(135deg, #e3ff66 0%, var(--primary) 58%, #b6f000 100%); color: #06060a; border: none; border-radius: 100px; padding: 1rem 1.1rem 1rem 1.7rem; font-family: 'Poppins', sans-serif; font-weight: 700; font-size: 0.95rem; letter-spacing: 0.2px; cursor: pointer; box-shadow: 0 10px 34px rgba(195,255,0,0.28); transition: transform 0.25s var(--ease), box-shadow 0.25s; }
+    .spf-btn:hover { transform: translateY(-3px); box-shadow: 0 16px 46px rgba(195,255,0,0.42); }
+    .spf-btn .arrow { width: 32px; height: 32px; border-radius: 50%; background: rgba(6,6,10,0.16); display: flex; align-items: center; justify-content: center; font-size: 1rem; flex-shrink: 0; }
+    .spf-note { text-align: center; color: var(--muted); font-size: 0.78rem; margin-top: 1rem; }
+    @media (max-width: 860px) { .spf { grid-template-columns: 1fr; gap: 2rem; } .spf-left { position: static; } .spf-grid2 { grid-template-columns: 1fr; } .spf-badge-wrap, .spf-headline { text-align: left; } }
+
+    /* Collapsible Skills + Full Portfolio (revealed by a button in Project Showcase) */
+    .extra-toggle-wrap { text-align: center; padding: 0.5rem 5% 3rem; }
+    .extra-toggle-btn {
+      display: inline-flex; align-items: center; gap: 0.55rem;
+      font-family: 'Manrope', sans-serif; font-size: 0.78rem; font-weight: 700;
+      letter-spacing: 0.3px; color: var(--primary);
+      background: rgba(195,255,0,0.06); border: 1px solid rgba(195,255,0,0.4);
+      border-radius: 100px; padding: 0.6rem 1.5rem; cursor: pointer;
+      transition: background 0.25s var(--ease), border-color 0.25s, box-shadow 0.25s, transform 0.25s;
+    }
+    .extra-toggle-btn:hover { background: rgba(195,255,0,0.12); border-color: var(--primary); box-shadow: 0 0 22px rgba(195,255,0,0.18); transform: translateY(-2px); }
+    .extra-toggle-btn svg { width: 15px; height: 15px; transition: transform 0.3s var(--ease); }
+    .extra-toggle-btn.is-open svg { transform: rotate(180deg); }
+    .extra-collapsible { max-height: 0; overflow: hidden; opacity: 0; transition: max-height 0.65s var(--ease), opacity 0.5s ease; }
+    .extra-collapsible.is-open { max-height: 9000px; opacity: 1; overflow: visible; }
+
+    /* ── FAQ (accordion, two-column) ── */
+    .faq-wrap { display: grid; grid-template-columns: 0.85fr 1.15fr; gap: 3rem; max-width: 1200px; margin: 0 auto; align-items: start; }
+    .faq-left { position: sticky; top: 6rem; }
+    .faq-left .bc-badge-wrap, .faq-left .spf-headline { text-align: left; }
+    .faq-list { border-top: 1px solid var(--hairline); }
+    .faq-item { border-bottom: 1px solid var(--hairline); padding: 1.4rem 0.2rem; cursor: pointer; }
+    .faq-q { display: grid; grid-template-columns: 2.6rem 1fr auto; align-items: center; gap: 1rem; }
+    .faq-num { font-size: 0.78rem; font-weight: 600; color: var(--primary); letter-spacing: 1px; }
+    .faq-question { font-family: 'Manrope', sans-serif; font-weight: 600; font-size: 1.08rem; color: var(--text); letter-spacing: -0.2px; min-width: 0; overflow-wrap: break-word; }
+    .faq-icon-plus { width: 20px; text-align: center; font-size: 1.5rem; line-height: 1; color: var(--muted); transition: transform 0.32s var(--ease), color 0.32s; justify-self: end; }
+    .faq-item.open .faq-icon-plus { transform: rotate(135deg); color: var(--primary); }
+    .faq-item:hover .faq-question { color: var(--primary); }
+    .faq-a { max-height: 0; overflow: hidden; opacity: 0; transition: max-height 0.42s var(--ease), opacity 0.42s ease, margin-top 0.42s var(--ease); }
+    .faq-item.open .faq-a { max-height: 360px; opacity: 1; margin-top: 1rem; }
+    .faq-a p { color: var(--muted); font-size: 0.95rem; line-height: 1.75; padding: 0 2rem 0.2rem 3.6rem; }
+    @media (max-width: 860px) {
+      .faq-wrap { grid-template-columns: 1fr; gap: 2rem; } .faq-left { position: static; }
+      .faq-q { grid-template-columns: 2rem 1fr auto; gap: 0.7rem; }
+      .faq-question { font-size: 1rem; }
+      .faq-a p { padding-left: 2.7rem; padding-right: 0; }
+    }
+
+    /* ── Find me online + footer ── */
+    .fmo-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 1.2rem; max-width: 1200px; margin: 3rem auto 0; }
+    .fmo-card { display: flex; align-items: center; gap: 1rem; background: rgba(14,14,22,0.6); border: 1px solid rgba(255,255,255,0.07); border-radius: 18px; padding: 1.35rem 1.6rem; text-decoration: none; transition: transform 0.3s var(--ease), border-color 0.3s, box-shadow 0.3s; }
+    .fmo-card:hover { transform: translateY(-3px); border-color: rgba(195,255,0,0.3); box-shadow: 0 16px 40px rgba(0,0,0,0.35), 0 0 24px rgba(195,255,0,0.05); }
+    .fmo-icon { width: 46px; height: 46px; border-radius: 50%; border: 1px solid rgba(195,255,0,0.3); display: flex; align-items: center; justify-content: center; font-weight: 700; font-size: 0.9rem; color: var(--primary); background: rgba(195,255,0,0.05); flex-shrink: 0; }
+    .fmo-info { flex: 1; min-width: 0; }
+    .fmo-name { font-weight: 600; color: var(--text); font-size: 1rem; }
+    .fmo-handle { color: var(--muted); font-size: 0.85rem; }
+    .fmo-arrow { width: 42px; height: 42px; border-radius: 50%; border: 1px solid rgba(255,255,255,0.14); display: flex; align-items: center; justify-content: center; color: var(--text); flex-shrink: 0; transition: background 0.3s var(--ease), color 0.3s, border-color 0.3s, transform 0.3s; }
+    .fmo-card:hover .fmo-arrow { background: var(--primary); color: #06060a; border-color: var(--primary); transform: translateX(3px); }
+    @media (max-width: 640px) { .fmo-grid { grid-template-columns: 1fr; } }
+
+    .site-footer { max-width: 1200px; margin: 3.5rem auto 0; padding: 2rem 5%; border-top: 1px solid var(--hairline); display: flex; align-items: center; justify-content: space-between; gap: 1rem; flex-wrap: wrap; }
+    .site-footer-brand { display: flex; align-items: center; gap: 0.7rem; }
+    .site-footer-avatar { width: 34px; height: 34px; border-radius: 50%; object-fit: cover; border: 1px solid var(--hairline); }
+    .site-footer-name { font-weight: 700; color: var(--text); letter-spacing: -0.2px; }
+    .site-footer-copy { color: var(--muted); font-size: 0.85rem; }
+
+    /* ── Mobile nav pill fit (authoritative — placed last to win over the floating-pill rule) ── */
+    @media (max-width: 768px) {
+      body nav { padding: 0.8rem 3% !important; }
+      nav .nav-inner { padding: 0.45rem 0.55rem 0.45rem 1.1rem !important; }
+      nav .logo { font-size: 1.15rem !important; }
+    }
+    @media (max-width: 400px) {
+      body nav { padding: 0.65rem 2.5% !important; }
+      nav .nav-inner { padding: 0.4rem 0.45rem 0.4rem 0.85rem !important; }
+      nav .logo { font-size: 1rem !important; }
+    }
+
+    /* ── Scroll to Work indicator (hero) ── */
+    .hero-scroll { position: absolute; left: 5%; bottom: 2.2rem; display: inline-flex; align-items: center; gap: 0.8rem; text-decoration: none; z-index: 2; opacity: 0.85; transition: opacity 0.3s var(--ease), transform 0.3s var(--ease); }
+    .hero-scroll:hover { opacity: 1; transform: translateY(-2px); }
+    .hero-scroll-mouse { width: 22px; height: 34px; border: 1.5px solid rgba(242,240,234,0.5); border-radius: 12px; position: relative; flex-shrink: 0; }
+    .hero-scroll-dot { position: absolute; left: 50%; top: 6px; width: 4px; height: 4px; border-radius: 50%; background: var(--primary); transform: translateX(-50%); animation: heroScrollDot 1.6s var(--ease) infinite; }
+    @keyframes heroScrollDot { 0% { opacity: 0; transform: translate(-50%, 0); } 30% { opacity: 1; } 70% { opacity: 1; transform: translate(-50%, 12px); } 100% { opacity: 0; transform: translate(-50%, 12px); } }
+    .hero-scroll-text { font-size: 0.68rem; font-weight: 600; letter-spacing: 2px; text-transform: uppercase; color: var(--muted); }
+    @media (max-width: 768px) { .hero-scroll { position: static; margin-top: 2.4rem; } }
+
+    /* ── Premium button hover: lift + glow + sheen sweep (reference-style) ── */
+    .hero-cta, .spf-btn { position: relative; overflow: hidden; }
+    .hero-cta::before, .spf-btn::before {
+      content: ''; position: absolute; top: 0; left: -75%; width: 45%; height: 100%;
+      background: linear-gradient(100deg, transparent, rgba(255,255,255,0.5), transparent);
+      transform: skewX(-18deg); pointer-events: none;
+      transition: left 0.55s var(--ease); z-index: 0;
+    }
+    .hero-cta:hover::before, .spf-btn:hover::before { left: 130%; }
+    .hero-cta > *, .spf-btn > * { position: relative; z-index: 1; }
+    .fmo-card:active, .filter-tab:active, .nav-cta:active, .extra-toggle-btn:active { transform: scale(0.97); }
+    @media (prefers-reduced-motion: reduce) { .hero-scroll-dot { animation: none; } }
   </style>
 </head>
 <body>
@@ -678,7 +1040,7 @@
       <li><a href="#portfolio">Portfolio</a></li>
       <li><a href="#contact">Contact</a></li>
     </ul>
-    <a href="#contact" class="nav-cta">Hire Me</a>
+    <a href="#" onclick="openPage('startproject-page');return false;" class="nav-cta">Hire Me</a>
     <button class="nav-hamburger" id="hamburger" aria-label="Open menu">
       <span></span><span></span><span></span>
     </button>
@@ -715,16 +1077,16 @@
     </button>
   </div>
   <div class="nav-mobile-footer">
-    <a href="https://wa.me/6281243532553?text=Hi%20there%21%0AI%27m%20interested%20in%20the%20video%20editing%20service%20from%20imadevideo.%0AHere%27s%20a%20brief%20about%20me%3A%0A%0AName%3A%20%0APackage%3A%20%28e.g.%20Short-Form%20Editing%20Intermediate%29%0ANumber%20of%20videos%3A%20%0AType%20of%20video%3A%20%0AEstimated%20video%20duration%3A%20%0ASocial%20media%20account%20%28if%20any%29%3A%20%0ADeadline%20%28if%20any%29%3A%20%0AAdditional%20notes%20%28optional%29%3A%20%0A%0ALooking%20forward%20to%20hearing%20from%20you.%20Thank%20you%21" target="_blank">
+    <a href="#" onclick="closeMobileMenu(); openPage('startproject-page'); return false;">
       <svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><path d="M21 15a2 2 0 0 1-2 2H7l-4 4V5a2 2 0 0 1 2-2h14a2 2 0 0 1 2 2z"></path></svg>
-      Hire Me
+      Start a project
     </a>
   </div>
 </div>
 
 <!-- FLOATING CONTACT BUTTON -->
 <div class="float-contact" id="float-contact">
-  <a href="#contact">
+  <a href="#" onclick="openPage('startproject-page'); return false;">
     <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M21 15a2 2 0 0 1-2 2H7l-4 4V5a2 2 0 0 1 2-2h14a2 2 0 0 1 2 2z"></path></svg>
     Contact Me
   </a>
@@ -732,6 +1094,8 @@
 
 <!-- HERO -->
 <section class="hero" id="hero">
+  <svg class="hero-doodle hero-doodle--crown" viewBox="0 0 100 70" stroke-width="3" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M6 58 L20 20 L34 42 L50 12 L66 42 L80 20 L94 58"/><path d="M12 60 L88 60"/></svg>
+  <svg class="hero-doodle hero-doodle--squiggle" viewBox="0 0 90 46" stroke-width="3" stroke-linecap="round" aria-hidden="true"><path d="M5 24 Q16 4 27 24 T49 24 T71 24 T90 20"/></svg>
   <div class="hero-inner">
     <div class="reveal">
       <div class="hero-eyebrow">AI Driven Video Editor</div>
@@ -739,6 +1103,7 @@
         <h1>imadevideo</h1>
         <img class="hero-name-avatar" src="https://res.cloudinary.com/drfokzzbf/image/upload/f_auto,q_auto/v1773777820/IMG_5487_xrmyui.jpg" alt="I Made Puja Endra">
       </div>
+      <h2 class="hero-tagline">I edit videos that<br><span class="rotator"><span class="rotator-word" id="rotWord" data-words="build trust.|hold attention.|drive growth.|convert viewers.|feel like you.">build trust.</span></span></h2>
       <div class="hero-divider"></div>
       <div class="hero-desc">
         Professional video editor for short-form and long-form content.
@@ -746,7 +1111,8 @@
         cinematic, and engaging stories.
       </div>
       <div class="hero-ctas">
-        <a href="#clients" class="hero-cta">Explore My Work</a>
+        <a href="#" onclick="openPage('startproject-page');return false;" class="hero-cta">Start a project</a>
+        <a href="#showcase" class="hero-cta-secondary" style="text-transform:uppercase;">Explore My Work</a>
         <a href="#" onclick="openPage('ratecard-page');return false;" class="hero-cta-secondary">
           <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
             <path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z"></path>
@@ -770,80 +1136,63 @@
         alt="I Made Puja Endra" style="width:100%; display:block; border-radius:4px;">
     </div>
   </div>
+  <a href="#showcase" class="hero-scroll" aria-label="Scroll to work">
+    <span class="hero-scroll-mouse"><span class="hero-scroll-dot"></span></span>
+    <span class="hero-scroll-text">Scroll to Work</span>
+  </a>
 </section>
 
-<!-- PROBLEM / AGITATION -->
-<div class="section textured-section reveal" id="problem" style="padding-top:2.2rem; padding-bottom:2.2rem;">
-  <h2 class="section-title narrative-title reveal">Your content deserves speed and consistency, not another slow, generic edit.</h2>
-  <p class="section-sub reveal">Sound familiar?</p>
-  <div class="problem-grid stagger-parent">
-    <div class="problem-card"><div class="problem-x">✕</div><div class="problem-text">Editor takes days to reply while discussing your project</div></div>
-    <div class="problem-card"><div class="problem-x">✕</div><div class="problem-text">Waiting a week or more for a simple edit</div></div>
-    <div class="problem-card"><div class="problem-x">✕</div><div class="problem-text">Every video looks different, no consistent style</div></div>
-    <div class="problem-card"><div class="problem-x">✕</div><div class="problem-text">Templates that don't feel like your brand at all</div></div>
-    <div class="problem-card"><div class="problem-x">✕</div><div class="problem-text">Revisions take forever to come back</div></div>
-    <div class="problem-card"><div class="problem-x">✕</div><div class="problem-text">Editing eats hours you don't have</div></div>
-  </div>
-  <p class="problem-conclusion reveal">Most of this comes down to speed, consistency, and an editor who actually keeps up with you.</p>
-</div>
-
-<!-- WHAT YOU GET -->
-<div class="section textured-section reveal" id="what-you-get" style="background:var(--bg-mid); max-width:100%; padding-top:2.2rem; padding-bottom:2.2rem;">
-  <div style="max-width:1400px; margin:0 auto; padding:0 5%;">
-    <h2 class="section-title narrative-title reveal">What You Get, Working With Me</h2>
-    <p class="section-sub reveal">Fast, consistent, and built around how you already work.</p>
-    <div class="wyg-grid stagger-parent">
-      <div class="wyg-card">
-        <div class="wyg-num">01</div>
-        <div class="wyg-title">Fast Response</div>
-        <div class="wyg-desc">Quick back-and-forth while we work out the brief, no waiting days just to lock down a direction.</div>
-        <div class="wyg-tags"><span class="wyg-tag">Same-Day Reply</span><span class="wyg-tag">Clear Communication</span></div>
-      </div>
-      <div class="wyg-card">
-        <div class="wyg-num">02</div>
-        <div class="wyg-title">Same-Day Turnaround</div>
-        <div class="wyg-desc">Most projects can be finished and delivered in as fast as 1 day, without cutting corners on quality.</div>
-        <div class="wyg-tags"><span class="wyg-tag">1-Day Delivery</span><span class="wyg-tag">Priority Handling</span></div>
-      </div>
-      <div class="wyg-card">
-        <div class="wyg-num">03</div>
-        <div class="wyg-title">Consistent Style</div>
-        <div class="wyg-desc">Every video keeps the same pacing, color, and tone, so your channel feels like one cohesive brand.</div>
-        <div class="wyg-tags"><span class="wyg-tag">Signature Look</span><span class="wyg-tag">Repeatable Quality</span></div>
-      </div>
-      <div class="wyg-card">
-        <div class="wyg-num">04</div>
-        <div class="wyg-title">Brand-Matched Editing</div>
-        <div class="wyg-desc">Colors, fonts, and pacing adjusted to fit your brand, not a generic template applied to everyone.</div>
-        <div class="wyg-tags"><span class="wyg-tag">Brand Guidelines</span><span class="wyg-tag">Custom Templates</span></div>
-      </div>
-      <div class="wyg-card">
-        <div class="wyg-num">05</div>
-        <div class="wyg-title">Fast Revisions</div>
-        <div class="wyg-desc">Revision requests get turned around quickly, so feedback never stalls your content calendar.</div>
-        <div class="wyg-tags"><span class="wyg-tag">Quick Turnaround</span><span class="wyg-tag">No Back-and-Forth Chaos</span></div>
-      </div>
+<!-- SERVICES -->
+<div class="bc-section" id="services">
+  <div class="bc-badge-wrap reveal"><span class="bc-badge">Services</span></div>
+  <h2 class="bc-headline reveal">Editing built around <span class="serif">the content.</span></h2>
+  <div class="svc-list">
+    <div class="svc-row reveal">
+      <div class="svc-num">01</div>
+      <div class="svc-title">Short-form content</div>
+      <div class="svc-desc">Fast, focused edits for Reels, TikTok, and Shorts, built around a clear hook, deliberate pacing, and a consistent visual language.</div>
+    </div>
+    <div class="svc-row reveal">
+      <div class="svc-num">02</div>
+      <div class="svc-title">YouTube videos</div>
+      <div class="svc-desc">Long-form edits that protect the story, remove the drag, and give viewers a reason to stay through the next beat.</div>
+    </div>
+    <div class="svc-row reveal">
+      <div class="svc-num">03</div>
+      <div class="svc-title">Brand content</div>
+      <div class="svc-desc">Polished social and campaign edits that feel recognizably yours, not like another template with your logo added.</div>
     </div>
   </div>
 </div>
 
-<!-- CHECKLIST: FIT -->
-<div class="section textured-section reveal" id="fit-checklist" style="padding-top:2.2rem; padding-bottom:2.2rem;">
-  <h2 class="section-title narrative-title reveal">This Is For You If You Want To...</h2>
-  <div class="checklist-grid stagger-parent">
-    <div class="checklist-item"><div class="checklist-check">✓</div><div class="checklist-text">Get fast replies while discussing your project</div></div>
-    <div class="checklist-item"><div class="checklist-check">✓</div><div class="checklist-text">Have videos delivered in as fast as 1 day</div></div>
-    <div class="checklist-item"><div class="checklist-check">✓</div><div class="checklist-text">Keep a consistent, branded look across every video</div></div>
-    <div class="checklist-item"><div class="checklist-check">✓</div><div class="checklist-text">Get edits tailored to match your brand identity</div></div>
-    <div class="checklist-item"><div class="checklist-check">✓</div><div class="checklist-text">Get revisions turned around quickly, not tomorrow</div></div>
-    <div class="checklist-item"><div class="checklist-check">✓</div><div class="checklist-text">Work with someone who gets short-form &amp; long-form</div></div>
+<!-- WHY CHOOSE ME -->
+<div class="bc-section" id="benefits">
+  <div class="bc-badge-wrap reveal"><span class="bc-badge">Benefits</span></div>
+  <h2 class="bc-headline reveal">Why <span class="serif">Choose</span> Me?</h2>
+  <div class="ben-grid stagger-parent">
+    <div class="ben-card reveal">
+      <div class="ben-badge">01</div>
+      <div class="ben-title">Momentum without the rush</div>
+      <div class="ben-desc">I keep production moving with a clear workflow, focused feedback, and delivery dates you can actually plan around.</div>
+    </div>
+    <div class="ben-card reveal">
+      <div class="ben-badge">02</div>
+      <div class="ben-title">Every second earns its place</div>
+      <div class="ben-desc">I shape the story, pacing, captions, and sound so the edit holds attention without exhausting the viewer.</div>
+    </div>
+    <div class="ben-card reveal">
+      <div class="ben-badge">03</div>
+      <div class="ben-title">Your voice stays intact</div>
+      <div class="ben-desc">I build around your personality and brand system, not a recycled editing style that could belong to anyone.</div>
+    </div>
   </div>
 </div>
 
 <!-- ABOUT BUTTONS -->
 <div class="section reveal" id="about" style="padding-top:2.5rem; padding-bottom:2.5rem;">
-  <h2 class="section-title reveal">About Me</h2>
-  <p class="section-sub reveal" style="margin-bottom:2.5rem;">Get to know the editor behind the work</p>
+  <div class="bc-badge-wrap reveal"><span class="bc-badge">About</span></div>
+  <h2 class="bc-headline reveal">About <span class="serif">Me</span></h2>
+  <p class="section-sub reveal" style="margin-top:1.1rem; margin-bottom:2.5rem;">Get to know the editor behind the work</p>
   <div style="display:flex; gap:1.2rem; justify-content:center; flex-wrap:wrap;" class="reveal">
     <button class="page-btn" onclick="openPage('about-page')">
       <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="12" cy="8" r="4"/><path d="M4 20c0-4 3.6-7 8-7s8 3 8 7"/></svg>
@@ -934,7 +1283,7 @@
     </div>
 
     <!-- CTA -->
-    <a href="https://wa.me/6281243532553?text=Hi%20there%21%0AI%27m%20interested%20in%20the%20video%20editing%20service%20from%20imadevideo.%0AHere%27s%20a%20brief%20about%20me%3A%0A%0AName%3A%20%0APackage%3A%20%28e.g.%20Short-Form%20Editing%20Intermediate%29%0ANumber%20of%20videos%3A%20%0AType%20of%20video%3A%20%0AEstimated%20video%20duration%3A%20%0ASocial%20media%20account%20%28if%20any%29%3A%20%0ADeadline%20%28if%20any%29%3A%20%0AAdditional%20notes%20%28optional%29%3A%20%0A%0ALooking%20forward%20to%20hearing%20from%20you.%20Thank%20you%21" target="_blank" class="btn-lift" style="display:flex;align-items:center;justify-content:center;gap:0.6rem;background:var(--primary);color:#050505;font-family:'Montserrat',sans-serif;font-size:0.85rem;font-weight:800;letter-spacing:1px;text-transform:uppercase;padding:1rem;border-radius:14px;text-decoration:none;margin-bottom:1rem;">
+    <a href="#" onclick="return openBrief('')" class="btn-lift" style="display:flex;align-items:center;justify-content:center;gap:0.6rem;background:var(--primary);color:#050505;font-family:'Montserrat',sans-serif;font-size:0.85rem;font-weight:800;letter-spacing:1px;text-transform:uppercase;padding:1rem;border-radius:14px;text-decoration:none;margin-bottom:1rem;">
       <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><path d="M21 15a2 2 0 0 1-2 2H7l-4 4V5a2 2 0 0 1 2-2h14a2 2 0 0 1 2 2z"></path></svg>
       Let's Work Together
     </a>
@@ -1038,7 +1387,7 @@
       </div>
 
     </div>
-    <a href="https://wa.me/6281243532553?text=Hi%20there%21%0AI%27m%20interested%20in%20the%20video%20editing%20service%20from%20imadevideo.%0AHere%27s%20a%20brief%20about%20me%3A%0A%0AName%3A%20%0APackage%3A%20%28e.g.%20Short-Form%20Editing%20Intermediate%29%0ANumber%20of%20videos%3A%20%0AType%20of%20video%3A%20%0AEstimated%20video%20duration%3A%20%0ASocial%20media%20account%20%28if%20any%29%3A%20%0ADeadline%20%28if%20any%29%3A%20%0AAdditional%20notes%20%28optional%29%3A%20%0A%0ALooking%20forward%20to%20hearing%20from%20you.%20Thank%20you%21" target="_blank" class="btn-lift" style="display:flex;align-items:center;justify-content:center;gap:0.6rem;background:var(--primary);color:#050505;font-family:'Montserrat',sans-serif;font-size:0.85rem;font-weight:800;letter-spacing:1px;text-transform:uppercase;padding:1rem;border-radius:14px;text-decoration:none;margin-top:2rem;">
+    <a href="#" onclick="return openBrief('')" class="btn-lift" style="display:flex;align-items:center;justify-content:center;gap:0.6rem;background:var(--primary);color:#050505;font-family:'Montserrat',sans-serif;font-size:0.85rem;font-weight:800;letter-spacing:1px;text-transform:uppercase;padding:1rem;border-radius:14px;text-decoration:none;margin-top:2rem;">
       I Agree, Let's Start
     </a>
   </div>
@@ -1054,6 +1403,8 @@
     <span class="overlay-title">Pricelist</span>
   </div>
   <div class="overlay-body" style="max-width:720px;">
+    <div class="bc-badge-wrap reveal" style="text-align:left;"><span class="bc-badge">Pricelist</span></div>
+    <h2 class="bc-headline reveal" style="text-align:left; max-width:none; margin:0.9rem 0 1.4rem;">Packages built around <span class="serif">your content.</span></h2>
     <p style="color:var(--muted);font-size:0.9rem;margin-bottom:2.5rem;line-height:1.8;">Choose a package that fits your content needs. All packages include reference videos. <a href="#" onclick="openPage('terms-page');return false;" style="color:var(--primary);text-decoration:none;font-weight:600;">Read Terms &amp; Conditions →</a></p>
 
     <!-- ── Individual Packages ── -->
@@ -1159,9 +1510,9 @@
       </div>
     </div>
 
-    <a href="https://wa.me/6281243532553?text=Hi%20there%21%0AI%27m%20interested%20in%20the%20video%20editing%20service%20from%20imadevideo.%0AHere%27s%20a%20brief%20about%20me%3A%0A%0AName%3A%20%0APackage%3A%20%28e.g.%20Short-Form%20Editing%20Intermediate%29%0ANumber%20of%20videos%3A%20%0AType%20of%20video%3A%20%0AEstimated%20video%20duration%3A%20%0ASocial%20media%20account%20%28if%20any%29%3A%20%0ADeadline%20%28if%20any%29%3A%20%0AAdditional%20notes%20%28optional%29%3A%20%0A%0ALooking%20forward%20to%20hearing%20from%20you.%20Thank%20you%21" target="_blank" class="btn-lift" style="display:flex;align-items:center;justify-content:center;gap:0.6rem;background:var(--primary);color:#050505;font-family:'Montserrat',sans-serif;font-size:0.85rem;font-weight:800;letter-spacing:1px;text-transform:uppercase;padding:1rem;border-radius:14px;text-decoration:none;">
+    <a href="#" onclick="return openBrief('')" class="btn-lift" style="display:flex;align-items:center;justify-content:center;gap:0.6rem;background:var(--primary);color:#050505;font-family:'Montserrat',sans-serif;font-size:0.85rem;font-weight:800;letter-spacing:1px;text-transform:uppercase;padding:1rem;border-radius:14px;text-decoration:none;">
       <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><path d="M21 15a2 2 0 0 1-2 2H7l-4 4V5a2 2 0 0 1 2-2h14a2 2 0 0 1 2 2z"></path></svg>
-      Order via WhatsApp
+      Start a project
     </a>
 
     <!-- ── Bundle Packages ── -->
@@ -1192,7 +1543,7 @@
             <span>Delivery 1-2 days/video</span>
           </div>
         </div>
-        <a href="https://wa.me/6281243532553?text=Hi%20there%21%0AI%27d%20like%20to%20get%20the%20Starter%20Bundle%20from%20imadevideo.%0AHere%27s%20a%20brief%20about%20me%3A%0A%0AName%3A%20%0AType%20of%20video%3A%20%0AEstimated%20video%20duration%3A%20%0ASocial%20media%20account%20%28if%20any%29%3A%20%0ADeadline%20%28if%20any%29%3A%20%0AAdditional%20notes%20%28optional%29%3A%20%0A%0ALooking%20forward%20to%20hearing%20from%20you.%20Thank%20you%21" target="_blank" style="display:block;text-align:center;background:rgba(195,255,0,0.1);border:1.5px solid rgba(195,255,0,0.35);color:var(--primary);font-family:'Montserrat',sans-serif;font-size:0.8rem;font-weight:700;letter-spacing:1px;text-transform:uppercase;padding:0.85rem;border-radius:12px;text-decoration:none;" class="btn-lift">Get Starter Bundle →</a>
+        <a href="#" onclick="return openBrief('Starter Bundle')" style="display:block;text-align:center;background:rgba(195,255,0,0.1);border:1.5px solid rgba(195,255,0,0.35);color:var(--primary);font-family:'Montserrat',sans-serif;font-size:0.8rem;font-weight:700;letter-spacing:1px;text-transform:uppercase;padding:0.85rem;border-radius:12px;text-decoration:none;" class="btn-lift">Get Starter Bundle →</a>
       </div>
 
       <!-- GROWTH -->
@@ -1223,7 +1574,7 @@
             <span><strong>3 revisions</strong> per video</span>
           </div>
         </div>
-        <a href="https://wa.me/6281243532553?text=Hi%20there%21%0AI%27d%20like%20to%20get%20the%20Growth%20Bundle%20from%20imadevideo.%0AHere%27s%20a%20brief%20about%20me%3A%0A%0AName%3A%20%0AType%20of%20video%3A%20%0AEstimated%20video%20duration%3A%20%0ASocial%20media%20account%20%28if%20any%29%3A%20%0ADeadline%20%28if%20any%29%3A%20%0AAdditional%20notes%20%28optional%29%3A%20%0A%0ALooking%20forward%20to%20hearing%20from%20you.%20Thank%20you%21" target="_blank" style="display:block;text-align:center;background:var(--primary);color:#050505;font-family:'Montserrat',sans-serif;font-size:0.8rem;font-weight:800;letter-spacing:1px;text-transform:uppercase;padding:0.85rem;border-radius:12px;text-decoration:none;" class="btn-lift">Get Growth Bundle →</a>
+        <a href="#" onclick="return openBrief('Growth Bundle')" style="display:block;text-align:center;background:var(--primary);color:#050505;font-family:'Montserrat',sans-serif;font-size:0.8rem;font-weight:800;letter-spacing:1px;text-transform:uppercase;padding:0.85rem;border-radius:12px;text-decoration:none;" class="btn-lift">Get Growth Bundle →</a>
       </div>
 
       <!-- ULTIMATE -->
@@ -1254,7 +1605,7 @@
             <span><strong>5 revisions</strong> per video</span>
           </div>
         </div>
-        <a href="https://wa.me/6281243532553?text=Hi%20there%21%0AI%27d%20like%20to%20get%20the%20Ultimate%20Bundle%20from%20imadevideo.%0AHere%27s%20a%20brief%20about%20me%3A%0A%0AName%3A%20%0AType%20of%20video%3A%20%0AEstimated%20video%20duration%3A%20%0ASocial%20media%20account%20%28if%20any%29%3A%20%0ADeadline%20%28if%20any%29%3A%20%0AAdditional%20notes%20%28optional%29%3A%20%0A%0ALooking%20forward%20to%20hearing%20from%20you.%20Thank%20you%21" target="_blank" style="display:block;text-align:center;background:rgba(195,255,0,0.1);border:1.5px solid rgba(195,255,0,0.35);color:var(--primary);font-family:'Montserrat',sans-serif;font-size:0.8rem;font-weight:700;letter-spacing:1px;text-transform:uppercase;padding:0.85rem;border-radius:12px;text-decoration:none;" class="btn-lift">Get Ultimate Bundle →</a>
+        <a href="#" onclick="return openBrief('Ultimate Bundle')" style="display:block;text-align:center;background:rgba(195,255,0,0.1);border:1.5px solid rgba(195,255,0,0.35);color:var(--primary);font-family:'Montserrat',sans-serif;font-size:0.8rem;font-weight:700;letter-spacing:1px;text-transform:uppercase;padding:0.85rem;border-radius:12px;text-decoration:none;" class="btn-lift">Get Ultimate Bundle →</a>
       </div>
 
     </div>
@@ -1284,18 +1635,19 @@
 <!-- SHOWCASE -->
 <div id="showcase">
   <div class="showcase-header">
-    <h2 class="section-title reveal">Project Showcase</h2>
-    <p class="section-sub reveal">Swipe or drag to explore. Use the arrows to step, or filter by category.</p>
+    <div class="bc-badge-wrap reveal"><span class="bc-badge">Work</span></div>
+    <h2 class="bc-headline reveal">Project <span class="serif">Showcase</span></h2>
+    <p class="section-sub reveal" style="margin-top:1.1rem;">Swipe or drag to explore. Use the arrows to step, or filter by category.</p>
   </div>
 
   <!-- Filter tabs -->
   <div class="showcase-filter reveal" id="showcase-filter">
-    <button class="filter-tab is-active" data-filter="all">All</button>
-    <button class="filter-tab" data-filter="shortform">Short-Form</button>
+    <button class="filter-tab is-active" data-filter="shortform">Short-Form</button>
     <button class="filter-tab" data-filter="motion">Motion Graphics</button>
     <button class="filter-tab" data-filter="ads">Video Ads</button>
     <button class="filter-tab" data-filter="timeline">Editing Timeline</button>
     <button class="filter-tab" data-filter="long">Long-Form</button>
+    <button class="filter-tab" data-filter="extra">Skills &amp; Portfolio</button>
   </div>
 
   <!-- Row 1 -->
@@ -1436,9 +1788,12 @@
   </div>
 </div>
 
+<div id="extra-sections" style="display:none;">
+
 <!-- SKILLS -->
 <div class="section reveal" id="skills" style="padding-left:0; padding-right:0; max-width:100%;">
-  <h2 class="section-title reveal" style="padding:0 5%;">Skills &amp; Experience</h2>
+  <div class="bc-badge-wrap reveal"><span class="bc-badge">Skills</span></div>
+  <h2 class="bc-headline reveal" style="padding:0 5%;">Skills &amp; <span class="serif">Experience</span></h2>
   <div class="skill-carousel-wrap">
     <div class="skill-carousel-scroll" id="scroll-skills">
       <div class="skill-card" data-idx="0"><h3>Editing Software</h3><ul><li>CapCut PC</li><li>Adobe Premiere Pro</li><li>After Effects</li></ul></div>
@@ -1457,8 +1812,9 @@
 <!-- PORTFOLIO -->
 <div id="portfolio" class="portfolio-section reveal">
   <div class="portfolio-inner">
-    <h2 class="section-title reveal">Full Portfolio</h2>
-    <p class="section-sub reveal">Explore my complete collection across all categories</p>
+    <div class="bc-badge-wrap reveal"><span class="bc-badge">Portfolio</span></div>
+    <h2 class="bc-headline reveal">Full <span class="serif">Portfolio</span></h2>
+    <p class="section-sub reveal" style="margin-top:1.1rem;">Explore my complete collection across all categories</p>
     <div class="sec-carousel-wrap mid">
       <div class="sec-carousel-scroll portfolio-scroll" id="scroll-portfolio">
         <a href="https://drive.google.com/drive/folders/1o5he3i43HemiBZ_Ca1R-KvqgP1O161Tz?usp=sharing" target="_blank" class="portfolio-card" data-idx="0"><div class="portfolio-thumb" style="background-image:linear-gradient(rgba(0,0,0,0.2),rgba(12,12,20,0.95)),url('https://images.unsplash.com/photo-1492619375914-88005aa9e8fb?w=800')"></div><div class="portfolio-info"><h3>Reels Content Editing</h3><p>Full collection of short-form editing projects.</p></div></a>
@@ -1480,48 +1836,329 @@
   </div>
 </div>
 
+</div><!-- /extra-sections -->
+
 <!-- TESTIMONIALS -->
-<div id="testimonials" class="reveal">
-  <div class="testimonials-inner">
-    <h2 class="section-title reveal">What Clients Say</h2>
-    <p class="section-sub reveal">Real words from real people I've worked with</p>
-    <div class="sec-carousel-wrap">
-      <div class="sec-carousel-scroll testi-scroll" id="scroll-testi">
-        <div class="testi-card" data-idx="0"><div class="testi-stars">★★★★★</div><div class="testi-text">"Imade just gets it. Every edit he delivers matches exactly the vibe I'm going for, the pacing, the cuts, everything. Been working together for a while now and honestly wouldn't switch to anyone else."</div><div class="testi-author"><div class="testi-avatar"><img src="https://res.cloudinary.com/drfokzzbf/image/upload/v1773749193/profilruangsepri_toigvr.jpg" alt="ruangsepri"></div><div><div class="testi-name">@ruangsepri</div><div class="testi-role">AI Content Creator · 192K Followers</div></div></div></div>
-        <div class="testi-card" data-idx="1"><div class="testi-stars">★★★★★</div><div class="testi-text">"Fast, clean, and easy to work with. Since I started working with Imade, my content's way more engaging and my watch time actually went up. If you need a solid video editor, this is your guy."</div><div class="testi-author"><div class="testi-avatar"><img src="https://res.cloudinary.com/drfokzzbf/image/upload/v1773749308/profiltechpreneurboi_zbrtr1.jpg" alt="techpreneurboi"></div><div><div class="testi-name">@techpreneurboi</div><div class="testi-role">AI Agent &amp; Automation Expert · 35.2K Followers</div></div></div></div>
-        <div class="testi-card" data-idx="2"><div class="testi-stars">★★★★★</div><div class="testi-text">"The edits look so clean and premium, exactly the kind of quality I was looking for. My personal brand content went from okay to really impressive. Imade knows how to make things look high-end."</div><div class="testi-author"><div class="testi-avatar"><img src="https://res.cloudinary.com/drfokzzbf/image/upload/v1773749314/profilvictoriawong68_o9wy3y.jpg" alt="victoriawong68"></div><div><div class="testi-name">@victoriawong68</div><div class="testi-role">Digital Creator · 493K Followers ✓</div></div></div></div>
-        <div class="testi-card" data-idx="3"><div class="testi-stars">★★★★★</div><div class="testi-text">"Super consistent, barely any revisions, always on time. We trust Imade with all our educational content and he never disappoints. Genuinely one of the most reliable editors we've worked with."</div><div class="testi-author"><div class="testi-avatar"><img src="https://res.cloudinary.com/drfokzzbf/image/upload/v1773749698/profilcreatecontent.club_dkwkeh.jpg" alt="createcontent.club"></div><div><div class="testi-name">@createcontent.club</div><div class="testi-role">Creator Community · 456K Followers</div></div></div></div>
-        <div class="testi-card" data-idx="4"><div class="testi-stars">★★★★★</div><div class="testi-text">"I was looking for someone who could keep up with the pace of my content and actually understand what I'm building. Imade does both, clean edits, fast turnaround, and he always brings good energy to the collaboration."</div><div class="testi-author"><div class="testi-avatar"><img src="https://res.cloudinary.com/drfokzzbf/image/upload/v1773771273/472416709_1083279420216121_6462226940629783718_n_ankpjd.jpg" alt="abedsteady"></div><div><div class="testi-name">@abedsteady</div><div class="testi-role">AI Educator &amp; Mentor · 41.6K Followers ✓</div></div></div></div>
-        <div class="testi-card" data-idx="5"><div class="testi-stars">★★★★★</div><div class="testi-text">"Imade gets the brand instantly. No lengthy briefings needed, he just delivers. The AI-driven workflow is impressive and the results always look polished and on-brand."</div><div class="testi-author"><div class="testi-avatar"><img src="https://res.cloudinary.com/drfokzzbf/image/upload/v1773749702/profilaicreatorlabs.id_nu6p8h.jpg" alt="aicreatorlabs.id"></div><div><div class="testi-name">@aicreatorlabs.id</div><div class="testi-role">AI Creator Labs · 40.5K Followers</div></div></div></div><div class="testi-card" data-idx="6"><div class="testi-stars">★★★★★</div><div class="testi-text">"Working with Imade was an outstanding experience. He understood our brand aesthetic immediately and delivered a cinematic result that truly captures the luxury feel of Alpha Villas Bali. The quality was beyond what we expected."</div><div class="testi-author"><div class="testi-avatar"><img src="https://res.cloudinary.com/drfokzzbf/image/upload/v1774795156/467413992_1081273290192154_7068970243961835098_n_u39mpy.jpg" alt="alphavillasbali"></div><div><div class="testi-name">@alphavillasbali</div><div class="testi-role">Real Estate · Alpha Villas Bali · 4.6K Followers</div></div></div></div>
+<div class="bc-section" id="testimonials">
+  <div class="bc-badge-wrap reveal"><span class="bc-badge">Testimonials</span></div>
+  <h2 class="bc-headline reveal">There's a reason people can't <span class="serif">stop praising</span> me.</h2>
+  <div class="tst-grid">
+    <div class="chat-card reveal">
+      <div class="chat-head">
+        <div class="chat-avatar"><img src="https://res.cloudinary.com/drfokzzbf/image/upload/v1773749193/profilruangsepri_toigvr.jpg" style="width:100%;height:100%;object-fit:cover;border-radius:50%;" alt="@ruangsepri"></div>
+        <div><div class="chat-name">@ruangsepri</div><div class="chat-handle">AI Content Creator · 192K</div></div>
       </div>
+      <div class="chat-stars">★★★★★</div>
+      <div class="chat-bubble">Imade just gets it. Every edit he delivers matches exactly the vibe I'm going for, the pacing, the cuts, everything. Been working together for a while now and honestly wouldn't switch to anyone else.</div>
+      <div class="chat-time">09.14 <span class="ticks">✓✓</span></div>
     </div>
-    <div class="carousel-ui" style="padding:0.5rem 0 2rem;">
-      <button class="c-arrow" data-sec-scroll="scroll-testi" data-dir="-1">&#8592;</button>
-      <div class="c-dots" id="dots-testi"></div>
-      <button class="c-arrow" data-sec-scroll="scroll-testi" data-dir="1">&#8594;</button>
-      <span class="c-counter" id="counter-testi">01 / 07</span>
+    <div class="chat-card reveal">
+      <div class="chat-head">
+        <div class="chat-avatar"><img src="https://res.cloudinary.com/drfokzzbf/image/upload/v1773749308/profiltechpreneurboi_zbrtr1.jpg" style="width:100%;height:100%;object-fit:cover;border-radius:50%;" alt="@techpreneurboi"></div>
+        <div><div class="chat-name">@techpreneurboi</div><div class="chat-handle">AI &amp; Automation · 35.2K</div></div>
+      </div>
+      <div class="chat-stars">★★★★★</div>
+      <div class="chat-bubble">Fast, clean, and easy to work with. Since I started working with Imade, my content's way more engaging and my watch time actually went up. If you need a solid video editor, this is your guy.</div>
+      <div class="chat-time">17.39 <span class="ticks">✓✓</span></div>
+    </div>
+    <div class="chat-card reveal">
+      <div class="chat-head">
+        <div class="chat-avatar"><img src="https://res.cloudinary.com/drfokzzbf/image/upload/v1773749314/profilvictoriawong68_o9wy3y.jpg" style="width:100%;height:100%;object-fit:cover;border-radius:50%;" alt="@victoriawong68"></div>
+        <div><div class="chat-name">@victoriawong68</div><div class="chat-handle">Digital Creator · 493K ✓</div></div>
+      </div>
+      <div class="chat-stars">★★★★★</div>
+      <div class="chat-bubble">The edits look so clean and premium, exactly the kind of quality I was looking for. My personal brand content went from okay to really impressive. Imade knows how to make things look high-end.</div>
+      <div class="chat-time">21.02 <span class="ticks">✓✓</span></div>
+    </div>
+    <div class="chat-card reveal">
+      <div class="chat-head">
+        <div class="chat-avatar"><img src="https://res.cloudinary.com/drfokzzbf/image/upload/v1773749698/profilcreatecontent.club_dkwkeh.jpg" style="width:100%;height:100%;object-fit:cover;border-radius:50%;" alt="@createcontent.club"></div>
+        <div><div class="chat-name">@createcontent.club</div><div class="chat-handle">Creator Community · 456K</div></div>
+      </div>
+      <div class="chat-stars">★★★★★</div>
+      <div class="chat-bubble">Super consistent, barely any revisions, always on time. We trust Imade with all our educational content and he never disappoints. Genuinely one of the most reliable editors we've worked with.</div>
+      <div class="chat-time">11.27 <span class="ticks">✓✓</span></div>
+    </div>
+    <div class="chat-card reveal">
+      <div class="chat-head">
+        <div class="chat-avatar"><img src="https://res.cloudinary.com/drfokzzbf/image/upload/v1773771273/472416709_1083279420216121_6462226940629783718_n_ankpjd.jpg" style="width:100%;height:100%;object-fit:cover;border-radius:50%;" alt="@abedsteady"></div>
+        <div><div class="chat-name">@abedsteady</div><div class="chat-handle">AI Educator · 41.6K ✓</div></div>
+      </div>
+      <div class="chat-stars">★★★★★</div>
+      <div class="chat-bubble">I was looking for someone who could keep up with the pace of my content and actually understand what I'm building. Imade does both, clean edits, fast turnaround, and he always brings good energy to the collab.</div>
+      <div class="chat-time">14.50 <span class="ticks">✓✓</span></div>
+    </div>
+    <div class="chat-card reveal">
+      <div class="chat-head">
+        <div class="chat-avatar"><img src="https://res.cloudinary.com/drfokzzbf/image/upload/v1773749702/profilaicreatorlabs.id_nu6p8h.jpg" style="width:100%;height:100%;object-fit:cover;border-radius:50%;" alt="@aicreatorlabs.id"></div>
+        <div><div class="chat-name">@aicreatorlabs.id</div><div class="chat-handle">AI Creator Labs · 40.5K</div></div>
+      </div>
+      <div class="chat-stars">★★★★★</div>
+      <div class="chat-bubble">Imade gets the brand instantly. No lengthy briefings needed, he just delivers. The AI-driven workflow is impressive and the results always look polished and on-brand.</div>
+      <div class="chat-time">08.33 <span class="ticks">✓✓</span></div>
+    </div>
+    <div class="chat-card reveal">
+      <div class="chat-head">
+        <div class="chat-avatar"><img src="https://res.cloudinary.com/drfokzzbf/image/upload/v1774795156/467413992_1081273290192154_7068970243961835098_n_u39mpy.jpg" style="width:100%;height:100%;object-fit:cover;border-radius:50%;" alt="@alphavillasbali"></div>
+        <div><div class="chat-name">@alphavillasbali</div><div class="chat-handle">Real Estate · 4.6K</div></div>
+      </div>
+      <div class="chat-stars">★★★★★</div>
+      <div class="chat-bubble">Working with Imade was an outstanding experience. He understood our brand aesthetic immediately and delivered a cinematic result that truly captures the luxury feel of Alpha Villas Bali. Beyond what we expected.</div>
+      <div class="chat-time">19.05 <span class="ticks">✓✓</span></div>
     </div>
   </div>
 </div>
 
-<!-- CONTACT -->
-<div class="section" id="contact">
-  <h2 class="section-title reveal">Let's Work Together</h2>
-  <div class="contact-body reveal">
-    <p>Ready to create something cinematic? Let's collaborate and bring your vision to life.</p>
-    <div class="contact-links">
-      <a href="https://wa.me/6281243532553?text=Hi%20there%21%0AI%27m%20interested%20in%20the%20video%20editing%20service%20from%20imadevideo.%0AHere%27s%20a%20brief%20about%20me%3A%0A%0AName%3A%20%0APackage%3A%20%28e.g.%20Short-Form%20Editing%20Intermediate%29%0ANumber%20of%20videos%3A%20%0AType%20of%20video%3A%20%0AEstimated%20video%20duration%3A%20%0ASocial%20media%20account%20%28if%20any%29%3A%20%0ADeadline%20%28if%20any%29%3A%20%0AAdditional%20notes%20%28optional%29%3A%20%0A%0ALooking%20forward%20to%20hearing%20from%20you.%20Thank%20you%21" target="_blank" class="contact-link">WhatsApp</a>
-      <a href="https://instagram.com/imadevideo" target="_blank" class="contact-link">Instagram</a>
-      <a href="mailto:madepujaendra@gmail.com" class="contact-link contact-link-email">Email</a>
+<!-- PROCESS -->
+<div class="bc-section" id="process">
+  <div class="bc-badge-wrap reveal"><span class="bc-badge">Process</span></div>
+  <h2 class="bc-headline reveal">Clear from brief <span class="serif">to final.</span></h2>
+  <div class="proc-wrap">
+    <div class="proc-line"></div>
+    <div class="proc-grid">
+      <div class="proc-step reveal">
+        <div class="proc-dot"></div>
+        <div class="proc-num">01</div>
+        <div class="proc-title">Share the direction</div>
+        <div class="proc-desc">Send the footage, references, deadline, and the one thing the video needs to achieve.</div>
+      </div>
+      <div class="proc-step reveal">
+        <div class="proc-dot"></div>
+        <div class="proc-num">02</div>
+        <div class="proc-title">See the first cut</div>
+        <div class="proc-desc">I shape the story and visual direction, then send a focused version that gives us something clear to refine.</div>
+      </div>
+      <div class="proc-step reveal">
+        <div class="proc-dot"></div>
+        <div class="proc-num">03</div>
+        <div class="proc-title">Refine and publish</div>
+        <div class="proc-desc">We tighten the details, approve the final cut, and export everything ready for the platform.</div>
+      </div>
     </div>
+  </div>
+</div>
+
+<!-- START A PROJECT — opens as an overlay page from Hire Me / Contact Me / hero CTA -->
+<div class="overlay-page" id="startproject-page">
+  <div class="overlay-header">
+    <button class="overlay-back" onclick="closePage('startproject-page')">
+      <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><polyline points="15 18 9 12 15 6"/></svg>
+      Back
+    </button>
+    <span class="overlay-title">Start a project</span>
+  </div>
+  <div class="overlay-body" style="max-width:1120px;">
+  <div class="bc-section" id="contact" style="padding-top:1rem;">
+    <div class="spf">
+    <div class="spf-left reveal">
+      <div class="spf-badge-wrap"><span class="bc-badge">Start a project</span></div>
+      <h2 class="spf-headline reveal">Tell me what <span class="serif">you're working</span> on.</h2>
+      <p class="spf-sub">A few details are enough. Your brief opens in WhatsApp so you can review it before anything is sent.</p>
+    </div>
+    <div class="spf-card reveal">
+      <div class="spf-grid2">
+        <div class="spf-field">
+          <label class="spf-label" for="spf-name">Your name</label>
+          <input class="spf-input" id="spf-name" type="text" placeholder="Your name">
+        </div>
+        <div class="spf-field">
+          <label class="spf-label" for="spf-contact">Email or social handle</label>
+          <input class="spf-input" id="spf-contact" type="text" placeholder="you@email.com or @handle">
+        </div>
+      </div>
+      <div class="spf-grid2">
+        <div class="spf-field">
+          <label class="spf-label" for="spf-type">What are we editing?</label>
+          <select class="spf-select" id="spf-type">
+            <option value="" disabled selected>Select a project type</option>
+            <option>Short-form content</option>
+            <option>YouTube video</option>
+            <option>Brand content</option>
+            <option>Other</option>
+          </select>
+        </div>
+        <div class="spf-field">
+          <label class="spf-label" for="spf-count">Number of videos</label>
+          <input class="spf-input" id="spf-count" type="number" min="1" placeholder="e.g. 4">
+        </div>
+      </div>
+      <div class="spf-field">
+        <label class="spf-label" for="spf-package">Package</label>
+        <select class="spf-select" id="spf-package">
+          <option value="" disabled selected>Select a package</option>
+          <optgroup label="Short-Form Editing">
+            <option>Short-Form Basic - $19.99</option>
+            <option>Short-Form Intermediate - $39.99</option>
+            <option>Short-Form Advanced - $69.99</option>
+          </optgroup>
+          <optgroup label="Motion Graphics">
+            <option>Motion Graphics 30s - $169.99</option>
+            <option>Motion Graphics 60s - $219.99</option>
+            <option>Motion Graphics 90s - $269.99</option>
+          </optgroup>
+          <optgroup label="Long-Form Editing">
+            <option>Long-Form Basic - $119.99</option>
+            <option>Long-Form Intermediate - $169.99</option>
+            <option>Long-Form Advanced - $219.99</option>
+          </optgroup>
+          <optgroup label="Bundle Packages">
+            <option>Starter Bundle - $699.99/mo</option>
+            <option>Growth Bundle - $1,124.99/mo</option>
+            <option>Ultimate Bundle - $1,489.99/mo</option>
+          </optgroup>
+          <option>Not sure yet - need a recommendation</option>
+        </select>
+      </div>
+      <div class="spf-field">
+        <label class="spf-label" for="spf-deadline">Ideal deadline</label>
+        <input class="spf-input" id="spf-deadline" type="date">
+      </div>
+      <div class="spf-field">
+        <label class="spf-label" for="spf-ref">Reference link</label>
+        <input class="spf-input" id="spf-ref" type="text" placeholder="YouTube, Drive, or Instagram link">
+      </div>
+      <div class="spf-field">
+        <label class="spf-label" for="spf-goal">What should the content achieve?</label>
+        <textarea class="spf-textarea" id="spf-goal" placeholder="Tell me about the audience, direction, and outcome."></textarea>
+      </div>
+      <button class="spf-btn" type="button" onclick="bcSubmitBrief()">
+        Continue on WhatsApp
+        <span class="arrow">→</span>
+      </button>
+      <p class="spf-note">Nothing is sent without your confirmation.</p>
+    </div>
+    </div>
+  </div>
+  </div>
+</div>
+
+<script>
+/* Open the "Start a project" brief, optionally pre-selecting a package from the Pricelist */
+function openBrief(pkg){
+  /* Hide the Pricelist WITHOUT history.back() — calling closePage here fires an
+     async popstate that would immediately close the brief we're about to open. */
+  var rc = document.getElementById('ratecard-page');
+  if (rc) { rc.classList.remove('is-open'); }
+  openPage('startproject-page');
+  var sel = document.getElementById('spf-package');
+  if (sel && pkg){
+    var matched = false;
+    for (var i = 0; i < sel.options.length; i++){
+      if (sel.options[i].value === pkg || sel.options[i].textContent === pkg){
+        sel.selectedIndex = i; matched = true; break;
+      }
+    }
+    // fall back to a "starts with" match (e.g. pass "Starter Bundle")
+    if (!matched){
+      for (var j = 0; j < sel.options.length; j++){
+        if (sel.options[j].textContent.indexOf(pkg) === 0){ sel.selectedIndex = j; break; }
+      }
+    }
+  }
+  return false;
+}
+/* Start-a-project brief → WhatsApp compose */
+function bcSubmitBrief(){
+  var g = function(id){ var el = document.getElementById(id); return el ? String(el.value).trim() : ''; };
+  var lines = [
+    "Hi imadevideo! I'd like to start a project.",
+    "",
+    "Name: " + g('spf-name'),
+    "Contact: " + g('spf-contact'),
+    "Project type: " + g('spf-type'),
+    "Package: " + g('spf-package'),
+    "Number of videos: " + g('spf-count'),
+    "Deadline: " + g('spf-deadline'),
+    "Reference: " + g('spf-ref'),
+    "Goal: " + g('spf-goal'),
+    "",
+    "Looking forward to it. Thank you!"
+  ];
+  var msg = encodeURIComponent(lines.join("\n"));
+  window.open("https://wa.me/6281243532553?text=" + msg, "_blank");
+}
+/* Toggle the collapsed Skills + Full Portfolio block from the Project Showcase button */
+function toggleExtra(){
+  var box = document.getElementById('extra-sections');
+  var btn = document.getElementById('extra-toggle');
+  var label = document.getElementById('extra-toggle-label');
+  if (!box) return;
+  var open = box.classList.toggle('is-open');
+  if (btn){ btn.classList.toggle('is-open', open); btn.setAttribute('aria-expanded', open ? 'true' : 'false'); }
+  if (label) label.textContent = open ? 'Hide Skills & Full Portfolio' : 'View Skills & Full Portfolio';
+  if (open){
+    setTimeout(function(){
+      window.dispatchEvent(new Event('resize'));
+      var skills = document.getElementById('skills');
+      if (skills) skills.scrollIntoView({ behavior: 'smooth', block: 'start' });
+    }, 400);
+  }
+}
+</script>
+
+<!-- FAQ -->
+<div class="bc-section" id="faq">
+  <div class="faq-wrap">
+    <div class="faq-left reveal">
+      <div class="bc-badge-wrap reveal"><span class="bc-badge">FAQ</span></div>
+      <h2 class="spf-headline reveal">Before we <span class="serif">start.</span></h2>
+    </div>
+    <div class="faq-list reveal">
+      <div class="faq-item reveal open" onclick="faqToggle(this)">
+        <div class="faq-q"><span class="faq-num">01</span><span class="faq-question">What do you need from me?</span><span class="faq-icon-plus">+</span></div>
+        <div class="faq-a"><p>Your footage, references, deadline, and a clear goal. If the direction is still rough, I can help you shape it before editing starts.</p></div>
+      </div>
+      <div class="faq-item reveal" onclick="faqToggle(this)">
+        <div class="faq-q"><span class="faq-num">02</span><span class="faq-question">Are revisions included?</span><span class="faq-icon-plus">+</span></div>
+        <div class="faq-a"><p>Yes. We agree on the revision scope before the project starts, so the process stays clear for both sides.</p></div>
+      </div>
+      <div class="faq-item reveal" onclick="faqToggle(this)">
+        <div class="faq-q"><span class="faq-num">03</span><span class="faq-question">Can you match my current style?</span><span class="faq-icon-plus">+</span></div>
+        <div class="faq-a"><p>Yes. I can work inside your existing visual system, or help define a stronger editing direction from scratch.</p></div>
+      </div>
+      <div class="faq-item reveal" onclick="faqToggle(this)">
+        <div class="faq-q"><span class="faq-num">04</span><span class="faq-question">Do you work with international clients?</span><span class="faq-icon-plus">+</span></div>
+        <div class="faq-a"><p>Yes. Briefs, feedback, and delivery are all handled online, so location is never a blocker.</p></div>
+      </div>
+      <div class="faq-item reveal" onclick="faqToggle(this)">
+        <div class="faq-q"><span class="faq-num">05</span><span class="faq-question">How soon can we start?</span><span class="faq-icon-plus">+</span></div>
+        <div class="faq-a"><p>Availability changes week to week. Send your brief and I'll confirm the earliest realistic start date.</p></div>
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- FIND ME ONLINE -->
+<div class="bc-section" id="find-me">
+  <div class="bc-badge-wrap reveal"><span class="bc-badge">Find Me Online</span></div>
+  <h2 class="bc-headline reveal">Still thinking? Take a look at what I'm <span class="serif">making next.</span></h2>
+  <div class="fmo-grid">
+    <a href="https://instagram.com/imadevideo" target="_blank" rel="noopener" class="fmo-card reveal">
+      <div class="fmo-icon">IG</div>
+      <div class="fmo-info"><div class="fmo-name">Instagram</div><div class="fmo-handle">@imadevideo</div></div>
+      <div class="fmo-arrow">→</div>
+    </a>
+    <a href="mailto:madepujaendra@gmail.com" class="fmo-card reveal">
+      <div class="fmo-icon">@</div>
+      <div class="fmo-info"><div class="fmo-name">Email</div><div class="fmo-handle">madepujaendra@gmail.com</div></div>
+      <div class="fmo-arrow">→</div>
+    </a>
   </div>
 </div>
 
 <!-- FOOTER -->
-<footer>
-  <p><strong style="color:var(--primary)">imadevideo</strong> · I Made Puja Endra</p>
-  <p>AI Driven Video Editor &amp; Cinematic Storyteller © 2026</p>
+<footer class="site-footer">
+  <div class="site-footer-brand">
+    <img class="site-footer-avatar" src="https://res.cloudinary.com/drfokzzbf/image/upload/f_auto,q_auto/v1773777820/IMG_5487_xrmyui.jpg" alt="I Made Puja Endra">
+    <span class="site-footer-name">imadevideo</span>
+  </div>
+  <div class="site-footer-copy">© 2026 imadevideo · I Made Puja Endra. All rights reserved.</div>
 </footer>
+
+<script>
+/* FAQ accordion toggle */
+function faqToggle(el){ if (el) el.classList.toggle('open'); }
+</script>
 
 <script data-cfasync="false" src="/cdn-cgi/scripts/5c5dd728/cloudflare-static/email-decode.min.js"></script><script>
 /* ═══════════════════════════════════════════════════════════
@@ -1866,49 +2503,63 @@ document.addEventListener('DOMContentLoaded', function() {
         ).forEach(addMouseDrag);
       }
 
-      /* Showcase filter tabs (Short-Form / Long-Form / All) */
+      /* Showcase filter tabs (no "All" — a category is always active) */
       var filterTabs = document.querySelectorAll('#showcase-filter .filter-tab');
       var filterItems = document.querySelectorAll('.showcase-filter-item');
+      var extraBox = document.getElementById('extra-sections');
+      function applyFilter(f) {
+        if (f === 'extra') {
+          /* "Skills & Portfolio" tab: hide all showcase items, show the extra block */
+          filterItems.forEach(function(it) { it.style.display = 'none'; });
+          if (extraBox) {
+            extraBox.style.display = '';
+            setTimeout(function(){ window.dispatchEvent(new Event('resize')); }, 60);
+          }
+          return;
+        }
+        if (extraBox) extraBox.style.display = 'none';
+        filterItems.forEach(function(it) {
+          var show = (f === 'all' || it.dataset.cat === f);
+          it.style.display = show ? '' : 'none';
+        });
+      }
       filterTabs.forEach(function(tab) {
         tab.addEventListener('click', function() {
           filterTabs.forEach(function(t) { t.classList.remove('is-active'); });
           tab.classList.add('is-active');
-          var f = tab.dataset.filter;
-          filterItems.forEach(function(it) {
-            var show = (f === 'all' || it.dataset.cat === f);
-            it.style.display = show ? '' : 'none';
-          });
+          applyFilter(tab.dataset.filter);
         });
       });
+      /* Apply the default active category on load so the page isn't one long stack */
+      var activeTab = document.querySelector('#showcase-filter .filter-tab.is-active');
+      if (activeTab) applyFilter(activeTab.dataset.filter);
 
     });
   });
 });
 
-/* ── Scroll reveal: auto-apply to all elements ─────────── */
+/* ── Scroll reveal: elements animate IN when they enter and OUT when they leave,
+     so every scroll (up or down) produces movement. ───────── */
 (function() {
   if (!window.IntersectionObserver) return;
-
-  // Legacy .reveal
   document.body.classList.add('js-reveal-ready');
-  var legObs = new IntersectionObserver(function(entries) {
-    var visible = entries.filter(function(e) { return e.isIntersecting; });
-    visible.forEach(function(e, i) {
-      setTimeout(function() { e.target.classList.add('visible'); }, i * 110);
-      legObs.unobserve(e.target);
+  var obs = new IntersectionObserver(function(entries) {
+    var entering = [];
+    entries.forEach(function(e) {
+      if (e.isIntersecting) entering.push(e.target);
+      else e.target.classList.remove('visible');
     });
-  }, { threshold: 0.04, rootMargin: '0px 0px -20px 0px' });
+    entering.forEach(function(el, i) {
+      setTimeout(function() { el.classList.add('visible'); }, i * 85);
+    });
+  }, { threshold: 0.08, rootMargin: '0px 0px -6% 0px' });
   document.querySelectorAll('.reveal').forEach(function(el) {
     var r = el.getBoundingClientRect();
-    if (r.top < window.innerHeight) el.classList.add('visible');
-    else legObs.observe(el);
+    if (r.top < window.innerHeight * 0.95 && r.bottom > 0) el.classList.add('visible');
+    obs.observe(el);
   });
-  setTimeout(function() {
-    document.querySelectorAll('.reveal:not(.visible)').forEach(function(el) { el.classList.add('visible'); });
-  }, 2000);
-
-
 })();
+
 
 /* ── Hero stat count-up animation ──────────────────────── */
 (function() {
@@ -2050,9 +2701,36 @@ document.getElementById('nav-close').addEventListener('click', closeMobileMenu);
   window.openPage = function(id) {
     _origOpen(id);
     var page = document.getElementById(id);
-    if (page) setTimeout(function(){ initReveal(page); }, 60);
+    if (page) setTimeout(function(){
+      initReveal(page);
+      /* Force any .reveal inside the opened overlay to show (the scroll observer
+         may not fire for transformed/off-canvas overlay content). */
+      page.querySelectorAll('.reveal').forEach(function(el){ el.classList.add('visible'); });
+    }, 60);
   };
 })();
+</script>
+
+<!-- ── Editorial restyle behaviour: rotating word + custom cursor ── -->
+<script>
+/* Rotating serif accent word in the hero tagline */
+(function(){
+  var el = document.getElementById('rotWord');
+  if (!el) return;
+  var words = (el.getAttribute('data-words') || '').split('|').filter(Boolean);
+  if (words.length < 2) return;
+  if (window.matchMedia && window.matchMedia('(prefers-reduced-motion: reduce)').matches) return;
+  var i = 0;
+  setInterval(function(){
+    el.classList.add('swap');
+    setTimeout(function(){
+      i = (i + 1) % words.length;
+      el.textContent = words[i];
+      el.classList.remove('swap');
+    }, 320);
+  }, 2600);
+})();
+
 </script>
 
 </body>
