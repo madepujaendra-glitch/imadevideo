@@ -362,8 +362,8 @@
     footer p { color: var(--muted); font-size: 0.84rem; line-height: 2; }
 
     /* REVEAL */
-    .reveal { opacity: 1; transform: none; transition: opacity 0.85s cubic-bezier(0.16,1,0.3,1), transform 0.85s cubic-bezier(0.16,1,0.3,1); will-change: opacity, transform; }
-    .js-reveal-ready .reveal { opacity: 0; transform: translateY(40px); }
+    .reveal { opacity: 1; transform: none; transition: opacity 0.9s cubic-bezier(0.25,1,0.5,1), transform 0.9s cubic-bezier(0.25,1,0.5,1); will-change: opacity, transform; }
+    .js-reveal-ready .reveal { opacity: 0; transform: translateY(32px); }
     .js-reveal-ready .reveal.visible { opacity: 1; transform: translateY(0); }
     /* Staggered cascade for grouped items (Services / Benefits / Process) */
     .svc-row.reveal:nth-child(2), .proc-step.reveal:nth-child(2) { transition-delay: 0.09s; }
@@ -1994,7 +1994,7 @@
       </div>
       <div class="spf-field">
         <label class="spf-label" for="spf-package">Package</label>
-        <select class="spf-select" id="spf-package">
+        <select class="spf-select" id="spf-package" onchange="bcSyncCountFromPackage()">
           <option value="" disabled selected>Select a package</option>
           <optgroup label="Short-Form Editing">
             <option>Short-Form Basic - $19.99</option>
@@ -2065,7 +2065,19 @@ function openBrief(pkg){
       }
     }
   }
+  bcSyncCountFromPackage();
   return false;
+}
+/* Auto-fill "Number of videos" from the chosen bundle */
+function bcSyncCountFromPackage(){
+  var pkgSel = document.getElementById('spf-package');
+  var countEl = document.getElementById('spf-count');
+  if (!pkgSel || !countEl) return;
+  var txt = pkgSel.value || '';
+  var counts = { 'Starter Bundle': 20, 'Growth Bundle': 19, 'Ultimate Bundle': 24 };
+  for (var name in counts){
+    if (txt.indexOf(name) === 0){ countEl.value = counts[name]; return; }
+  }
 }
 /* Start-a-project brief → WhatsApp compose */
 function bcSubmitBrief(){
@@ -2548,25 +2560,23 @@ document.addEventListener('DOMContentLoaded', function() {
   });
 });
 
-/* ── Scroll reveal: elements animate IN when they enter and OUT when they leave,
-     so every scroll (up or down) produces movement. ───────── */
+/* ── Scroll reveal: each element glides in ONCE when it enters the viewport,
+     then stays put (no re-hide) — smooth, no flicker. ───────── */
 (function() {
   if (!window.IntersectionObserver) return;
   document.body.classList.add('js-reveal-ready');
   var obs = new IntersectionObserver(function(entries) {
     var entering = [];
-    entries.forEach(function(e) {
-      if (e.isIntersecting) entering.push(e.target);
-      else e.target.classList.remove('visible');
-    });
+    entries.forEach(function(e) { if (e.isIntersecting) entering.push(e.target); });
     entering.forEach(function(el, i) {
-      setTimeout(function() { el.classList.add('visible'); }, i * 85);
+      setTimeout(function() { el.classList.add('visible'); }, i * 70);
+      obs.unobserve(el);
     });
-  }, { threshold: 0.08, rootMargin: '0px 0px -6% 0px' });
+  }, { threshold: 0.14, rootMargin: '0px 0px -8% 0px' });
   document.querySelectorAll('.reveal').forEach(function(el) {
     var r = el.getBoundingClientRect();
     if (r.top < window.innerHeight * 0.95 && r.bottom > 0) el.classList.add('visible');
-    obs.observe(el);
+    else obs.observe(el);
   });
 })();
 
