@@ -1034,6 +1034,18 @@
     .hero-cta > *, .spf-btn > * { position: relative; z-index: 1; }
     .fmo-card:active, .filter-tab:active, .nav-cta:active, .extra-toggle-btn:active { transform: scale(0.97); }
     @media (prefers-reduced-motion: reduce) { .hero-scroll-dot { animation: none; } }
+
+    /* ── Mobile performance: drop GPU-heavy effects so scrolling stays smooth on phones ── */
+    @media (max-width: 900px) {
+      .nav-inner { backdrop-filter: none !important; -webkit-backdrop-filter: none !important; background: rgba(9,9,15,0.97) !important; }
+      .float-contact a { backdrop-filter: none !important; -webkit-backdrop-filter: none !important; background: rgba(5,5,8,0.97) !important; }
+      .ben-card::after { display: none !important; }
+      .ben-card { box-shadow: none !important; }
+      .hero-video { box-shadow: none !important; }
+      /* lighter, snappier reveal on mobile = less GPU work per element */
+      .js-reveal-ready .reveal { transform: translateY(22px); }
+      .reveal { transition: opacity 0.6s ease-out, transform 0.6s ease-out !important; }
+    }
   </style>
 </head>
 <body>
@@ -2760,6 +2772,8 @@ document.getElementById('nav-close').addEventListener('click', closeMobileMenu);
 (function(){
   if (!window.Lenis) return;
   if (window.matchMedia && window.matchMedia('(prefers-reduced-motion: reduce)').matches) return;
+  /* On phones/tablets, native touch scrolling is smoother than JS smoothing — skip Lenis. */
+  if (window.matchMedia && (window.matchMedia('(hover: none)').matches || window.matchMedia('(pointer: coarse)').matches)) return;
   var lenis = new Lenis({
     duration: 1.15,
     easing: function(t){ return Math.min(1, 1.001 - Math.pow(2, -10 * t)); },
