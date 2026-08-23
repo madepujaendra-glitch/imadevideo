@@ -2478,10 +2478,10 @@ function openPage(id) {
   page.classList.add('is-open');
   document.body.style.overflow = 'hidden';
   window.history.pushState({ page: id }, '', '#' + id);
-  // Autoplay all yt-lazy inside this page
+  // Autoplay yt-lazy inside this page (desktop only — tap-to-play on mobile to avoid lag)
   setTimeout(function() {
     page.querySelectorAll('.yt-lazy[data-vid]').forEach(function(el) {
-      loadYT(el);
+      autoYT(el);
     });
   }, 300);
 }
