@@ -732,12 +732,13 @@
       box-shadow: 0 10px 34px rgba(195,255,0,0.28), inset 0 0 0 1px rgba(255,255,255,0.25);
     }
     .hero-cta::after {
-      content: '→';
+      content: '';
       display: inline-flex; align-items: center; justify-content: center;
       width: 30px; height: 30px; margin-left: 1rem;
       border-radius: 50%;
-      background: rgba(6,6,10,0.16);
-      font-size: 0.95rem; font-weight: 700;
+      background-color: rgba(6,6,10,0.16);
+      background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='15' height='15' viewBox='0 0 24 24' fill='none' stroke='%2306060a' stroke-width='2.6' stroke-linecap='round' stroke-linejoin='round'%3E%3Cline x1='4' y1='12' x2='19' y2='12'/%3E%3Cpolyline points='12 5 19 12 12 19'/%3E%3C/svg%3E");
+      background-repeat: no-repeat; background-position: center;
       transition: transform 0.3s var(--ease);
     }
     .hero-cta:hover {
@@ -1042,6 +1043,11 @@
       .ben-card::after { display: none !important; }
       .ben-card { box-shadow: none !important; }
       .hero-video { box-shadow: none !important; }
+      /* KILL the expensive blur/filter spotlight on carousels (main Android lag source) */
+      .carousel-item, .carousel-item.is-active { filter: none !important; will-change: auto !important; }
+      .carousel-item { opacity: 0.55 !important; transform: scale(0.94) !important; }
+      .carousel-item.is-active { opacity: 1 !important; transform: scale(1) !important; box-shadow: 0 10px 30px rgba(0,0,0,0.5) !important; }
+      .sec-carousel-scroll .portfolio-card, .wide-carousel-scroll .wide-card, .skill-carousel-scroll .skill-card { will-change: auto !important; }
       /* lighter, snappier reveal on mobile = less GPU work per element */
       .js-reveal-ready .reveal { transform: translateY(22px); }
       .reveal { transition: opacity 0.6s ease-out, transform 0.6s ease-out !important; }
@@ -2045,7 +2051,7 @@
       </div>
       <button class="spf-btn" type="button" onclick="bcSubmitBrief()">
         Continue on WhatsApp
-        <span class="arrow">→</span>
+        <span class="arrow"><svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.6" stroke-linecap="round" stroke-linejoin="round"><line x1="4" y1="12" x2="19" y2="12"/><polyline points="12 5 19 12 12 19"/></svg></span>
       </button>
       <p class="spf-note">Nothing is sent without your confirmation.</p>
     </div>
@@ -2170,12 +2176,12 @@ function toggleExtra(){
     <a href="https://instagram.com/imadevideo" target="_blank" rel="noopener" class="fmo-card reveal">
       <div class="fmo-icon">IG</div>
       <div class="fmo-info"><div class="fmo-name">Instagram</div><div class="fmo-handle">@imadevideo</div></div>
-      <div class="fmo-arrow">→</div>
+      <div class="fmo-arrow"><svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.4" stroke-linecap="round" stroke-linejoin="round"><line x1="4" y1="12" x2="19" y2="12"/><polyline points="12 5 19 12 12 19"/></svg></div>
     </a>
     <a href="mailto:madepujaendra@gmail.com" class="fmo-card reveal">
       <div class="fmo-icon">@</div>
       <div class="fmo-info"><div class="fmo-name">Email</div><div class="fmo-handle">madepujaendra@gmail.com</div></div>
-      <div class="fmo-arrow">→</div>
+      <div class="fmo-arrow"><svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.4" stroke-linecap="round" stroke-linejoin="round"><line x1="4" y1="12" x2="19" y2="12"/><polyline points="12 5 19 12 12 19"/></svg></div>
     </a>
   </div>
 </div>
@@ -2315,7 +2321,7 @@ class NativeCarousel {
       this._syncUI(0);
       // Auto-play first item
       var firstLazy = this.items[0].querySelector('.yt-lazy[data-vid]');
-      if (firstLazy) { var _self = this; setTimeout(function() { loadYT(firstLazy); }, 200); }
+      if (firstLazy) { var _self = this; setTimeout(function() { autoYT(firstLazy); }, 200); }
     }
 
     var self = this;
@@ -2325,7 +2331,7 @@ class NativeCarousel {
       self._syncUI(idx);
       // Auto-play video on active item
       var lazy = self.items[idx].querySelector('.yt-lazy[data-vid]');
-      if (lazy) loadYT(lazy);
+      if (lazy) autoYT(lazy);
     });
 
 
@@ -2379,7 +2385,7 @@ class SecCarousel {
       this._syncUI(0);
       // Auto-play first item
       var firstLazy = this.items[0].querySelector('.yt-lazy[data-vid]');
-      if (firstLazy) { setTimeout(function() { loadYT(firstLazy); }, 300); }
+      if (firstLazy) { setTimeout(function() { autoYT(firstLazy); }, 300); }
     }
 
     var self = this;
@@ -2389,7 +2395,7 @@ class SecCarousel {
       self._syncUI(idx);
       // Auto-play video on active item
       var lazy = self.items[idx].querySelector('.yt-lazy[data-vid]');
-      if (lazy) loadYT(lazy);
+      if (lazy) autoYT(lazy);
     });
 
 
@@ -2422,6 +2428,11 @@ class SecCarousel {
 }
 
 /* ── Utility ─────────────────────────────────────────────── */
+function autoYT(el){
+  if(!el) return;
+  if(window.matchMedia && (window.matchMedia('(hover: none)').matches || window.matchMedia('(pointer: coarse)').matches)) return;
+  loadYT(el);
+}
 function loadYT(el) {
   var vid = el.dataset.vid;
   var iframe = document.createElement('iframe');
@@ -2620,6 +2631,15 @@ document.addEventListener('DOMContentLoaded', function() {
 
   var statsEl = document.querySelector('.hero-stats');
   if (!statsEl) return;
+  /* On phones/tablets, skip the counting animation (it drops frames on weaker GPUs) —
+     just show the final numbers instantly. */
+  if (window.matchMedia && (window.matchMedia('(hover: none)').matches || window.matchMedia('(pointer: coarse)').matches)) {
+    document.querySelectorAll('.hero-stat-num[data-count-target]').forEach(function(el) {
+      var t = parseInt(el.dataset.countTarget, 10);
+      el.textContent = formatCount(t, t, true) + '+';
+    });
+    return;
+  }
   var statObs = new IntersectionObserver(function(entries) {
     entries.forEach(function(e) {
       if (e.isIntersecting) {
@@ -2649,8 +2669,9 @@ document.addEventListener('DOMContentLoaded', function() {
   });
 })();
 
-/* ── Autoplay videos when scrolled into view ─────────────── */
+/* ── Autoplay videos when scrolled into view (desktop only — tap-to-play on mobile) ─── */
 (function() {
+  if (window.matchMedia && (window.matchMedia('(hover: none)').matches || window.matchMedia('(pointer: coarse)').matches)) return;
   var obs = new IntersectionObserver(function(entries) {
     entries.forEach(function(e) {
       if (e.isIntersecting) {
